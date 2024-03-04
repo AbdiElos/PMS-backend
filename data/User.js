@@ -32,7 +32,7 @@ const User = sequelize.define('User', {
   roles: {
     type: DataTypes.STRING,
     allowNull: false,
-    defaultValue: 'user', // Set the default value to 'user'
+    defaultValue: 'user',
   },
   refreshToken: {
     type: DataTypes.STRING,
@@ -41,7 +41,18 @@ const User = sequelize.define('User', {
   email: {
     type: DataTypes.STRING,
     allowNull: true,
-  }
+  },
+  status: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: true,
+  },
+  project: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
+    unsigned: true,
+  },
 });
 
 User.sync({ alter: false })

@@ -2,12 +2,12 @@ const bcrypt = require('bcrypt');
 const User = require('../data/User');
 
 const handleNewUser = async (req, res) => {
-  const { username, firstname, lastname, password, email } = req.body;
+  const { username,  password, email } = req.body;
   
-  if (!username || !password || !firstname || !lastname || !email) {
+  if (!username || !password || !email) {
     return res.status(400).json({ "message": "Incomplete data form" });
   }
-
+ 
   try {
     const duplicate = await User.findOne({ where: { username } });
     if (duplicate) {
@@ -17,8 +17,8 @@ const handleNewUser = async (req, res) => {
     const hashedPwd = await bcrypt.hash(password, 10);
     await User.create({
       username,
-      firstname,
-      lastname,
+      //firstname,
+      //lastname,
       password: hashedPwd,
       email
     });
