@@ -16,10 +16,10 @@ const updateProfile = async (req, res) => {
   try {
     const user = await User.findOne({ where: { username: req.username } });
     console.log(user);
-    const { firstname, lastname, email, password } = req.body;
+    const { username, email, password } = req.body;
     console.log(req.body);
-    if (firstname) user.firstname = firstname;
-    if (lastname) user.lastname = lastname;
+    if (username) user.username = username;
+  
     if (email) user.email = email;
     if (password) {
       const hashedPwd = await bcrypt.hash(password, 10);

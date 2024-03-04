@@ -30,10 +30,10 @@ const getActivity = async (req, res) => {
 
 const addUser = async (req, res) => {
   const {
-    username, firstname, lastname, password, roles, email
+    username, password, roles, email
   } = req.body;
 
-  if (!username || !password || !roles || !firstname || !lastname || !email) {
+  if (!username || !password || !roles || !email) {
     return res.status(400).json({ "message": "Bad request" });
   }
 
@@ -47,8 +47,7 @@ const addUser = async (req, res) => {
 
     const newUser = await User.create({
       username,
-      firstname,
-      lastname,
+      
       roles,
    
       
