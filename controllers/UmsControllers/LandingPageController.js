@@ -1,4 +1,4 @@
-const User=require('../data/User');
+const User=require('../../data/User');
 // const { el } = require('date-fns/locale');
 const getUser=async (req,res)=>{
     var isFavored;

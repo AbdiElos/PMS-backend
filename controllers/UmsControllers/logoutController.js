@@ -1,5 +1,5 @@
-const User=require('../data/User');
-const Activity=require('../data/Activity')
+const User=require('../../data/User');
+const Activity=require('../../data/Activity')
 const handleLogout= async (req,res)=>{
     // delete access token in the front end
     const cookie=req.cookies;

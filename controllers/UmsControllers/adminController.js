@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
-const User = require('../data/User');
-const Activity = require('../data/Activity');
+const User = require('../../data/User');
+const Activity = require('../../data/Activity');
 
 
 const getUser = async (req, res) => {

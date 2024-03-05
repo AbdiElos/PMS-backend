@@ -1,4 +1,4 @@
-const User = require("../data/User");
+const User = require("../../data/User");
 const bcrypt = require("bcrypt");
 
 const handleProfileUpdate = async (req, res) => {

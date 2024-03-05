@@ -13,7 +13,6 @@ connection
 const PORT = process.env.PORT || 3500;
 
 
-
 // Establish database connection
 
 // Middleware
@@ -22,15 +21,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public', 'uploads')));
-app.use("/register", require('./routes/api/register'));
-app.use("/auth", require('./routes/api/auth'));
-app.use('/refresh', require('./routes/api/refresh'));
+app.use("/ums", require('./routes/api/ums'));
 app.use(verifyJWT);
-app.use('/logout', require('./routes/api/logout'));
-app.use('/home', require('./routes/api/home'));
-app.use('/users', require('./routes/api/landingPage'));
-app.use('/admin', require('./routes/api/admin'));
-app.use('/admin2', require('./routes/api/admin2'));
 
 // Start the server
 app.listen(PORT, () => {
