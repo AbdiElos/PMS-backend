@@ -1,33 +1,35 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const User = require('../data/User');
-const Activity = require('../data/Activity');
+const db = require("../config/db");
+const User = db.User;
+const Activity = db.Activity;
 
 const handleAuth = async (req, res) => {
   console.log(req.body);
-  const { username, password } = req.body;
-  if (!username || !password) {
+  const { full_name, password } = req.body;
+  if (!full_name || !password) {
     return res.status(400).json({ "message": "Both username and password are required" });
   }
   
   try {
-    const foundUser = await User.findOne({ where: { username } });
+    const foundUser = await User.findOne({ 
+      where: { full_name }
+    });
+    
     if (!foundUser) {
-      return res.status(400).json({ "message": "Username is not available, sign up first" });
+      return res.status(400).json({ "message": "full_name is not available, sign up first" });
     }
     
-    if (foundUser.suspended) {
+    if (!foundUser.account_status) {
       return res.status(400).json({ "message": "You are temporarily banned from accessing your account. Please contact us for assistance." });
     }
     
     const match = await bcrypt.compare(password, foundUser.password);
     if (match) {
-      const roles = foundUser.roles;
       const accessToken = jwt.sign(
         {
           userInfo: { 
-            username: foundUser.username,
-            roles: roles
+            full_name: foundUser.full_name
           }
         },
         process.env.ACCESS_TOKEN_SECRET,
@@ -35,7 +37,7 @@ const handleAuth = async (req, res) => {
       );
       
       const refreshToken = jwt.sign(
-        { username: foundUser.username },
+        { full_name: foundUser.full_name },
         process.env.REFRESH_TOKEN_SECRET,
         { expiresIn: '1d' }
       );
@@ -44,7 +46,7 @@ const handleAuth = async (req, res) => {
       await foundUser.save();
       
       const activity = await Activity.create({
-        username: username,
+        full_name: full_name,
         activity: 'logged in',
         time: new Date()
       });

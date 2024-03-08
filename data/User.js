@@ -1,66 +1,57 @@
-const { Sequelize, DataTypes } = require('sequelize');
-const connection = require('../config/connect');
+module.exports = (sequelize, DataTypes) => {
+  const User = sequelize.define('User', {
+    user_id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey: true,
+    },
+    full_name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    refreshToken: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    project_status: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
+    account_status: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: true,
+    },
+    division_id: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
+    /*Role_id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey: true,
+    },*/
 
-const sequelize = new Sequelize(
-  connection.config.database,
-  connection.config.user,
-  connection.config.password,
-  {
-    host: connection.config.host,
-    port: connection.config.port,
-    dialect: 'mysql',
-  }
-);
 
-const User = sequelize.define('User', {
-  username: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  firstname: {
-    type: DataTypes.STRING,
-    allowNull: true,
-  },
-  lastname: {
-    type: DataTypes.STRING,
-    allowNull: true,
-  },
-  password: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  roles: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    defaultValue: 'user',
-  },
-  refreshToken: {
-    type: DataTypes.STRING,
-    allowNull: true,
-  },
-  email: {
-    type: DataTypes.STRING,
-    allowNull: true,
-  },
-  status: {
-    type: DataTypes.BOOLEAN,
-    allowNull: false,
-    defaultValue: true,
-  },
-  project: {
-    type: DataTypes.BOOLEAN,
-    allowNull: false,
-    defaultValue: false,
-    unsigned: true,
-  },
-});
-
-User.sync({ alter: false })
-  .then(() => {
-    //console.log('User table created or already exists');
-  })
-  .catch((error) => {
-    console.error('Error creating User table:', error);
+    
   });
 
-module.exports = User;
+  User.sync()
+    .then(() => {
+      // console.log('User table created or already exists');
+    })
+    .catch((error) => {
+      console.error('Error creating User table:', error);
+    });
+
+  return User;
+};

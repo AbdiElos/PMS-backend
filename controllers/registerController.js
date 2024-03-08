@@ -1,26 +1,32 @@
 const bcrypt = require('bcrypt');
-const User = require('../data/User');
+const db = require("../config/db");
+const User = db.User;
+const Roles = db.Roles;
 
 const handleNewUser = async (req, res) => {
-  const { username,  password, email } = req.body;
-  
-  if (!username || !password || !email) {
+  const { full_name, password, email } = req.body;
+
+  if (!full_name || !password || !email ) {
     return res.status(400).json({ "message": "Incomplete data form" });
   }
- 
+
   try {
-    const duplicate = await User.findOne({ where: { username } });
-    if (duplicate) {
-      return res.status(409).json({ "message": "Duplicate username" });
+    const duplicateEmail = await User.findOne({ where: { email } });
+    if (duplicateEmail) {
+      return res.status(409).json({ "message": "Duplicate email" });
+    }
+
+    const duplicateFullName = await User.findOne({ where: { full_name } });
+    if (duplicateFullName) {
+      return res.status(409).json({ "message": "Duplicate full name" });
     }
 
     const hashedPwd = await bcrypt.hash(password, 10);
     await User.create({
-      username,
-      //firstname,
-      //lastname,
+      full_name,
       password: hashedPwd,
       email
+      
     });
 
     return res.status(201).json({ "success": "New user is created" });

@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
-const User = require('../data/User');
+const db = require("../config/db");
+const User = db.User;
 
 const handleRefreshToken = async (req, res) => {
   const cookie = req.cookies;
@@ -12,13 +13,11 @@ const handleRefreshToken = async (req, res) => {
       refreshToken,
       process.env.REFRESH_TOKEN_SECRET,
       (err, decoded) => {
-        if (err || foundUser.username !== decoded.username) return res.sendStatus(403);
-        const roles = Object.values(foundUser.roles);
+        if (err || foundUser.full_name !== decoded.full_name) return res.sendStatus(403);
         const accessToken = jwt.sign(
           {
             userInfo: {
-              username: decoded.username,
-              roles: roles,
+              full_name: decoded.full_name,
             },
           },
           process.env.ACCESS_TOKEN_SECRET,

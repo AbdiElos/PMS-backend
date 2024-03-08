@@ -21,18 +21,25 @@ const verifyAdmin=(req,res,next)=>{
   next()
 }*/
 
-const verifyAdmin=(req,res,next)=>{
+/*const verifyAdmin=(req,res,next)=>{
   if(!req?.roles) return res.sendStatus(401)
   if(!(req.roles===3030)){
       return res.sendStatus(401)
   }
   next()
-}
+}*/
 router.route('/addMember')
     .post(adminController.addUser)
+router.route('/allUser')
+    .get(adminController.getAllUser)
 
-router.route("/getUser/:username")
+
+router.route("/getUser/:full_name")
     .get(adminController.getUser);
+
+
+router.route("/changeStatus/:full_name")
+    .get(adminController.toggleSuspend)
 /*router.route("/consumers/:username/activity")
     .get(verifyAdmin,adminController.getActivity);
 

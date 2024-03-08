@@ -10,9 +10,9 @@ const handleProfileUpdate = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    const { username,  email, password } = req.body;
+    const { full_name,  email, password } = req.body;
    
-    if (username) user.lastname = username;
+    if (full_name) user.full_name = full_name;
     if (email) user.email = email;
     if (password) {
       const hashedPwd = await bcrypt.hash(password, 10);
