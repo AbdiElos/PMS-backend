@@ -1,14 +1,25 @@
 module.exports = (sequelize, DataTypes) => {
   const Roles = sequelize.define('Roles', {
-    Role_id: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
-      primaryKey: true,
-    },
+    // role_id: {
+    //   type: DataTypes.UUID,
+    //   defaultValue: DataTypes.UUIDV4,
+    //   primaryKey: true,
+      
+    // },
     name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    created_by: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    updated_by: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+
+
   });
 
   Roles.sync({ alter: false })

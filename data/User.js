@@ -9,18 +9,33 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     password: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    division_id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      allowNull: true
     },
     refreshToken: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    email: {
-      type: DataTypes.STRING,
+
+    team_id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
       allowNull: true,
     },
+    // role_id: {
+    //   type: DataTypes.UUID,
+    //   allowNull: false,
+    // },
     project_status: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
@@ -31,18 +46,15 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       defaultValue: true,
     },
-    division_id: {
-      type: DataTypes.INTEGER,
+
+    created_by: {
+      type: DataTypes.STRING,
       allowNull: true,
     },
-    /*Role_id: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
-      primaryKey: true,
-    },*/
-
-
-    
+    updated_by: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
   });
 
   User.sync()

@@ -8,10 +8,10 @@ const sequelize = new Sequelize(
   {
     host: connection.config.host,
     port: connection.config.port,
-    dialect: 'mysql', // Assuming you want to use MySQL
+    dialect: 'mysql', 
     operatorsAliases: false,
     pool: {
-      max: 10, // Adjust as per your requirement
+      max: 10, 
       min: 0,
       acquire: 30000,
       idle: 10000,
@@ -24,13 +24,43 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-// Import your models here
+// Import  models here
 db.Roles = require('../data/Roles')(sequelize, Sequelize);
 db.User = require('../data/User')(sequelize, Sequelize);
 db.Activity = require('../data/Activity')(sequelize, Sequelize);
+db.Permission = require('../data/Permissions')(sequelize, Sequelize);
+db.Role_has_permission = require('../data/role_has_permission')(sequelize, Sequelize);
+db.Division= require('../data/Division')(sequelize, Sequelize);
+db.Team= require('../data/Team')(sequelize, Sequelize);
+db.Sector= require('../data/Sector')(sequelize, Sequelize);
+db.Project= require('../data/Project')(sequelize, Sequelize);
+db.Project_member= require('../data/Project_member')(sequelize, Sequelize);
+db.Milestone= require('../data/Milestone')(sequelize, Sequelize);
+db.Task= require('../data/Task')(sequelize, Sequelize);
+db.Subtask= require('../data/Subtask')(sequelize, Sequelize);
+db.Comment= require('../data/Comment')(sequelize, Sequelize);
+db.Task_member= require('../data/Task_member')(sequelize, Sequelize);
+db.Document= require('../data/Document')(sequelize, Sequelize);
+db.Document_type= require('../data/Document_type')(sequelize, Sequelize);
+db.Milestone_members= require('../data/Milestone_members')(sequelize, Sequelize);
 
-// Define associations if any
-//db.Roles.hasMany(db.User, { as: 'User' });
-//db.User.belongsTo(db.Roles, { foreignKey: 'Role_id', as: 'role' });
+// Define associations if any+
+db.User.belongsTo(db.Roles, { foreignKey: "RoleId", as: 'Roles' });
+db.Roles.hasMany(db.User, { as: 'User' });
 
+
+// Define many-to-many relationship between Roles and Permissions
+// db.Roles.belongsToMany(db.Permission, {
+//   through: 'Role_has_permission',
+//   foreignKey: 'role_id',
+//   otherKey: 'permission_id',
+//   as: 'Permissions',
+// });
+
+// db.Permission.belongsToMany(db.Roles, {
+//   through: 'Role_has_permission',
+//   foreignKey: 'permission_id',
+//   otherKey: 'role_id',
+//   as: 'Roles',
+// });
 module.exports = db;
