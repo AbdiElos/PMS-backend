@@ -1,6 +1,10 @@
 const jwt = require('jsonwebtoken');
+<<<<<<< HEAD:controllers/refreshTokenController.js
 const db = require("../config/db");
 const User = db.User;
+=======
+const User = require('../../data/User');
+>>>>>>> 158dbac6b4a26e7b06db8c69ba19d71d273836b2:controllers/UmsControllers/refreshTokenController.js
 
 const handleRefreshToken = async (req, res) => {
   const cookie = req.cookies;

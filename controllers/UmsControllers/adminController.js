@@ -1,7 +1,13 @@
 const bcrypt = require('bcrypt');
+<<<<<<< HEAD:controllers/adminController.js
 const db = require("../config/db");
 const User = db.User;
 const Roles = db.Roles;
+=======
+const User = require('../../data/User');
+const Activity = require('../../data/Activity');
+
+>>>>>>> 158dbac6b4a26e7b06db8c69ba19d71d273836b2:controllers/UmsControllers/adminController.js
 
 const getUser = async (req, res) => {
   const full_name = req.params.full_name;

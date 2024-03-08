@@ -1,7 +1,11 @@
 const bcrypt = require('bcrypt');
+<<<<<<< HEAD:controllers/registerController.js
 const db = require("../config/db");
 const User = db.User;
 const Roles = db.Roles;
+=======
+const User = require('../../data/User');
+>>>>>>> 158dbac6b4a26e7b06db8c69ba19d71d273836b2:controllers/UmsControllers/registerController.js
 
 const handleNewUser = async (req, res) => {
   const { full_name, password, email } = req.body;

@@ -1,8 +1,13 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+<<<<<<< HEAD:controllers/authController.js
 const db = require("../config/db");
 const User = db.User;
 const Activity = db.Activity;
+=======
+const User = require('../../data/User');
+const Activity = require('../../data/Activity');
+>>>>>>> 158dbac6b4a26e7b06db8c69ba19d71d273836b2:controllers/UmsControllers/authController.js
 
 const handleAuth = async (req, res) => {
   console.log(req.body);

@@ -1,4 +1,4 @@
-const User=require('../data/User');
+const User=require('../../data/User');
 const nodemailer = require('nodemailer');
 const bcrypt=require("bcrypt")
 const crypto=require("crypto")
