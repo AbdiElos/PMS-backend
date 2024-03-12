@@ -35,13 +35,13 @@ module.exports = (sequelize, DataTypes) => {
       },
     });
   
-    Task.sync()
-      .then(() => {
-        // console.log('Task table created or already exists');
-      })
-      .catch((error) => {
-        console.error('Error creating Task table:', error);
-      });
+    // Task.sync()
+    //   .then(() => {
+    //     // console.log('Task table created or already exists');
+    //   })
+    //   .catch((error) => {
+    //     console.error('Error creating Task table:', error);
+    //   });
   
     return Task;
   };

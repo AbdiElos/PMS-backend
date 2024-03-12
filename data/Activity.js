@@ -14,13 +14,13 @@ module.exports = (sequelize, DataTypes) => {
     },
   });
 
-  Activity.sync({ alter: false })
-    .then(() => {
-      //console.log('Activity table created or already exists');
-    })
-    .catch((error) => {
-      console.error('Error creating Activity table:', error); // Log any errors that occur during sync
-    });
+  // Activity.sync({ alter: false })
+  //   .then(() => {
+  //     //console.log('Activity table created or already exists');
+  //   })
+  //   .catch((error) => {
+  //     console.error('Error creating Activity table:', error); // Log any errors that occur during sync
+  //   });
 
   return Activity;
 };

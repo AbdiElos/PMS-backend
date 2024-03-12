@@ -39,13 +39,13 @@ module.exports = (sequelize, DataTypes) => {
       },
     });
   
-    Subtask.sync()
-      .then(() => {
-        // console.log('Subtask table created or already exists');
-      })
-      .catch((error) => {
-        console.error('Error creating Subtask table:', error);
-      });
+    // Subtask.sync()
+    //   .then(() => {
+    //     // console.log('Subtask table created or already exists');
+    //   })
+    //   .catch((error) => {
+    //     console.error('Error creating Subtask table:', error);
+    //   });
   
     return Subtask;
   };

@@ -5,11 +5,24 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
     },
-    full_name: {
+    // full_name: {
+    //   type: DataTypes.STRING,
+    //   allowNull: false,
+    // },
+    name: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
+    },
+    gender: { // New column to be added
+      type: DataTypes.STRING, // Assuming string data type for gender
+      allowNull: true, // Adjust based on your requirements
     },
     email: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+
+    created_us: {
       type: DataTypes.STRING,
       allowNull: true,
     },
@@ -57,13 +70,13 @@ module.exports = (sequelize, DataTypes) => {
     },
   });
 
-  User.sync()
-    .then(() => {
-      // console.log('User table created or already exists');
-    })
-    .catch((error) => {
-      console.error('Error creating User table:', error);
-    });
+  // User.sync()
+  //   .then(() => {
+  //     // console.log('User table created or already exists');
+  //   })
+  //   .catch((error) => {
+  //     console.error('Error creating User table:', error);
+  //   });
 
   return User;
 };

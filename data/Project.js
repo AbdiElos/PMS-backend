@@ -45,13 +45,13 @@ module.exports = (sequelize, DataTypes) => {
       },
     });
   
-    Project.sync()
-      .then(() => {
-        // console.log('User table created or already exists');
-      })
-      .catch((error) => {
-        console.error('Error creating Project table:', error);
-      });
+    // Project.sync()
+    //   .then(() => {
+    //     // console.log('User table created or already exists');
+    //   })
+    //   .catch((error) => {
+    //     console.error('Error creating Project table:', error);
+    //   });
   
     return Project;
   };

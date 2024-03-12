@@ -25,13 +25,13 @@ module.exports = (sequelize, DataTypes) => {
       },
     });
   
-    Sector.sync()
-      .then(() => {
-        // console.log('User table created or already exists');
-      })
-      .catch((error) => {
-        console.error('Error creating Division table:', error);
-      });
+    // Sector.sync()
+    //   .then(() => {
+    //     // console.log('User table created or already exists');
+    //   })
+    //   .catch((error) => {
+    //     console.error('Error creating Division table:', error);
+    //   });
   
     return Sector;
   };

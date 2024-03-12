@@ -44,13 +44,13 @@ module.exports = (sequelize, DataTypes) => {
       },
     });
   
-    Milestone.sync()
-      .then(() => {
-        // console.log('User table created or already exists');
-      })
-      .catch((error) => {
-        console.error('Error creating Project table:', error);
-      });
+    // Milestone.sync()
+    //   .then(() => {
+    //     // console.log('User table created or already exists');
+    //   })
+    //   .catch((error) => {
+    //     console.error('Error creating Project table:', error);
+    //   });
   
     return Milestone;
   };

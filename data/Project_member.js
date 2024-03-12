@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       user_id: {
         type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
+        
         allowNull: true,
       },
       project_id: {
@@ -19,13 +19,13 @@ module.exports = (sequelize, DataTypes) => {
     
     });
   
-    Project_member.sync()
-      .then(() => {
-        // console.log('Members table created or already exists');
-      })
-      .catch((error) => {
-        console.error('Error creating Project_member table:', error);
-      });
+    // Project_member.sync()
+    //   .then(() => {
+    //     // console.log('Members table created or already exists');
+    //   })
+    //   .catch((error) => {
+    //     console.error('Error creating Project_member table:', error);
+    //   });
   
     return Project_member;
   };

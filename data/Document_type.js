@@ -17,13 +17,13 @@ module.exports = (sequelize, DataTypes) => {
       }
     });
   
-    Document_type.sync()
-      .then(() => {
-        // console.log('Document_type table created or already exists');
-      })
-      .catch((error) => {
-        console.error('Error creating Document_typetable:', error);
-      });
+    // Document_type.sync()
+    //   .then(() => {
+    //     // console.log('Document_type table created or already exists');
+    //   })
+    //   .catch((error) => {
+    //     console.error('Error creating Document_typetable:', error);
+    //   });
   
     return Document_type;
   };

@@ -31,13 +31,13 @@ module.exports = (sequelize, DataTypes) => {
       },
     });
   
-    Team.sync()
-      .then(() => {
-        // console.log('Team table created or already exists');
-      })
-      .catch((error) => {
-        console.error('Error creating Team table:', error);
-      });
+    // Team.sync()
+    //   .then(() => {
+    //     // console.log('Team table created or already exists');
+    //   })
+    //   .catch((error) => {
+    //     console.error('Error creating Team table:', error);
+    //   });
   
     return Team;
   };

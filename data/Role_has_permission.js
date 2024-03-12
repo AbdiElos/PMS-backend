@@ -19,14 +19,14 @@ module.exports = (sequelize, DataTypes) => {
   
     });
   
-    Role_has_permission.sync({ alter: false })
-      .then(() => {
-        // console.log('Roles table created or already exists');
-        //return Roles.create({ name: 'user' });
-      })
-      .catch((error) => {
-        console.error('Error creating Role_permission table:', error);
-      });
+    // Role_has_permission.sync({ alter: false })
+    //   .then(() => {
+    //     // console.log('Roles table created or already exists');
+    //     //return Roles.create({ name: 'user' });
+    //   })
+    //   .catch((error) => {
+    //     console.error('Error creating Role_permission table:', error);
+    //   });
   
     return Role_has_permission;
   };

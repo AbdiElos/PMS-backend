@@ -25,14 +25,14 @@ module.exports = (sequelize, DataTypes) => {
   
     });
   
-    Comment.sync({ alter: false })
-      .then(() => {
-        // console.log('Roles table created or already exists');
-        //return Roles.create({ name: 'user' });
-      })
-      .catch((error) => {
-        console.error('Error creating Comment table:', error);
-      });
+    // Comment.sync({ alter: false })
+    //   .then(() => {
+    //     // console.log('Roles table created or already exists');
+    //     //return Roles.create({ name: 'user' });
+    //   })
+    //   .catch((error) => {
+    //     console.error('Error creating Comment table:', error);
+    //   });
   
     return Comment;
   };

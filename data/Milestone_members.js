@@ -18,13 +18,13 @@ module.exports = (sequelize, DataTypes) => {
    
     });
   
-    Milestone_members.sync()
-      .then(() => {
-        // console.log('Milestone_member table created or already exists');
-      })
-      .catch((error) => {
-        console.error('Error creating Milestone_memeber table:', error);
-      });
+    // Milestone_members.sync()
+    //   .then(() => {
+    //     // console.log('Milestone_member table created or already exists');
+    //   })
+    //   .catch((error) => {
+    //     console.error('Error creating Milestone_memeber table:', error);
+    //   });
   
     return Milestone_members;
   };

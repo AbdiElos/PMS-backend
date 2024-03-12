@@ -18,13 +18,13 @@ module.exports = (sequelize, DataTypes) => {
 
     });
   
-    Task_member.sync()
-      .then(() => {
-        // console.log('Task table created or already exists');
-      })
-      .catch((error) => {
-        console.error('Error creating Task_member table:', error);
-      });
+    // Task_member.sync()
+    //   .then(() => {
+    //     // console.log('Task table created or already exists');
+    //   })
+    //   .catch((error) => {
+    //     console.error('Error creating Task_member table:', error);
+    //   });
   
     return Task_member;
   };
