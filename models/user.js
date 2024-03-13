@@ -9,12 +9,19 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate(models) {
-      // define association here
-    }
+   
+
+    // static associate(models) {
+    //   User.belongsToMany(models.roles, {
+    //     through: 'User_role',
+    //     foreignKey: 'user_id',
+    //     otherKey: 'role_id'
+    //   });
+    // }
+    
   }
   User.init({
-    user_id: DataTypes.UUID,
+    user_id: { type: DataTypes.UUID, primaryKey: true, required:true }, // Specify user_id as the primary key
     full_name: DataTypes.STRING,
     img_url: DataTypes.STRING,
     email: DataTypes.STRING,
@@ -31,5 +38,6 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'User',
   });
+  
   return User;
 };

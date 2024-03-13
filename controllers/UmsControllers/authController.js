@@ -2,10 +2,13 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const db = require("../../config/db");
 const User = db.User;
+const Roles = db.Roles;
 const Activity = db.Activity;
 
 const handleAuth = async (req, res) => {
   console.log(req.body);
+  
+  
   const { full_name, password } = req.body;
   if (!full_name || !password) {
     return res.status(400).json({ "message": "Both username and password are required" });
@@ -20,9 +23,9 @@ const handleAuth = async (req, res) => {
       return res.status(400).json({ "message": "full_name is not available, sign up first" });
     }
     
-    if (!foundUser.account_status) {
-      return res.status(400).json({ "message": "You are temporarily banned from accessing your account. Please contact us for assistance." });
-    }
+    // if (!foundUser.account_status) {
+    //   return res.status(400).json({ "message": "You are temporarily banned from accessing your account. Please contact us for assistance." });
+    // }
     
     const match = await bcrypt.compare(password, foundUser.password);
     if (match) {

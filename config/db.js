@@ -25,8 +25,8 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 // Import  models here
-// db.Roles = require('../data/Roles')(sequelize, Sequelize);
-// db.User = require('../data/User')(sequelize, Sequelize);
+db.Roles = require('../models/roles')(sequelize, Sequelize);
+db.User = require('../models/user')(sequelize, Sequelize);
 // db.Activity = require('../data/Activity')(sequelize, Sequelize);
 // db.Permission = require('../data/Permissions')(sequelize, Sequelize);
 // db.Role_has_permission = require('../data/role_has_permission')(sequelize, Sequelize);

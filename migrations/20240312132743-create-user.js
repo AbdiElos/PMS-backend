@@ -10,7 +10,8 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       user_id: {
-        type: Sequelize.UUID
+        type: Sequelize.UUID,
+        primaryKey:true
       },
       full_name: {
         type: Sequelize.STRING
@@ -55,6 +56,10 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
+      },
+      is_deleted: {
+        allowNull: true,
+        type: Sequelize.STRING
       }
     });
   },
