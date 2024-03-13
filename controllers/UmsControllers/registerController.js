@@ -10,8 +10,17 @@ const Roles = db.Roles;
 const handleNewUser = async (req, res) => {
   const { full_name, password, email } = req.body;
 
-  const duplicateFullName =  await User.findOne({ where: { user_id:"b7353b88-429d-4b74-a30a-6ffa375d8a21" } },{ include: Roles });
-  console.log("user info ==",duplicateFullName)
+  const duplicateFullName = await User.findOne({ 
+    where: { user_id: "9737cc04-e2c7-481b-b925-0dd5cfcc482f" },
+    include: [{
+      model: Roles, // Assuming Roles is the model for roles
+      as: 'Roles', // This should match the alias you've defined in the association
+      // attributes: ['role_id','name'] // Specify the attributes you want to include from the Roles table
+    }]
+  });
+  console.log("hello !!!!!")
+  console.log("user info ==", duplicateFullName.toJSON());
+  
 
   if (!full_name || !password || !email ) {
     return res.status(400).json({ "message": "Incomplete data form" });

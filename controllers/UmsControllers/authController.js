@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const db = require("../../config/db");
 const User = db.User;
 const Roles = db.Roles;
-const Activity = db.Activity;
+//const Activity = db.Activity;
 
 const handleAuth = async (req, res) => {
   console.log(req.body);
@@ -48,12 +48,12 @@ const handleAuth = async (req, res) => {
       foundUser.refreshToken = refreshToken;
       await foundUser.save();
       
-      const activity = await Activity.create({
+     /* const activity = await Activity.create({
         full_name: full_name,
         activity: 'logged in',
         time: new Date()
       });
-      console.log(activity);
+      console.log(activity);*/
 
       res.cookie('jwt', refreshToken, { httpOnly: true, sameSite: 'None', secure: true, maxAge: 24 * 60 * 60 * 1000 });
       res.json({ access_token: accessToken, foundUser });

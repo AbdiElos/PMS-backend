@@ -25,9 +25,9 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 // Import  models here
-db.Roles = require('../models/roles')(sequelize, Sequelize);
+db.Roles = require('../models/Roles')(sequelize, Sequelize);
 db.User = require('../models/user')(sequelize, Sequelize);
-// db.Activity = require('../data/Activity')(sequelize, Sequelize);
+//db.Activity = require('../Activity')(sequelize, Sequelize);
 // db.Permission = require('../data/Permissions')(sequelize, Sequelize);
 // db.Role_has_permission = require('../data/role_has_permission')(sequelize, Sequelize);
 // db.Division= require('../data/Division')(sequelize, Sequelize);
@@ -46,8 +46,23 @@ db.User = require('../models/user')(sequelize, Sequelize);
 
 // Define associations if any+
 
-// db.Roles.hasMany(db.User, { foreignKey: "role_id", as: 'User' });
-// db.User.belongsTo(db.Roles, { foreignKey: "role_id", as: 'Roles' });
+//  db.Roles.hasMany(db.User, { foreignKey: "role_id", as: 'User' });
+//  db.User.belongsTo(db.Roles, { foreignKey: "role_id", as: 'Roles' });
+// Define many-to-many relationship between User and Roles
+db.User.belongsToMany(db.Roles, {
+  through: 'User_roles',
+  foreignKey: 'user_id',
+  otherKey: 'role_id',
+  as: 'Roles' // Alias for the association
+});
+
+db.Roles.belongsToMany(db.User, {
+  through: 'User_roles',
+  foreignKey: 'role_id',
+  otherKey: 'user_id',
+  as: 'Users' // Alias for the association
+});
+
 
 
 // // Define many-to-One relationship between Sector and Division
