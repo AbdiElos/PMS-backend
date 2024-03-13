@@ -10,7 +10,9 @@ module.exports = {
       //   type: Sequelize.INTEGER
       // },
       permission_id: {
-        type: Sequelize.UUID
+        type: Sequelize.UUID,
+        allowNull:false,
+        primaryKey:true
       },
       name: {
         type: Sequelize.STRING

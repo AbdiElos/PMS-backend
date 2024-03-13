@@ -28,7 +28,7 @@ db.sequelize = sequelize;
 db.Roles = require('../models/Roles')(sequelize, Sequelize);
 db.User = require('../models/user')(sequelize, Sequelize);
 //db.Activity = require('../Activity')(sequelize, Sequelize);
-// db.Permission = require('../data/Permissions')(sequelize, Sequelize);
+db.Permission = require('../models/permission')(sequelize, Sequelize);
 // db.Role_has_permission = require('../data/role_has_permission')(sequelize, Sequelize);
 // db.Division= require('../data/Division')(sequelize, Sequelize);
 // db.Team= require('../data/Team')(sequelize, Sequelize);
@@ -61,6 +61,22 @@ db.Roles.belongsToMany(db.User, {
   foreignKey: 'role_id',
   otherKey: 'user_id',
   as: 'Users' // Alias for the association
+});
+
+
+
+db.Permission.belongsToMany(db.Roles, {
+  through: 'Role_has_permissions',
+  foreignKey: 'permission_id',
+  otherKey: 'role_id',
+  as: 'Roles' // Alias for the association
+});
+
+db.Roles.belongsToMany(db.Permission, {
+  through: 'Role_has_permissions',
+  foreignKey: 'role_id',
+  otherKey: 'permission_id',
+  as: 'Permissions' // Alias for the association
 });
 
 

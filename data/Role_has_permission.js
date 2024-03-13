@@ -1,10 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
     const Role_has_permission = sequelize.define('Role_has_permission', {
-      role_has_permission_id: {
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
-        primaryKey: true,
-      },
+  
       role_id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
