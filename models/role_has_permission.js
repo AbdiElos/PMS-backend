@@ -14,41 +14,11 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Role_has_permission.init({
-    role_id: {type:DataTypes.UUID,
-        references: {
-          model: 'Roles', // The name of the referenced model
-          key: 'role_id' // The name of the referenced column in the Roles table
-        }},
-    permission_id:{type:DataTypes.UUID,
-      references: {
-        model: 'Permission', // The name of the referenced model
-        key: 'permission_id' // The name of the referenced column in the Roles table
-      }},
+    role_id: DataTypes.UUID,
+    permission_id: DataTypes.UUID
   }, {
     sequelize,
     modelName: 'Role_has_permission',
   });
   return Role_has_permission;
 };
-
-// User_role.init({
-//   user_id: {
-//     type: DataTypes.UUID,
-//      // Ensures the user_id cannot be null
-//     references: {
-//       model: 'User', // The name of the referenced model
-//       key: 'user_id' // The name of the referenced column in the User table
-//     }
-//   },
-//   role_id: {
-//     type: DataTypes.UUID,
-    
-//     references: {
-//       model: 'Roles', // The name of the referenced model
-//       key: 'role_id' // The name of the referenced column in the Roles table
-//     }
-//   }
-// }, {
-//   sequelize,
-//   modelName: 'User_role',
-// });

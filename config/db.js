@@ -48,6 +48,8 @@ db.Permission = require('../models/permission')(sequelize, Sequelize);
 
 //  db.Roles.hasMany(db.User, { foreignKey: "role_id", as: 'User' });
 //  db.User.belongsTo(db.Roles, { foreignKey: "role_id", as: 'Roles' });
+
+
 // Define many-to-many relationship between User and Roles
 db.User.belongsToMany(db.Roles, {
   through: 'User_roles',
