@@ -48,12 +48,12 @@ const handleAuth = async (req, res) => {
       foundUser.refreshToken = refreshToken;
       await foundUser.save();
       
-     /* const activity = await Activity.create({
-        full_name: full_name,
-        activity: 'logged in',
-        time: new Date()
-      });
-      console.log(activity);*/
+    //  const activity = await Activity.create({
+    //     full_name: full_name,
+    //     activity: 'logged in',
+    //     time: new Date()
+    //   });
+    //   console.log(activity);
 
       res.cookie('jwt', refreshToken, { httpOnly: true, sameSite: 'None', secure: true, maxAge: 24 * 60 * 60 * 1000 });
       res.json({ access_token: accessToken, foundUser });

@@ -5,11 +5,17 @@ const { v4: uuidv4 } = require('uuid');
 const uuid = uuidv4();
 const Roles = db.Roles;
 const Permission = db.Permission; 
+const {generateRandomPassword}=require('../../middlewares/generate_password')
 // const User = require('../../models/user');
 //const Roles = require('../../models/roles');
 
+
+
+
 const handleNewUser = async (req, res) => {
-  const { full_name, password, email } = req.body;
+  const { full_name, email } = req.body;
+  const password = generateRandomPassword();
+  
 
   const duplicateFullName = await User.findOne({ 
     where: { user_id: "9737cc04-e2c7-481b-b925-0dd5cfcc482f" },
@@ -61,7 +67,7 @@ const handleNewUser = async (req, res) => {
       return res.status(409).json({ "message": "Duplicate full name" });
     }
 
-    const hashedPwd = await bcrypt.hash(password, 10);
+    const hashedPwd = await bcrypt.hash(password, 6);
     await User.create({
       user_id:uuid,
       full_name,
@@ -70,7 +76,7 @@ const handleNewUser = async (req, res) => {
       
     });
 
-    return res.status(201).json({ "success": "New user is created" });
+    return res.status(201).json({ "success": "New user is created user account is ==" ,full_name, password});
   } catch (err) {
     console.error(err);
     return res.status(500).json({ "message": "Server problem" });

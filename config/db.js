@@ -27,13 +27,13 @@ db.sequelize = sequelize;
 // Import  models here
 db.Roles = require('../models/Roles')(sequelize, Sequelize);
 db.User = require('../models/user')(sequelize, Sequelize);
-//db.Activity = require('../Activity')(sequelize, Sequelize);
+db.Activity = require('../models/activity')(sequelize, Sequelize);
 db.Permission = require('../models/permission')(sequelize, Sequelize);
 // db.Role_has_permission = require('../data/role_has_permission')(sequelize, Sequelize);
 // db.Division= require('../data/Division')(sequelize, Sequelize);
 // db.Team= require('../data/Team')(sequelize, Sequelize);
 // db.Sector= require('../data/Sector')(sequelize, Sequelize);
-// db.Project= require('../data/Project')(sequelize, Sequelize);
+db.Project= require('../models/project')(sequelize, Sequelize);
 // db.Project_member= require('../data/Project_member')(sequelize, Sequelize);
 // db.Milestone= require('../data/Milestone')(sequelize, Sequelize);
 // db.Task= require('../data/Task')(sequelize, Sequelize);
@@ -79,6 +79,22 @@ db.Roles.belongsToMany(db.Permission, {
   foreignKey: 'role_id',
   otherKey: 'permission_id',
   as: 'Permissions' // Alias for the association
+});
+
+
+
+db.User.belongsToMany(db.Project, {
+  through: 'Project_member',
+  foreignKey: 'user_id',
+  otherKey: 'project_id',
+  as: 'Projects' // Alias for the association
+});
+
+db.Project.belongsToMany(db.User, {
+  through: 'Project_member',
+  foreignKey: 'project_id',
+  otherKey: 'user_id',
+  as: 'Users' // Alias for the association
 });
 
 
