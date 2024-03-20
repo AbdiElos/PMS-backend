@@ -3,11 +3,10 @@ const jwt = require('jsonwebtoken');
 const db = require("../../config/db");
 const User = db.User;
 const Roles = db.Roles;
-//const Activity = db.Activity;
+const User_role = db.User_role; // Assuming this is the model representing the many-to-many relationship between users and roles
 
 const handleAuth = async (req, res) => {
   console.log(req.body);
-  
   
   const { full_name, password } = req.body;
   if (!full_name || !password) {
@@ -15,6 +14,7 @@ const handleAuth = async (req, res) => {
   }
   
   try {
+    // Step 1: Retrieve user information from the User table
     const foundUser = await User.findOne({ 
       where: { full_name }
     });
@@ -23,16 +23,25 @@ const handleAuth = async (req, res) => {
       return res.status(400).json({ "message": "full_name is not available, sign up first" });
     }
     
-    // if (!foundUser.account_status) {
-    //   return res.status(400).json({ "message": "You are temporarily banned from accessing your account. Please contact us for assistance." });
-    // }
-    
     const match = await bcrypt.compare(password, foundUser.password);
     if (match) {
+      // Step 2: Use the obtained user_id to fetch associated role IDs from the intermediate table
+      const User_roleEntries = await User_role.findAll({
+        where: { user_id: foundUser.user_id }
+      });
+
+      // Step 3: Fetch role information from the Roles table based on the role IDs
+      const roleIds = User_roleEntries.map(entry => entry.role_id);
+      const roles = await Roles.findAll({
+        where: { id: roleIds }
+      });
+
       const accessToken = jwt.sign(
         {
           userInfo: { 
-            full_name: foundUser.full_name
+            user_id: foundUser.user_id,
+            full_name: foundUser.full_name,
+            roles: roles.map(role => role.role_name) // Extracting role names
           }
         },
         process.env.ACCESS_TOKEN_SECRET,
@@ -40,7 +49,7 @@ const handleAuth = async (req, res) => {
       );
       
       const refreshToken = jwt.sign(
-        { full_name: foundUser.full_name },
+        { user_id: foundUser.user_id },
         process.env.REFRESH_TOKEN_SECRET,
         { expiresIn: '1d' }
       );
@@ -48,13 +57,6 @@ const handleAuth = async (req, res) => {
       foundUser.refreshToken = refreshToken;
       await foundUser.save();
       
-    //  const activity = await Activity.create({
-    //     full_name: full_name,
-    //     activity: 'logged in',
-    //     time: new Date()
-    //   });
-    //   console.log(activity);
-
       res.cookie('jwt', refreshToken, { httpOnly: true, sameSite: 'None', secure: true, maxAge: 24 * 60 * 60 * 1000 });
       res.json({ access_token: accessToken, foundUser });
     } else {
