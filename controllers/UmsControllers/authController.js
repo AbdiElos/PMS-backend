@@ -5,10 +5,7 @@ const User = db.User;
 const Roles = db.Roles;
 //const Activity = db.Activity;
 
-const handleAuth = async (req, res) => {
-  console.log(req.body);
-  
-  
+const handleAuth = async (req, res) => { 
   const { email, password } = req.body;
   if (!email || !password) {
     return res.status(400).json({ "message": "Both username and password are required" });
@@ -25,7 +22,18 @@ const handleAuth = async (req, res) => {
     if (foundUser.account_status) {
       return res.status(400).json({ "message": "You are temporarily banned from accessing your account. Please contact us for assistance." });
     }
-    
+
+    const users = await User.findOne({ 
+    where: {email},
+    include: [{
+      model: Roles, 
+      as: 'Roles', 
+      attributes:["role_id","name"],
+      options: { eager: true }
+    }]
+   });
+   console.log(users.toJSON())
+  //  console.log(user.Roles)
     // const match = await bcrypt.compare(password, foundUser.password);
     const match=password==foundUser.password
     if (match) {
@@ -45,7 +53,7 @@ const handleAuth = async (req, res) => {
       
       foundUser.refreshToken = refreshToken;
       await foundUser.save();
-      
+
     //  const activity = await Activity.create({
     //     full_name: full_name,
     //     activity: 'logged in',
