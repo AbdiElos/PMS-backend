@@ -2,13 +2,16 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Project_members', {
+    await queryInterface.createTable('Role_has_permissions', {
       id: {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID
       },
-      user_id: {
+      role_id: {
+        type: Sequelize.UUID
+      },
+      permission_id: {
         type: Sequelize.UUID
       },
       createdAt: {
@@ -22,6 +25,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Project_members');
+    await queryInterface.dropTable('Role_has_permissions');
   }
 };

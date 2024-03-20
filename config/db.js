@@ -33,6 +33,10 @@ db.Project= require('../models/project')(sequelize, Sequelize);
 db.Sector = require('../models/sector')(sequelize, Sequelize);
 db.Division= require('../models/division')(sequelize, Sequelize);
 //db.User_role = require('../models/user_role')(sequelize, Sequelize);
+db.user_role=require('../models/User_role')(sequelize, Sequelize)
+db.role_permission=require('../models/role_has_permission')(sequelize,Sequelize)
+db.sector=require('../models/sector')(sequelize,Sequelize)
+db.division=require('../models/division')(sequelize,Sequelize)
 // db.Role_has_permission = require('../data/role_has_permission')(sequelize, Sequelize);
 
 // db.Team= require('../data/Team')(sequelize, Sequelize);

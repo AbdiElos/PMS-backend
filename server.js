@@ -25,8 +25,10 @@ app.use("/ums", require('./routes/api/ums'));
 app.use("/ums", require('./routes/api/sectorroute'));
 app.use("/ums", require('./routes/api/changepasswordroute'));
 app.use(verifyJWT);
+app.use("/organization", require('./routes/api/organization'));
+// app.use(verifyJWT);
 
 // Start the server
-app.listen(PORT, () => {
+app.listen(PORT,'0.0.0.0', () => {
   console.log('Server running on port ' + PORT);
 });

@@ -1,7 +1,8 @@
 
-const verifyRoles=(...allowedRoles)=>{
+const verifyRoles=(permission_id)=>{
     return (req,res,next)=>{
         if(!req?.roles) return res.sendStatus(401);
+        const roles=req.roles
         console.log(req.roles);
         const rolesArray=[...allowedRoles];
         console.log(rolesArray);
@@ -10,6 +11,7 @@ const verifyRoles=(...allowedRoles)=>{
         next();
     }
 }
+
 
 module.exports=verifyRoles;
 
