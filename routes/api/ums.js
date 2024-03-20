@@ -12,6 +12,7 @@ const authController = require('../../controllers/UmsControllers/authController.
 const forgotPasswordController = require('../../controllers/UmsControllers/forgotPasswordController.js');
 const adminController2 = require('../../controllers/UmsControllers/adminController2.js');
 const adminController = require('../../controllers/UmsControllers/adminController.js');
+const  sectorController= require('../../controllers/UmsControllers/sectorController.js');
 
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -32,10 +33,22 @@ router.route("/login")
 // app.use(verifyJWT)
 router.route('/refresh')
     .get(refreshTokenController.handleRefreshToken)
-// router.route('/:username')
-//     .get(LandingPageController.getUser)
-router.route('/profile')
-    .get(profileController.getProfile)
+router.route('/finduser/:user_id')
+    .get(adminController.getUser)
+router.route('/findalluser')
+    .get(adminController.getAllUser)
+router.route('/profile/update/:user_id')
+    .put(adminController.editMember)
+router.route("profile/changeStatus/:user_id")
+    .get(adminController.toggleSuspend)
+
+
+
+
+
+
+// router.route('/profile')
+//     .get(profileController.getProfile)
 router.route('/profile/update')
     .post(profileController.updateProfile)
 router.route("/forgotPassword")
@@ -61,4 +74,16 @@ router.route("/update/:id")
 router.route('/profile/update')
     .post(upload.single("profileImg"),profileController.updateProfile)
 
+// router.route('/sector/newsector')
+//    .post(sectorController.handleNewSector)
+// router.route('/sector/getsector/:id')
+//    .get(sectorController.handleGetSectorById)
+
+// router.route('/sector/getallsector')
+//    .get(sectorController.handleGetAllSectors)
+
+// router.route('/sector/updatesector/:id')
+//    .put(sectorController.handleUpdateSector)
+// router.route('/sector/deletesector/:id')
+//    .delete(sectorController. handleDeleteSector)
 module.exports=router;

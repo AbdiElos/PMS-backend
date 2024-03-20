@@ -22,6 +22,9 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public', 'uploads')));
 app.use("/ums", require('./routes/api/ums'));
+app.use("/ums", require('./routes/api/sectorroute'));
+app.use("/ums", require('./routes/api/changepasswordroute'));
+app.use(verifyJWT);
 app.use("/organization", require('./routes/api/organization'));
 // app.use(verifyJWT);
 

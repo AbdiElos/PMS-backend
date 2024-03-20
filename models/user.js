@@ -30,14 +30,19 @@ module.exports = (sequelize, DataTypes) => {
     division_id: DataTypes.UUID,
     refreshToken: DataTypes.STRING,
     team_id: DataTypes.UUID,
-    project_status: DataTypes.BOOLEAN,
-    account_status: DataTypes.BOOLEAN,
+    project_status:{type:DataTypes.BOOLEAN,defaultValue:false},
+    account_status: {type:DataTypes.BOOLEAN,defaultValue:true},
     created_by: DataTypes.STRING,
     updated_by: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'User',
   });
+
+  User.associate = (models) => {
+    User.belongsTo(models.Division, { foreignKey: 'division_id', as: 'Division' });
+  };
+
   
   return User;
 };

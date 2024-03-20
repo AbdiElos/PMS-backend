@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const db = require("../../config/db");
 const User = db.User;
+const Roles = db.Roles;
 
 const handleRefreshToken = async (req, res) => {
   const cookie = req.cookies;

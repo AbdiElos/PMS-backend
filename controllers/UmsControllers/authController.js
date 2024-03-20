@@ -3,7 +3,6 @@ const jwt = require('jsonwebtoken');
 const db = require("../../config/db");
 const User = db.User;
 const Roles = db.Roles;
-//const Activity = db.Activity;
 
 const handleAuth = async (req, res) => { 
   const { email, password } = req.body;
@@ -44,7 +43,7 @@ const handleAuth = async (req, res) => {
         process.env.ACCESS_TOKEN_SECRET,
         { expiresIn: '1d' }
       );
-      
+    
       const refreshToken = jwt.sign(
         { full_name: foundUser.full_name },
         process.env.REFRESH_TOKEN_SECRET,
@@ -61,6 +60,7 @@ const handleAuth = async (req, res) => {
     //   });
     //   console.log(activity);
 
+      
       res.cookie('jwt', refreshToken, { httpOnly: true, sameSite: 'None', secure: true, maxAge: 24 * 60 * 60 * 1000 });
       res.json({ access_token: accessToken, foundUser });
     } else {
