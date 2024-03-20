@@ -62,7 +62,7 @@ const addUser = async (req, res) => {
 
     const newUser = await User.create({
       full_name,
-      //roles,
+      roles,
       password: hashedPwd,
       email,
     });
@@ -115,7 +115,6 @@ const editMember = async (req, res) => {
 
 const toggleSuspend = async (req, res) => {
   const full_name = req.params.full_name;
-
   try {
     const result = await User.findOne({ where: { full_name } });
     if (!result) {

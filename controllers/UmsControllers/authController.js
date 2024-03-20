@@ -9,31 +9,29 @@ const handleAuth = async (req, res) => {
   console.log(req.body);
   
   
-  const { full_name, password } = req.body;
-  if (!full_name || !password) {
+  const { email, password } = req.body;
+  if (!email || !password) {
     return res.status(400).json({ "message": "Both username and password are required" });
   }
-  
   try {
     const foundUser = await User.findOne({ 
-      where: { full_name }
+      where: { email }
     });
     
     if (!foundUser) {
-      return res.status(400).json({ "message": "full_name is not available, sign up first" });
+      return res.status(400).json({ "message": "email is not available, sign up first" });
     }
     
-    // if (!foundUser.account_status) {
-    //   return res.status(400).json({ "message": "You are temporarily banned from accessing your account. Please contact us for assistance." });
-    // }
+    if (foundUser.account_status) {
+      return res.status(400).json({ "message": "You are temporarily banned from accessing your account. Please contact us for assistance." });
+    }
     
-    const match = await bcrypt.compare(password, foundUser.password);
+    // const match = await bcrypt.compare(password, foundUser.password);
+    const match=password==foundUser.password
     if (match) {
       const accessToken = jwt.sign(
         {
-          userInfo: { 
-            full_name: foundUser.full_name
-          }
+          userInfo: foundUser
         },
         process.env.ACCESS_TOKEN_SECRET,
         { expiresIn: '1d' }
