@@ -14,6 +14,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Role_has_permission.init({
+    role_permission_id: {
+      type: DataTypes.UUID,
+      primaryKey:true
+    },
     role_id: DataTypes.UUID,
     permission_id: DataTypes.UUID
   }, {

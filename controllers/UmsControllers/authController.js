@@ -3,7 +3,6 @@ const jwt = require('jsonwebtoken');
 const db = require("../../config/db");
 const User = db.User;
 const Roles = db.Roles;
-const User_role = db.User_role; // Assuming this is the model representing the many-to-many relationship between users and roles
 
 const handleAuth = async (req, res) => {
   console.log(req.body);
@@ -14,9 +13,15 @@ const handleAuth = async (req, res) => {
   }
   
   try {
-    // Step 1: Retrieve user information from the User table
     const foundUser = await User.findOne({ 
-      where: { full_name }
+      where: { full_name },
+      
+      
+      include: [{
+        model: Roles, 
+        as: 'Roles', 
+        
+      }]// Include roles associated with the user
     });
     
     if (!foundUser) {
@@ -25,23 +30,11 @@ const handleAuth = async (req, res) => {
     
     const match = await bcrypt.compare(password, foundUser.password);
     if (match) {
-      // Step 2: Use the obtained user_id to fetch associated role IDs from the intermediate table
-      const User_roleEntries = await User_role.findAll({
-        where: { user_id: foundUser.user_id }
-      });
-
-      // Step 3: Fetch role information from the Roles table based on the role IDs
-      const roleIds = User_roleEntries.map(entry => entry.role_id);
-      const roles = await Roles.findAll({
-        where: { id: roleIds }
-      });
-
       const accessToken = jwt.sign(
         {
           userInfo: { 
-            user_id: foundUser.user_id,
             full_name: foundUser.full_name,
-            roles: roles.map(role => role.role_name) // Extracting role names
+            roles: foundUser.Roles.map(role => role.role_name) // Extracting role names
           }
         },
         process.env.ACCESS_TOKEN_SECRET,
@@ -49,7 +42,7 @@ const handleAuth = async (req, res) => {
       );
       
       const refreshToken = jwt.sign(
-        { user_id: foundUser.user_id },
+        { full_name: foundUser.full_name },
         process.env.REFRESH_TOKEN_SECRET,
         { expiresIn: '1d' }
       );

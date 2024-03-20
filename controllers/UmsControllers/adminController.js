@@ -4,9 +4,9 @@ const User = db.User;
 const Roles = db.Roles;
 
 const getUser = async (req, res) => {
-  const full_name = req.params.full_name;
+  const user_id = req.params.user_id;
   try {
-    const result = await User.findOne({ where: { full_name } });
+    const result = await User.findOne({ where: { user_id } });
     if (!result) {
       return res.status(404).json({ "message": "User not found" });
     }
@@ -94,19 +94,23 @@ const deleteUser = async (req, res) => {
 };
 
 const editMember = async (req, res) => {
-  const full_name = req.params.full_name;
-  const { role} = req.body;
+  const user_id = req.params.user_id;
+  const { full_name,email,gender} = req.body;
 
   try {
-    const result = await User.findOne({ where: { full_name } });
+    const result = await User.findOne({ where: { user_id } });
     if (!result) {
       return res.status(404).json({ "message": "User not found" });
     }
 
-    if (role) result.role = role;
+    
+    if (full_name) result.full_name = full_name;
+    if (email) result.email = email;
+    if (gender) result.gender = gender;
+   //add other atribute here to update
 
     await result.save();
-    return res.status(201).json({ "message": `${full_name} edited member` });
+    return res.status(201).json({ "message": `user account updated` });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ "message": "Server problem" });
@@ -114,10 +118,10 @@ const editMember = async (req, res) => {
 };
 
 const toggleSuspend = async (req, res) => {
-  const full_name = req.params.full_name;
+  const user_id = req.params.user_id;
 
   try {
-    const result = await User.findOne({ where: { full_name } });
+    const result = await User.findOne({ where: { user_id } });
     if (!result) {
       return res.status(404).json({ "message": "User not found" });
     }
@@ -125,7 +129,7 @@ const toggleSuspend = async (req, res) => {
     result. account_status = !result. account_status;
     await result.save();
 
-    return res.status(201).json({ "message": `${full_name} status is updated member` });
+    return res.status(201).json({ "message": `${result.full_name} status is updated member` });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ "message": "Server problem" });
