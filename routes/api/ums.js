@@ -6,7 +6,7 @@ const verifyJWT = require('../../middlewares/verifyJWT');
 const registerController = require('../../controllers/UmsControllers/registerController.js')
 const refreshTokenController = require('../../controllers/UmsControllers/refreshTokenController.js');
 const logoutController = require('../../controllers/UmsControllers/logoutController.js');
-const LandingPageController=require('../../controllers/UmsControllers/LandingPageController.js')
+// const LandingPageController=require('../../controllers/UmsControllers/LandingPageController.js')
 const profileController=require("../../controllers/UmsControllers/profileController")
 const authController = require('../../controllers/UmsControllers/authController.js');
 const forgotPasswordController = require('../../controllers/UmsControllers/forgotPasswordController.js');
@@ -25,15 +25,15 @@ var storage = multer.diskStorage({
   })
 var upload = multer({ storage: storage })
 
+router.route('/registerUser')
+    .post(registerController.handleNewUser)
 router.route("/login")
     .post(authController.handleAuth);
-router.route('/register')
-    .post(registerController.handleNewUser)
-app.use(verifyJWT)
+// app.use(verifyJWT)
 router.route('/refresh')
     .get(refreshTokenController.handleRefreshToken)
-router.route('/:username')
-    .get(LandingPageController.getUser)
+// router.route('/:username')
+//     .get(LandingPageController.getUser)
 router.route('/profile')
     .get(profileController.getProfile)
 router.route('/profile/update')
@@ -60,4 +60,5 @@ router.route("/update/:id")
     .post(adminController2.handleProfileUpdate)
 router.route('/profile/update')
     .post(upload.single("profileImg"),profileController.updateProfile)
+
 module.exports=router;
