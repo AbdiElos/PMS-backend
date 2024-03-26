@@ -168,10 +168,6 @@ db.Task.belongsToMany(db.Milestone_members, {
 
 
 
-
-
-
-
 // // Define many-to-One relationship between Sector and Division
 // db.Sector.hasMany(db.Division, { foreignKey: "sector_id", as: 'Division' });
 // db.Division.belongsTo(db.Sector, { foreignKey: "sector_id", as: 'Sector' });
