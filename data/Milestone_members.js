@@ -2,7 +2,8 @@ module.exports = (sequelize, DataTypes) => {
     const Milestone_members = sequelize.define('Milestone_members', {
         milestone_memeber_id: {
         type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
+        allowNull: false,
+        
         primaryKey: true,
       },
       milestone_id: {
@@ -10,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: DataTypes.UUIDV4,
        
       },
-      member_id: {
+      project_member_id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
        

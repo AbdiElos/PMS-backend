@@ -1,5 +1,7 @@
 require('dotenv').config();
 const Sequelize = require('sequelize');
+const milestone_members = require('../models/milestone_members');
+const task = require('../models/task');
 
 const sequelize = new Sequelize(
   process.env.DB_NAME,
@@ -33,18 +35,22 @@ db.Project= require('../models/project')(sequelize, Sequelize);
 db.Sector = require('../models/sector')(sequelize, Sequelize);
 db.Division= require('../models/division')(sequelize, Sequelize);
 //db.User_role = require('../models/user_role')(sequelize, Sequelize);
-db.user_role=require('../models/User_role')(sequelize, Sequelize)
+db.user_role=require('../models/user_role')(sequelize, Sequelize)
 db.role_permission=require('../models/role_has_permission')(sequelize,Sequelize)
 db.sector=require('../models/sector')(sequelize,Sequelize)
 db.division=require('../models/division')(sequelize,Sequelize)
+db.Project_member= require('../models/project_member')(sequelize, Sequelize);
+
+db.Milestone= require('../models/Milestone')(sequelize, Sequelize);
+db.Milestone_members= require('../models/milestone_members')(sequelize, Sequelize);
+db.Task= require('../models/task')(sequelize, Sequelize);
+db.Task_member= require('../models/task_member')(sequelize, Sequelize);
 // db.Role_has_permission = require('../data/role_has_permission')(sequelize, Sequelize);
 
 // db.Team= require('../data/Team')(sequelize, Sequelize);
 // db.Sector= require('../data/Sector')(sequelize, Sequelize);
 
-// db.Project_member= require('../data/Project_member')(sequelize, Sequelize);
-// db.Milestone= require('../data/Milestone')(sequelize, Sequelize);
-// db.Task= require('../data/Task')(sequelize, Sequelize);
+
 // db.Subtask= require('../data/Subtask')(sequelize, Sequelize);
 // db.Comment= require('../data/Comment')(sequelize, Sequelize);
 // db.Task_member= require('../data/Task_member')(sequelize, Sequelize);
@@ -59,6 +65,23 @@ db.division=require('../models/division')(sequelize,Sequelize)
 //many to one association
 db.Division.hasMany(db.User, { foreignKey: 'division_id', as: 'Users' });
 db.User.belongsTo(db.Division, { foreignKey: 'division_id', as: 'Division' });
+
+
+
+// Project.hasMany(Milestone, {
+//   foreignKey: 'project_id',
+//   as: 'Milestones',
+// });
+
+// Milestone.belongsTo(Project, {
+//   foreignKey: 'project_id',
+//   as: 'Project',
+// });
+
+
+// Milestone.hasMany(Task, {foreignKey: 'milestone_id',as: 'Task',});
+// Task.belongsTo(Milestone, {foreignKey: 'milestone_id',as: 'Milestone',});
+
 
 //  db.Roles.hasMany(db.User, { foreignKey: "role_id", as: 'User' });
 //  db.User.belongsTo(db.Roles, { foreignKey: "role_id", as: 'Roles' });
@@ -110,6 +133,44 @@ db.Project.belongsToMany(db.User, {
   otherKey: 'user_id',
   as: 'Users' // Alias for the association
 });
+
+
+
+//many to many relationship b/n Milestone and project_member
+db.Milestone.belongsToMany(db.Project_member, {
+  through: 'Milestone_member',
+  foreignKey: 'milestone_id',
+  otherKey: 'project_member_id',
+  as: 'Project_members' // Alias for the association
+});
+
+db.Project_member.belongsToMany(db.Milestone, {
+  through: 'Milestone_member',
+  foreignKey: 'project_member_id',
+  otherKey: 'milestone_id',
+  as: 'Milestons' // Alias for the association
+});
+
+
+
+
+db.Milestone_members.belongsToMany(db.Task, {
+  through: 'Task_member',
+  foreignKey: 'milestone_member_id',
+  otherKey: 'task_id',
+  as: 'Tasks',
+});
+
+db.Task.belongsToMany(db.Milestone_members, {
+  through: 'Task_member',
+  foreignKey: 'task_id',
+  otherKey: 'milestone_member_id',
+  as: 'Milestone_members',
+});
+
+
+
+
 
 
 

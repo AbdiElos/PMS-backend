@@ -1,7 +1,7 @@
 // models/division.js
 
 module.exports = (sequelize, DataTypes) => {
-    const Division = sequelize.define('Division', {
+    const Division = sequelize.define('Divisions', {
       division_id: {
         type: DataTypes.UUID,
         primaryKey: true,
@@ -30,11 +30,6 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
       },
     });
-    Division.associate = (models) => {
-      Division.hasMany(models.User, { foreignKey: 'division_id', as: 'User' });
-    };
-    
-  
     return Division;
   };
   

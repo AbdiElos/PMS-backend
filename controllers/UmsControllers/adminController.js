@@ -118,14 +118,14 @@ const editMember = async (req, res) => {
 };
 
 const toggleSuspend = async (req, res) => {
-  const full_name = req.params.full_name;
+  const user_id = req.params.user_id;
   try {
     const result = await User.findOne({ where: { user_id } });
     if (!result) {
       return res.status(404).json({ "message": "User not found" });
     }
 
-    result. account_status = !result. account_status;
+    result.account_status = !result.account_status; // Remove the space before 'account_status'
     await result.save();
 
     return res.status(201).json({ "message": `${result.full_name} status is updated member` });
@@ -134,7 +134,6 @@ const toggleSuspend = async (req, res) => {
     return res.status(500).json({ "message": "Server problem" });
   }
 };
-
 module.exports = {
   getUser,
   getActivity,

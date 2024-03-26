@@ -28,8 +28,15 @@ module.exports = {
       password: {
         type: Sequelize.STRING
       },
-      division_id: {
-        type: Sequelize.UUID
+      unchanged_password: {
+        type: Sequelize.STRING
+      },
+      division_id:  {
+        type: Sequelize.UUID,
+        references: {
+          model: 'Divisions', // The name of the referenced model
+          key: 'division_id' // The name of the referenced column in the Roles table
+        }
       },
       refreshToken: {
         type: Sequelize.STRING
@@ -45,6 +52,9 @@ module.exports = {
       },
       created_by: {
         type: Sequelize.STRING
+      },
+      first_time_status:{
+        type:Sequelize.BOOLEAN
       },
       updated_by: {
         type: Sequelize.STRING

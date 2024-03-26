@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const db = require("../../config/db");
 const User = db.User;
-const Division = db.division;
+const Division = db.Division;
 const Roles=db.Roles;
 const { v4: uuidv4 } = require('uuid');
 const uuid = uuidv4();
@@ -99,4 +99,26 @@ const handleNewDivision = async (req, res) => {
       return res.status(500).json({ "message": "Server error" });
     }
   };
-  module.exports= { handleGetAllRole,handleNewDivision, handleGetAllDivision, handleGetDivisionById, handleUpdateDivision, handleDeleteDivision };
+  const handleGetAllUsersInDivision= async (req, res) => {
+    console.log("users in certain division called")
+    const id=req.params.id;
+    try {
+      const users = await Division.findAll({
+        where: { division_id:id },
+        include: [
+          {
+            model: User,
+            as: 'Users',
+            attributes: ['user_id','full_name', 'email'],
+          },
+        ],
+        attributes: ['division_id', 'name'],
+      });
+      console.log(users)
+      res.status(200).json({message:"success"})
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ "message": "Server error" });
+    }
+  };
+  module.exports= { handleGetAllRole,handleNewDivision, handleGetAllDivision, handleGetDivisionById, handleUpdateDivision, handleDeleteDivision, handleGetAllUsersInDivision };

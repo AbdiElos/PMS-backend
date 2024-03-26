@@ -12,7 +12,7 @@ const authController = require('../../controllers/UmsControllers/authController.
 const forgotPasswordController = require('../../controllers/UmsControllers/forgotPasswordController.js');
 const adminController2 = require('../../controllers/UmsControllers/adminController2.js');
 const adminController = require('../../controllers/UmsControllers/adminController.js');
-const  sectorController= require('../../controllers/UmsControllers/sectorController.js');
+//const  sectorController= require('../../controllers/UmsControllers/sectorController.js');
 
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -30,17 +30,26 @@ router.route('/registerUser')
     .post(registerController.handleNewUser)
 router.route("/login")
     .post(authController.handleAuth);
-// app.use(verifyJWT)
-router.route('/refresh')
-    .get(refreshTokenController.handleRefreshToken)
 router.route('/finduser/:user_id')
     .get(adminController.getUser)
-router.route('/findalluser')
-    .get(adminController.getAllUser)
+
 router.route('/profile/update/:user_id')
     .put(adminController.editMember)
 router.route("profile/changeStatus/:user_id")
-    .get(adminController.toggleSuspend)
+    .put(adminController.toggleSuspend)
+router.route('/findalluser')
+    .get(adminController.getAllUser)
+
+
+
+app.use(verifyJWT)
+
+
+router.route('/refresh')
+    .get(verifyJWT,refreshTokenController.handleRefreshToken)
+
+
+
 
 
 
@@ -67,8 +76,7 @@ router.route("/editMember/edit/:username")
     .put(adminController.editMember)
 router.route("/deleteMember/:username/:role")
     .delete(adminController.deleteUser)
-router.route("/changeStatus/:id/toggleSuspend")
-    .get(adminController.toggleSuspend)
+
 router.route("/update/:id")
     .post(adminController2.handleProfileUpdate)
 router.route('/profile/update')

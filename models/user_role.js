@@ -2,7 +2,7 @@ const { user_role } = require("../config/db");
 
 'use strict';
 const {
-  Model
+  Model, UUIDV4, UUID
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class User_role extends Model {
@@ -23,6 +23,12 @@ module.exports = (sequelize, DataTypes) => {
     
   }
   User_role.init({
+    user_role_id: {
+      type: DataTypes.UUID,
+       // Ensures the user_id cannot be null
+     primaryKey:true,
+    // defaultValue:UUID,
+     allowNull:false},
     user_id: {
       type: DataTypes.UUID,
        // Ensures the user_id cannot be null
@@ -31,14 +37,15 @@ module.exports = (sequelize, DataTypes) => {
         key: 'user_id' // The name of the referenced column in the User table
       }
     },
-    project_id:{
-      type: DataTypes.UUID,
-       // Ensures the user_id cannot be null
-      references: {
-        model: 'Project', // The name of the referenced model
-        key: 'project_id' // The name of the referenced column in the project table
-      }
-    },
+    // project_id:{
+    //   type: DataTypes.UUID,
+    //   defaultValue:UUID,
+    //    // Ensures the user_id cannot be null
+    //   references: {
+    //     model: 'Project', // The name of the referenced model
+    //     key: 'project_id' // The name of the referenced column in the project table
+    //   }
+   
     role_id: {
       type: DataTypes.UUID,
       

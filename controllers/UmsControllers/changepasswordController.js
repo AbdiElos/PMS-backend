@@ -20,13 +20,15 @@ const handleChangePassword = async (req, res) => {
     if (!foundUser) {
       return res.status(400).json({ message: "User not found" });
     }
-    const match = await bcrypt.compare(current_password, foundUser.password);
+    const match = await bcrypt.compare (current_password,foundUser.password);
     if (!match) {
       return res.status(401).json({ message: "Wrong current password" });
     }
 
-    const hashedNewPassword = await bcrypt.hash(new_password, 10);
+    const hashedNewPassword = await bcrypt.hash(new_password,6)
     foundUser.password = hashedNewPassword;
+    foundUser.unchanged_password=''
+    foundUser.first_time_status=true;
     await foundUser.save();
 
     res.status(200).json({ message: "Password changed successfully" });
@@ -34,6 +36,7 @@ const handleChangePassword = async (req, res) => {
     console.error(error);
     res.status(500).json({ message: "Server problem" });
   }
+
 };
 
 module.exports = { handleChangePassword };

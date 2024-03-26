@@ -28,6 +28,8 @@ router.route('/division/updatedivision/:id')
     .put(divisionController.handleUpdateDivision)
 router.route('/division/deletedivision/:id')
     .delete(divisionController.handleDeleteDivision)
+router.route('/division/users/:id')
+    .get(divisionController.handleGetAllUsersInDivision)
 router.route('/roles')
     .get(divisionController.handleGetAllRole)
 module.exports=router;

@@ -6,6 +6,7 @@ module.exports = {
         type: Sequelize.UUID,
         primaryKey: true,
         allowNull: false,
+        
       },
       sector_id: {
         type: Sequelize.UUID,
