@@ -14,7 +14,7 @@ const handleNewUser = async (req, res) => {
   // const role_id = isFirstAccount ? "3dba29ec-e51c-11ee-9ec0-c01803d47480" : "7078a968-e51c-11ee-9ec0-c01803d47480";
   const password = generateRandomPassword();
 
-  if (!full_name || !email) {
+  if (!full_name || !email || !division || !role) {
       return res.status(400).json({ "message": "Incomplete data form" });
     }
   try {

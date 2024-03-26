@@ -98,7 +98,7 @@ const handleNewDivision = async (req, res) => {
       console.error(error);
       return res.status(500).json({ "message": "Server error" });
     }
-  };
+  }
   const handleGetAllUsersInDivision= async (req, res) => {
     console.log("users in certain division called")
     const id=req.params.id;
@@ -115,10 +115,9 @@ const handleNewDivision = async (req, res) => {
         attributes: ['division_id', 'name'],
       });
       console.log(users)
-      res.status(200).json({message:"success"})
     } catch (error) {
       console.error(error);
       return res.status(500).json({ "message": "Server error" });
     }
   };
-  module.exports= { handleGetAllRole,handleNewDivision, handleGetAllDivision, handleGetDivisionById, handleUpdateDivision, handleDeleteDivision, handleGetAllUsersInDivision };
+  module.exports= { handleGetAllUsersInDivision, handleGetAllRole,handleNewDivision, handleGetAllDivision, handleGetDivisionById, handleUpdateDivision, handleDeleteDivision };

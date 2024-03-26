@@ -30,6 +30,9 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
       },
     });
+    Division.associate = (models) => {
+      Division.hasMany(models.User, { foreignKey: 'division_id', as: 'User' });
+    };
     return Division;
   };
   

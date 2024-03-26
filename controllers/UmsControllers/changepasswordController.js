@@ -5,7 +5,7 @@ const User = db.User;
 const Roles = db.Roles;
 
 const handleChangePassword = async (req, res) => {
-  const { user_id } = req.params;
+  const user_id  = req.id;
   const {  current_password, new_password  } = req.body;
 
   if (!current_password || !new_password) {

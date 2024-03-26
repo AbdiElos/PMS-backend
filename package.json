@@ -6,8 +6,8 @@
     "start": "node index",
     "dev": "nodemon server",
     "build": "npm i",
-    "migrate":"npx sequelize-cli db:migrate",
-    "down":"npx sequelize-cli db:migrate:undo"
+    "migrate": "npx sequelize-cli db:migrate",
+    "down": "npx sequelize-cli db:migrate:undo"
   },
   "author": "",
   "license": "ISC",

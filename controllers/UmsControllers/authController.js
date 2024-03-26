@@ -3,11 +3,9 @@ const jwt = require('jsonwebtoken');
 const db = require("../../config/db");
 const User = db.User;
 const Roles = db.Roles;
-
-const handleAuth = async (req, res) => {
-  console.log(req.body);
-  
-  
+const Permission=db.Permission
+const handleAuth = async (req, res) => { 
+  console.log(req.body)
   const { email, password } = req.body;
   if (!email || !password) {
     return res.status(400).json({ "message": "Both username and password are required" });
@@ -32,12 +30,12 @@ const handleAuth = async (req, res) => {
     if (match) {
       const accessToken = jwt.sign(
         {
-          userInfo: foundUser
+          userInfo: usersInfo
         },
         process.env.ACCESS_TOKEN_SECRET,
         { expiresIn: '1d' }
       );
-      
+    
       const refreshToken = jwt.sign(
         { full_name: foundUser.full_name },
         process.env.REFRESH_TOKEN_SECRET,
@@ -46,6 +44,14 @@ const handleAuth = async (req, res) => {
       
       foundUser.refreshToken = refreshToken;
       await foundUser.save();
+
+    //  const activity = await Activity.create({
+    //     full_name: full_name,
+    //     activity: 'logged in',
+    //     time: new Date()
+    //   });
+    //   console.log(activity);
+
       
       res.cookie('jwt', refreshToken, { httpOnly: true, sameSite: 'None', secure: true, maxAge: 24 * 60 * 60 * 1000 });
       res.json({ access_token: accessToken, foundUser, status:foundUser.first_time_status });

@@ -102,8 +102,6 @@ db.Roles.belongsToMany(db.User, {
   as: 'Users' // Alias for the association
 });
 
-
-
 db.Permission.belongsToMany(db.Roles, {
   through: 'Role_has_permissions',
   foreignKey: 'permission_id',
