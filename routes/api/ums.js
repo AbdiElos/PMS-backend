@@ -2,7 +2,7 @@ const express=require('express');
 const router=express.Router();
 const app=express()
 const multer=require('multer')
-const verifyJWT = require('../../middlewares/verifyJWT');
+const verifyJWT = require('../../middlewares/verifyJWT.js');
 const registerController = require('../../controllers/UmsControllers/registerController.js')
 const refreshTokenController = require('../../controllers/UmsControllers/refreshTokenController.js');
 const logoutController = require('../../controllers/UmsControllers/logoutController.js');
@@ -12,8 +12,7 @@ const authController = require('../../controllers/UmsControllers/authController.
 const forgotPasswordController = require('../../controllers/UmsControllers/forgotPasswordController.js');
 const adminController2 = require('../../controllers/UmsControllers/adminController2.js');
 const adminController = require('../../controllers/UmsControllers/adminController.js');
-const  sectorController= require('../../controllers/UmsControllers/sectorController.js');
-
+const  changepasswordController= require('../../controllers/UmsControllers/changepasswordController.js');
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
       console.log('calling destination...')
@@ -30,19 +29,18 @@ router.route('/registerUser')
     .post(registerController.handleNewUser)
 router.route("/login")
     .post(authController.handleAuth);
-// app.use(verifyJWT)
 router.route('/refresh')
     .get(refreshTokenController.handleRefreshToken)
 router.route('/finduser/:user_id')
     .get(adminController.getUser)
 router.route('/findalluser')
     .get(adminController.getAllUser)
-router.route('/profile/update/:user_id')
-    .put(adminController.editMember)
-router.route("profile/changeStatus/:user_id")
+router.route('/profile/update')
+    .put(verifyJWT,adminController.editMember)
+router.route("/profile/changeStatus/:id")
     .get(adminController.toggleSuspend)
-
-
+router.route('/profile/changepassword')
+    .put(verifyJWT,changepasswordController.handleChangePassword)
 
 
 

@@ -32,25 +32,11 @@ db.Permission = require('../models/permission')(sequelize, Sequelize);
 db.Project= require('../models/project')(sequelize, Sequelize);
 db.Sector = require('../models/sector')(sequelize, Sequelize);
 db.Division= require('../models/division')(sequelize, Sequelize);
-//db.User_role = require('../models/user_role')(sequelize, Sequelize);
 db.user_role=require('../models/User_role')(sequelize, Sequelize)
 db.role_permission=require('../models/role_has_permission')(sequelize,Sequelize)
 db.sector=require('../models/sector')(sequelize,Sequelize)
 db.division=require('../models/division')(sequelize,Sequelize)
-// db.Role_has_permission = require('../data/role_has_permission')(sequelize, Sequelize);
 
-// db.Team= require('../data/Team')(sequelize, Sequelize);
-// db.Sector= require('../data/Sector')(sequelize, Sequelize);
-
-// db.Project_member= require('../data/Project_member')(sequelize, Sequelize);
-// db.Milestone= require('../data/Milestone')(sequelize, Sequelize);
-// db.Task= require('../data/Task')(sequelize, Sequelize);
-// db.Subtask= require('../data/Subtask')(sequelize, Sequelize);
-// db.Comment= require('../data/Comment')(sequelize, Sequelize);
-// db.Task_member= require('../data/Task_member')(sequelize, Sequelize);
-// db.Document= require('../data/Document')(sequelize, Sequelize);
-// db.Document_type= require('../data/Document_type')(sequelize, Sequelize);
-// db.Milestone_members= require('../data/Milestone_members')(sequelize, Sequelize);
 
 
 
@@ -59,10 +45,6 @@ db.division=require('../models/division')(sequelize,Sequelize)
 //many to one association
 db.Division.hasMany(db.User, { foreignKey: 'division_id', as: 'Users' });
 db.User.belongsTo(db.Division, { foreignKey: 'division_id', as: 'Division' });
-
-//  db.Roles.hasMany(db.User, { foreignKey: "role_id", as: 'User' });
-//  db.User.belongsTo(db.Roles, { foreignKey: "role_id", as: 'Roles' });
-
 
 // Define many-to-many relationship between User and Roles
 db.User.belongsToMany(db.Roles, {
@@ -78,8 +60,6 @@ db.Roles.belongsToMany(db.User, {
   otherKey: 'user_id',
   as: 'Users' // Alias for the association
 });
-
-
 
 db.Permission.belongsToMany(db.Roles, {
   through: 'Role_has_permissions',

@@ -98,5 +98,26 @@ const handleNewDivision = async (req, res) => {
       console.error(error);
       return res.status(500).json({ "message": "Server error" });
     }
+  }
+  const handleGetAllUsersInDivision= async (req, res) => {
+    console.log("users in certain division called")
+    const id=req.params.id;
+    try {
+      const users = await Division.findAll({
+        where: { division_id:id },
+        include: [
+          {
+            model: User,
+            as: 'Users',
+            attributes: ['user_id','full_name', 'email'],
+          },
+        ],
+        attributes: ['division_id', 'name'],
+      });
+      console.log(users)
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ "message": "Server error" });
+    }
   };
-  module.exports= { handleGetAllRole,handleNewDivision, handleGetAllDivision, handleGetDivisionById, handleUpdateDivision, handleDeleteDivision };
+  module.exports= { handleGetAllUsersInDivision, handleGetAllRole,handleNewDivision, handleGetAllDivision, handleGetDivisionById, handleUpdateDivision, handleDeleteDivision };

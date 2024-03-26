@@ -3,8 +3,9 @@ const jwt = require('jsonwebtoken');
 const db = require("../../config/db");
 const User = db.User;
 const Roles = db.Roles;
-
+const Permission=db.Permission
 const handleAuth = async (req, res) => { 
+  console.log(req.body)
   const { email, password } = req.body;
   if (!email || !password) {
     return res.status(400).json({ "message": "Both username and password are required" });
@@ -18,27 +19,31 @@ const handleAuth = async (req, res) => {
       return res.status(400).json({ "message": "email is not available, sign up first" });
     }
     
-    if (foundUser.account_status) {
+    if (!foundUser.account_status) {
       return res.status(400).json({ "message": "You are temporarily banned from accessing your account. Please contact us for assistance." });
     }
 
-    const users = await User.findOne({ 
-    where: {email},
-    include: [{
-      model: Roles, 
-      as: 'Roles', 
-      attributes:["role_id","name"],
-      options: { eager: true }
-    }]
-   });
-   console.log(users.toJSON())
-  //  console.log(user.Roles)
-    // const match = await bcrypt.compare(password, foundUser.password);
-    const match=password==foundUser.password
+    const users = await User.findOne({
+      where: { email },
+      include: [
+        {
+          model: Roles,
+          as: 'Roles',
+          attributes: ['role_id', 'name'],
+        },
+      ],
+      attributes: ['user_id', 'email'],
+    });
+    const usersInfo=users.toJSON();
+    //const user_hashed=foundUser.hashed_pwd
+    console.log(password,foundUser.hashed_pwd)
+    const match = await bcrypt.compare(password, foundUser.hashed_pwd);
+    console.log(match)
+    // const match=password==foundUser.password
     if (match) {
       const accessToken = jwt.sign(
         {
-          userInfo: foundUser
+          userInfo: usersInfo
         },
         process.env.ACCESS_TOKEN_SECRET,
         { expiresIn: '1d' }

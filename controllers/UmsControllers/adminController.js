@@ -94,7 +94,7 @@ const deleteUser = async (req, res) => {
 };
 
 const editMember = async (req, res) => {
-  const user_id = req.params.user_id;
+  const user_id = req.id;
   const { full_name,email,gender} = req.body;
 
   try {
@@ -118,7 +118,7 @@ const editMember = async (req, res) => {
 };
 
 const toggleSuspend = async (req, res) => {
-  const full_name = req.params.full_name;
+  const user_id = req.params.id;
   try {
     const result = await User.findOne({ where: { user_id } });
     if (!result) {
@@ -128,7 +128,7 @@ const toggleSuspend = async (req, res) => {
     result. account_status = !result. account_status;
     await result.save();
 
-    return res.status(201).json({ "message": `${result.full_name} status is updated member` });
+    return res.status(201).json({ "message": `status is updated member` });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ "message": "Server problem" });

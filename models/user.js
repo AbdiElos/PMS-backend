@@ -33,7 +33,8 @@ module.exports = (sequelize, DataTypes) => {
     project_status:{type:DataTypes.BOOLEAN,defaultValue:false},
     account_status: {type:DataTypes.BOOLEAN,defaultValue:true},
     created_by: DataTypes.STRING,
-    updated_by: DataTypes.STRING
+    updated_by: DataTypes.STRING,
+    hashed_pwd: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'User',

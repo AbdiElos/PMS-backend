@@ -33,8 +33,6 @@ module.exports = (sequelize, DataTypes) => {
     Division.associate = (models) => {
       Division.hasMany(models.User, { foreignKey: 'division_id', as: 'User' });
     };
-    
-  
     return Division;
   };
   
