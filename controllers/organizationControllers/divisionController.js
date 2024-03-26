@@ -90,6 +90,7 @@ const handleNewDivision = async (req, res) => {
       return res.status(500).json({ "message": "Server error" });
     }
   };
+  // handle all roles
   const handleGetAllRole= async (req, res) => {
     try {
       const roles = await Roles.findAll();
