@@ -8,12 +8,20 @@ module.exports = {
         primaryKey: true,
         allowNull: false,
        },
-      role_id: {
-        type: Sequelize.UUID
-      },
+       role_id: {
+        type: Sequelize.UUID,
+        allowNull: false,
+        references: {
+          model: 'Roles',
+          key: 'role_id'
+        }},
       permission_id: {
-        type: Sequelize.UUID
-      },
+        type: Sequelize.UUID,
+        allowNull: false,
+        references: {
+          model: 'Permissions',
+          key: 'permission_id'
+      }},
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

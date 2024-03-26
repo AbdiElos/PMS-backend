@@ -23,11 +23,19 @@ module.exports = (sequelize, DataTypes) => {
   User.init({
     user_id: { type: DataTypes.UUID, primaryKey: true, required:true }, // Specify user_id as the primary key
     full_name: DataTypes.STRING,
+    first_time_status:DataTypes.BOOLEAN,
     img_url: DataTypes.STRING,
     email: DataTypes.STRING,
-    gender: DataTypes.STRING,
+    gender: {type:DataTypes.STRING,allowNull:false},
     password: DataTypes.STRING,
-    division_id: DataTypes.UUID,
+    unchanged_password: DataTypes.STRING,
+    division_id:  {
+      type: DataTypes.UUID,
+      references: {
+        model: 'Divisions', // The name of the referenced model
+        key: 'division_id' // The name of the referenced column in the Roles table
+      }
+    },
     refreshToken: DataTypes.STRING,
     team_id: DataTypes.UUID,
     project_status:{type:DataTypes.BOOLEAN,defaultValue:false},
@@ -39,11 +47,5 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'User',
   });
-
-  User.associate = (models) => {
-    User.belongsTo(models.Division, { foreignKey: 'division_id', as: 'Division' });
-  };
-
-  
   return User;
 };

@@ -1,7 +1,7 @@
 // models/division.js
 
 module.exports = (sequelize, DataTypes) => {
-    const Division = sequelize.define('Division', {
+    const Division = sequelize.define('Divisions', {
       division_id: {
         type: DataTypes.UUID,
         primaryKey: true,

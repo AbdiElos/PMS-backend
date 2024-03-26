@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const db = require("../../config/db");
 const User = db.User;
-const Division = db.division;
+const Division = db.Division;
 const Roles=db.Roles;
 const { v4: uuidv4 } = require('uuid');
 const uuid = uuidv4();

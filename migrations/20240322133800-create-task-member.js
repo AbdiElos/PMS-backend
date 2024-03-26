@@ -2,16 +2,16 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Project_members', {
-      project_member_id: {
-        allowNull: false,
-        primaryKey: true,
+    await queryInterface.createTable('Task_members', {
+      task_member_id: {
+        type: Sequelize.UUID,
+        allowNull:false,
+        primaryKey: true
+      },
+      milestone_member_id: {
         type: Sequelize.UUID
       },
-      project_id: {
-        type: Sequelize.UUID
-      },
-      user_id: {
+      task_id: {
         type: Sequelize.UUID
       },
       createdAt: {
@@ -25,6 +25,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Project_members');
+    await queryInterface.dropTable('Task_members');
   }
 };

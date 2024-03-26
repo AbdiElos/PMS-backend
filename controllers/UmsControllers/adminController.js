@@ -125,7 +125,7 @@ const toggleSuspend = async (req, res) => {
       return res.status(404).json({ "message": "User not found" });
     }
 
-    result. account_status = !result. account_status;
+    result.account_status = !result.account_status; // Remove the space before 'account_status'
     await result.save();
 
     return res.status(201).json({ "message": `status is updated member` });
@@ -134,7 +134,6 @@ const toggleSuspend = async (req, res) => {
     return res.status(500).json({ "message": "Server problem" });
   }
 };
-
 module.exports = {
   getUser,
   getActivity,

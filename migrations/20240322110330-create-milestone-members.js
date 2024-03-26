@@ -2,21 +2,20 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Activities', {
-      id: {
-        allowNull: false,
-        autoIncrement: true,
+    await queryInterface.createTable('Milestone_members', {
+      milestone_member_id: {
+        type: Sequelize.UUID,
+        allowNull:false,
         primaryKey: true,
-        type: Sequelize.INTEGER
       },
-      full_name: {
-        type: Sequelize.STRING
+      milestone_memeber_id: {
+        type: Sequelize.UUID
       },
-      activity: {
-        type: Sequelize.STRING
+      milestone_id: {
+        type: Sequelize.UUID
       },
-      time: {
-        type: Sequelize.DATE
+      project_member_id: {
+        type: Sequelize.UUID
       },
       createdAt: {
         allowNull: false,
@@ -29,6 +28,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Activities');
+    await queryInterface.dropTable('Milestone_members');
   }
 };
