@@ -21,14 +21,14 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: DataTypes.UUIDV4,
         allowNull: true
       },
-      created_by: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      updated_by: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
+
+    created_by: DataTypes.UUID,
+    updated_by: DataTypes.UUID,
+    createdAt:DataTypes.DATE,
+    updatedAt:DataTypes.DATE,
+    is_deleted:DataTypes.BOOLEAN,
+    deletionAt:DataTypes.DATE,
+    deletedBy:DataTypes.UUID
     });
     Division.associate = (models) => {
       Division.hasMany(models.User, { foreignKey: 'division_id', as: 'User' });

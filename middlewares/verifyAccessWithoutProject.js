@@ -1,5 +1,5 @@
 
-const verifyRoles=(Permission_id)=>{
+const verifyAccessWithoutProject=(Permission_id)=>{
     return (req,res,next)=>{
         if(!req?.roles) return res.sendStatus(401);
         const roles=req.roles
@@ -8,5 +8,5 @@ const verifyRoles=(Permission_id)=>{
         next();
     }
 }
-module.exports=verifyRoles;
+module.exports=verifyAccessWithoutProject;
 

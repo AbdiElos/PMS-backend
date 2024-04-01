@@ -3,18 +3,15 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Users', {
-      // id: {
-      //   allowNull: false,
-      //   autoIncrement: true,
-      //   primaryKey: true,
-      //   type: Sequelize.INTEGER
-      // },
       user_id: {
         type: Sequelize.UUID,
         primaryKey:true
       },
       full_name: {
         type: Sequelize.STRING
+      },
+      first_time_status:{
+        type:Sequelize.BOOLEAN
       },
       img_url: {
         type: Sequelize.STRING
@@ -51,13 +48,10 @@ module.exports = {
         type: Sequelize.BOOLEAN
       },
       created_by: {
-        type: Sequelize.STRING
-      },
-      first_time_status:{
-        type:Sequelize.BOOLEAN
+        type: Sequelize.UUID
       },
       updated_by: {
-        type: Sequelize.STRING
+        type: Sequelize.UUID
       },
       createdAt: {
         allowNull: false,
@@ -68,8 +62,17 @@ module.exports = {
         type: Sequelize.DATE
       },
       is_deleted: {
-        allowNull: true,
-        type: Sequelize.STRING
+        allowNull: false,
+        type: Sequelize.BOOLEAN,
+        default:false
+      },
+      deletionAt:{
+        allowNull:true,
+        type:Sequelize.DATE
+      },
+      deletedBy:{
+        allowNull:true,
+        type:Sequelize.UUID
       }
     });
   },

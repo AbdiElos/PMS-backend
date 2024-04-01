@@ -19,7 +19,15 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey:true
     },
     role_id: DataTypes.UUID,
-    permission_id: DataTypes.UUID
+    permission_id: DataTypes.UUID,
+    
+    created_by: DataTypes.UUID,
+    updated_by: DataTypes.UUID,
+    createdAt:DataTypes.DATE,
+    updatedAt:DataTypes.DATE,
+    is_deleted:DataTypes.BOOLEAN,
+    deletionAt:DataTypes.DATE,
+    deletedBy:DataTypes.UUID
   }, {
     sequelize,
     modelName: 'Role_has_permission',

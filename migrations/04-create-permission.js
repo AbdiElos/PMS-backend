@@ -3,12 +3,6 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Permissions', {
-      // id: {
-      //   allowNull: false,
-      //   autoIncrement: true,
-      //   primaryKey: true,
-      //   type: Sequelize.INTEGER
-      // },
       permission_id: {
         type: Sequelize.UUID,
         primaryKey: true,
@@ -17,14 +11,8 @@ module.exports = {
       name: {
         type: Sequelize.STRING
       },
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      }
+      createdAt:{type:Sequelize.DATE},
+      updatedAt:{type:Sequelize.DATE}
     });
   },
   async down(queryInterface, Sequelize) {

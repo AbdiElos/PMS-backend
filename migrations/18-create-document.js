@@ -12,14 +12,14 @@ module.exports = {
         type: Sequelize.UUID,
         allowNull:false,
         references: {
-          model: 'document_types', // The name of the referenced model
+          model: 'Document_types', // The name of the referenced model
           key: 'document_type_id'
       }},
       project_id: {
         type: Sequelize.UUID,
         allowNull:false,
         references: {
-          model: 'projects', // The name of the referenced model
+          model: 'Projects', // The name of the referenced model
           key: 'project_id'
       }},
       document: {
@@ -30,16 +30,13 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true,
       },
-      createdAt: {
-        type: Sequelize.DATE,
-        allowNull: false,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
-      },
-      updatedAt: {
-        type: Sequelize.DATE,
-        allowNull: false,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
-      },
+      created_by: {type: Sequelize.UUID},
+      updated_by: {type: Sequelize.UUID},
+      createdAt: {allowNull: false,type: Sequelize.DATE},
+      updatedAt: {allowNull: false,type: Sequelize.DATE},
+      is_deleted: {allowNull: false,type: Sequelize.BOOLEAN,default:false},
+      deletionAt:{allowNull:true,type:Sequelize.DATE},
+      deletedBy:{allowNull:true,type:Sequelize.UUID}
     });
   },
 

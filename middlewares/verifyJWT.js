@@ -3,7 +3,7 @@ require('dotenv').config();
 
 const verifyJWT=(req,res,next)=>{
     const authHeader=req.headers.authorization ||req.headers.Authorization;
-    if(!authHeader?.startsWith('Bearer ')) return res.sendStatus(401);
+    if(!authHeader?.startsWith('Bearer ')) return res.sendStatus(403);
     const token=authHeader.split(' ')[1];
     jwt.verify(
         token,
@@ -12,6 +12,7 @@ const verifyJWT=(req,res,next)=>{
             if(err) return res.sendStatus(403);
             req.id=decoded.userInfo.user_id;
             req.roles=decoded.userInfo.Roles;
+            console.log(decoded.userInfo)
             next()
         }
     )

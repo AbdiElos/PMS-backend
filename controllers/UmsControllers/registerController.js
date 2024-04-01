@@ -6,7 +6,6 @@ const Permission = db.Permission;
 const user_role=db.user_role
 const {generateRandomPassword}=require('../../middlewares/generate_password')
 const handleNewUser = async (req, res) => {
-  const uuid2=uuidv4()
   const uuid = uuidv4();
   console.log(req.body)
   const { full_name, email,gender,division,role} = req.body;
@@ -35,9 +34,10 @@ const handleNewUser = async (req, res) => {
       division_id:division
     });
     await user_role.create({
-      user_role_id:uuid2,
+      user_role_id:uuidv4(),
       user_id:uuid,
-      role_id:role
+      role_id:role,
+      project_id:"97a17f58-f00c-11ee-bd81-c01803d475fd"
     });
     return res.status(201).json({ "success": "New user is created user account is" ,full_name,email,unchanged_password});
   } catch (err) {

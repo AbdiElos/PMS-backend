@@ -20,24 +20,14 @@ module.exports = (sequelize) => {
       type: DataTypes.UUID,
       allowNull: true
     },
-    created_by: {
-      type: DataTypes.STRING,
-      allowNull: true
-    },
-    updated_by: {
-      type: DataTypes.STRING,
-      allowNull: true
-    },
-    createdAt: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
-    },
-    updatedAt: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
-    }
+    division_id:DataTypes.UUID,
+    created_by: DataTypes.UUID,
+    updated_by: DataTypes.UUID,
+    createdAt:DataTypes.DATE,
+    updatedAt:DataTypes.DATE,
+    is_deleted:DataTypes.BOOLEAN,
+    deletionAt:DataTypes.DATE,
+    deletedBy:DataTypes.UUID
   });
 
   return Team;

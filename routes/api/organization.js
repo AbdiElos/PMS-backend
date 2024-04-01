@@ -31,5 +31,5 @@ router.route('/division/deletedivision/:id')
 router.route('/division/users/:id')
     .get(divisionController.handleGetAllUsersInDivision)
 router.route('/roles')
-    .get(divisionController.handleGetAllRole)
+    .get(divisionController.handleGetAllDefaultRole)
 module.exports=router;

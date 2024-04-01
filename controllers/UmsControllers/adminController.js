@@ -128,7 +128,7 @@ const toggleSuspend = async (req, res) => {
     result.account_status = !result.account_status; // Remove the space before 'account_status'
     await result.save();
 
-    return res.status(201).json({ "message": `status is updated member` });
+    return res.status(201).json({ "message": `status is updated ` });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ "message": "Server problem" });

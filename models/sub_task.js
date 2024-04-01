@@ -7,13 +7,13 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
     },
-    task_member_id: {
-        type: DataTypes.UUID,
-        allowNull:false,
-        references: {
-          model: 'task_members', // The name of the referenced model
-          key: 'task_member_id'
-    }},
+    // task_member_id: {
+    //     type: DataTypes.UUID,
+    //     allowNull:false,
+    //     references: {
+    //       model: 'task_members', // The name of the referenced model
+    //       key: 'task_member_id'
+    // }},
     name: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -30,14 +30,13 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    created_by: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    updated_by: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
+    created_by: DataTypes.UUID,
+    updated_by: DataTypes.UUID,
+    createdAt:DataTypes.DATE,
+    updatedAt:DataTypes.DATE,
+    is_deleted:DataTypes.BOOLEAN,
+    deletionAt:DataTypes.DATE,
+    deletedBy:DataTypes.UUID
   });
 
   return Sub_task;

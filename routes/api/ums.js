@@ -13,6 +13,8 @@ const forgotPasswordController = require('../../controllers/UmsControllers/forgo
 const adminController2 = require('../../controllers/UmsControllers/adminController2.js');
 const adminController = require('../../controllers/UmsControllers/adminController.js');
 const  changepasswordController= require('../../controllers/UmsControllers/changepasswordController.js');
+const roleController=require('../../controllers/UmsControllers/rolesController.js')
+const { verify } = require('jsonwebtoken');
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
       console.log('calling destination...')
@@ -38,9 +40,9 @@ router.route('/findalluser')
 router.route('/profile/update')
     .put(verifyJWT,adminController.editMember)
 router.route("/profile/changeStatus/:id")
-    .get(adminController.toggleSuspend)
+    .put(adminController.toggleSuspend)
 router.route('/profile/changepassword')
-    .put(verifyJWT,changepasswordController.handleChangePassword)
+    .put(changepasswordController.handleChangePassword)
 
 
 
@@ -71,16 +73,14 @@ router.route("/update/:id")
 router.route('/profile/update')
     .post(upload.single("profileImg"),profileController.updateProfile)
 
-// router.route('/sector/newsector')
-//    .post(sectorController.handleNewSector)
-// router.route('/sector/getsector/:id')
-//    .get(sectorController.handleGetSectorById)
+// roles controller
 
-// router.route('/sector/getallsector')
-//    .get(sectorController.handleGetAllSectors)
-
-// router.route('/sector/updatesector/:id')
-//    .put(sectorController.handleUpdateSector)
-// router.route('/sector/deletesector/:id')
-//    .delete(sectorController. handleDeleteSector)
+router.route("/role/add")
+  .post(roleController.handleNewRole)
+router.route('/role/getallprojectroles')
+  .get(roleController.handleGetAllProjectRelatedRole)
+router.route('/role/getallroles')
+  .get(roleController.handleGetAllRole)
+router.route('/getallpermissions')
+  .get(roleController.handleGetAllPermissions)
 module.exports=router;

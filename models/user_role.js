@@ -25,35 +25,37 @@ module.exports = (sequelize, DataTypes) => {
   User_role.init({
     user_role_id: {
       type: DataTypes.UUID,
-       // Ensures the user_id cannot be null
-     primaryKey:true,
-    // defaultValue:UUID,
-     allowNull:false},
+            primaryKey:true,
+            allowNull:false
+      },
     user_id: {
       type: DataTypes.UUID,
-       // Ensures the user_id cannot be null
       references: {
         model: 'User', // The name of the referenced model
         key: 'user_id' // The name of the referenced column in the User table
       }
     },
-    // project_id:{
-    //   type: DataTypes.UUID,
-    //   defaultValue:UUID,
-    //    // Ensures the user_id cannot be null
-    //   references: {
-    //     model: 'Project', // The name of the referenced model
-    //     key: 'project_id' // The name of the referenced column in the project table
-    //   }
-   
+    project_id:{
+      type: DataTypes.UUID,
+      references: {
+        model: 'Project', // The name of the referenced model
+        key: 'project_id' // The name of the referenced column in the project table
+      }
+    },
     role_id: {
       type: DataTypes.UUID,
-      
       references: {
         model: 'Roles', // The name of the referenced model
         key: 'role_id' // The name of the referenced column in the Roles table
       }
-    }
+    },
+    created_by: DataTypes.UUID,
+    updated_by: DataTypes.UUID,
+    createdAt:DataTypes.DATE,
+    updatedAt:DataTypes.DATE,
+    is_deleted:DataTypes.BOOLEAN,
+    deletionAt:DataTypes.DATE,
+    deletedBy:DataTypes.UUID
   }, {
     sequelize,
     modelName: 'User_role',

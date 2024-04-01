@@ -40,9 +40,13 @@ module.exports = (sequelize, DataTypes) => {
     team_id: DataTypes.UUID,
     project_status:{type:DataTypes.BOOLEAN,defaultValue:false},
     account_status: {type:DataTypes.BOOLEAN,defaultValue:true},
-    created_by: DataTypes.STRING,
-    updated_by: DataTypes.STRING,
-    hashed_pwd: DataTypes.STRING
+    created_by: DataTypes.UUID,
+    updated_by: DataTypes.UUID,
+    createdAt:DataTypes.DATE,
+    updatedAt:DataTypes.DATE,
+    is_deleted:DataTypes.BOOLEAN,
+    deletionAt:DataTypes.DATE,
+    deletedBy:DataTypes.UUID
   }, {
     sequelize,
     modelName: 'User',

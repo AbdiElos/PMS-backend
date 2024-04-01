@@ -20,10 +20,18 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     user_id: DataTypes.UUID,
-    project_id: DataTypes.UUID
+    project_id: DataTypes.UUID,
+
+    created_by: DataTypes.UUID,
+    updated_by: DataTypes.UUID,
+    createdAt:DataTypes.DATE,
+    updatedAt:DataTypes.DATE,
+    is_deleted:DataTypes.BOOLEAN,
+    deletionAt:DataTypes.DATE,
+    deletedBy:DataTypes.UUID
   }, {
     sequelize,
-    modelName: 'Project_member',
+    modelName: 'Project_members',
   });
   return Project_member;
 };

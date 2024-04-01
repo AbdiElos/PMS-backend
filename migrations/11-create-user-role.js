@@ -15,14 +15,14 @@ module.exports = {
           key: 'user_id'
         }
       },
-      // project_id: {
-      //   type: Sequelize.UUID,
-      //   allowNull: false,
-      //   references: {
-      //     model: 'Projects',
-      //     key: 'project_id'
-      //   }
-      // },
+      project_id: {
+        type: Sequelize.UUID,
+        allowNull: false,
+        references: {
+          model: 'Projects',
+          key: 'project_id'
+        }
+      },
       role_id: {
         type: Sequelize.UUID,
         allowNull: false,
@@ -31,14 +31,13 @@ module.exports = {
           key: 'role_id'
         }
       },
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      }
+      created_by: {type: Sequelize.UUID},
+      updated_by: {type: Sequelize.UUID},
+      createdAt: {allowNull: false,type: Sequelize.DATE},
+      updatedAt: {allowNull: false,type: Sequelize.DATE},
+      is_deleted: {allowNull: false,type: Sequelize.BOOLEAN,default:false},
+      deletionAt:{allowNull:true,type:Sequelize.DATE},
+      deletedBy:{allowNull:true,type:Sequelize.UUID}
     });
   },
   down: async (queryInterface, Sequelize) => {

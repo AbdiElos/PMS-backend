@@ -8,28 +8,17 @@ module.exports = (sequelize) => {
       allowNull: false,
       primaryKey: true
     },
-    document_id: {
-      type: DataTypes.UUID,
-      allowNull: false,
-      references: {
-        model: 'documents', // The name of the referenced model
-        key: 'document_id'
-      }
-    },
     document_type: {
       type: DataTypes.STRING,
       allowNull: false
     },
-    createdAt: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
-    },
-    updatedAt: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
-    }
+    created_by: DataTypes.UUID,
+    updated_by: DataTypes.UUID,
+    createdAt:DataTypes.DATE,
+    updatedAt:DataTypes.DATE,
+    is_deleted:DataTypes.BOOLEAN,
+    deletionAt:DataTypes.DATE,
+    deletedBy:DataTypes.UUID
   });
 
   return Document_type;
