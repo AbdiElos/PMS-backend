@@ -20,11 +20,12 @@ app.use(cors(corsOptionsDelegate));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public', 'uploads')));
+app.use(express.static(path.join(__dirname, 'public', 'images')));
+app.use(express.static(path.join(__dirname, 'public', 'documents')));
 app.use("/ums", require('./routes/api/ums'));
 // app.use(verifyJWT);
 app.use("/organization", require('./routes/api/organization'));
-
+app.use("/projects",require('./routes/api/projects.js'))
 
 
 // Start the server

@@ -3,43 +3,35 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Projects', {
-      // id: {
-      //   allowNull: false,
-      //   autoIncrement: true,
-      //   primaryKey: true,
-      //   type: Sequelize.INTEGER
-      // },
       project_id: {
         type: Sequelize.UUID,
         primaryKey: true,
         allowNull: false,
       },
       name: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull:false
       },
       project_manager: {
-        type: Sequelize.STRING
+        type: Sequelize.UUID
       },
       technical_manager: {
-        type: Sequelize.STRING
+        type: Sequelize.UUID
       },
       overall_progress: {
         type: Sequelize.STRING
       },
       start_date: {
-        type: Sequelize.STRING
+        type: Sequelize.DATE
       },
       end_date: {
-        type: Sequelize.STRING
+        type: Sequelize.DATE
       },
-      document_id: {
+      createdBy: {
         type: Sequelize.UUID
       },
-      created_by: {
-        type: Sequelize.STRING
-      },
-      updated_by: {
-        type: Sequelize.STRING
+      updatedBy: {
+        type: Sequelize.UUID
       },
       createdAt: {
         allowNull: false,

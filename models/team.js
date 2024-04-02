@@ -21,11 +21,11 @@ module.exports = (sequelize) => {
       allowNull: true
     },
     created_by: {
-      type: DataTypes.STRING,
+      type: DataTypes.UUID,
       allowNull: true
     },
     updated_by: {
-      type: DataTypes.STRING,
+      type: DataTypes.UUID,
       allowNull: true
     },
     createdAt: {
@@ -39,6 +39,5 @@ module.exports = (sequelize) => {
       defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
     }
   });
-
   return Team;
 };

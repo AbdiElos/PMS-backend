@@ -16,7 +16,7 @@ const  changepasswordController= require('../../controllers/UmsControllers/chang
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
       console.log('calling destination...')
-      cb(null, './public/uploads/')
+      cb(null, './public/images/')
     },
     filename: function (req, file, cb) {
       console.log(file.originalname)

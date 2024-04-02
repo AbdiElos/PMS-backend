@@ -3,12 +3,6 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Users', {
-      // id: {
-      //   allowNull: false,
-      //   autoIncrement: true,
-      //   primaryKey: true,
-      //   type: Sequelize.INTEGER
-      // },
       user_id: {
         type: Sequelize.UUID,
         primaryKey:true
@@ -42,7 +36,11 @@ module.exports = {
         type: Sequelize.STRING
       },
       team_id: {
-        type: Sequelize.UUID
+        type: Sequelize.UUID,
+        references: {
+          model: 'Teams', // The name of the referenced model
+          key: 'team_id' // The name of the referenced column in the Roles table
+        }
       },
       project_status: {
         type: Sequelize.BOOLEAN

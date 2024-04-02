@@ -2,22 +2,31 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Document_types', {
-      document_type_id: {
+    await queryInterface.createTable('Teams', {
+      team_id: {
         type: Sequelize.UUID,
         allowNull:false,
         primaryKey: true
       },
-      document_id: {
-        type: Sequelize.UUID,
-        allowNull:false,
-        references: {
-          model: 'documents', // The name of the referenced model
-          key: 'document_id'
-      }},
-      document_type: {
+      name: {
         type: Sequelize.STRING,
         allowNull: false
+      },
+      description: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      team_manager_id: {
+        type: Sequelize.UUID,
+        allowNull: true
+      },
+      created_by: {
+        type: Sequelize.UUID,
+        allowNull: true
+      },
+      updated_by: {
+        type: Sequelize.UUID,
+        allowNull: true
       },
       createdAt: {
         type: Sequelize.DATE,
@@ -31,8 +40,7 @@ module.exports = {
       }
     });
   },
-
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Document_types');
+    await queryInterface.dropTable('Teams');
   }
 };

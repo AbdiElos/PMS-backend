@@ -11,7 +11,6 @@ module.exports = {
       },
       leader_id: {
         type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
         allowNull: true,
       },
       name: {

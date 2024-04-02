@@ -12,7 +12,11 @@ const handleAuth = async (req, res) => {
   }
   try {
     const foundUser = await User.findOne({ 
-      where: { email }
+      where: { email },
+      include: [{
+            model: Roles, 
+            as: 'Roles', 
+          }]
     });
     
     if (!foundUser) {
@@ -22,11 +26,9 @@ const handleAuth = async (req, res) => {
     if (!foundUser.account_status) {
       return res.status(400).json({ "message": "You are temporarily banned from accessing your account. Please contact us for assistance." });
     }
-   // const hashed= await bcrypt.hash(password, 6);
    console.log(password,foundUser.password)
     const match = await bcrypt.compare(password, foundUser.password);
     console.log(match)
-    //const match=password==foundUser.password
     if (match) {
       const accessToken = jwt.sign(
         {
@@ -51,8 +53,6 @@ const handleAuth = async (req, res) => {
     //     time: new Date()
     //   });
     //   console.log(activity);
-
-      
       res.cookie('jwt', refreshToken, { httpOnly: true, sameSite: 'None', secure: true, maxAge: 24 * 60 * 60 * 1000 });
       res.json({ access_token: accessToken, foundUser, status:foundUser.first_time_status });
     } else {

@@ -8,18 +8,13 @@ module.exports = {
         allowNull:false,
         primaryKey: true,
       },
-      
-
-
-        project_id: {
-          type: Sequelize.UUID,
-          allowNull:false,
-          references: {
-            model: 'Project', // The name of the referenced model
-            key: 'project_id' // The name of the referenced column in the Roles table
-        }
-        },
-
+      project_id: {
+        type: Sequelize.UUID,
+        allowNull:false,
+        references: {
+          model: 'Projects', // The name of the referenced model
+          key: 'project_id' // The name of the referenced column in the Roles table
+      }},
       name: {
         type: Sequelize.STRING,
         allowNull: false,

@@ -23,6 +23,5 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
   });
-
   return Sector;
 };

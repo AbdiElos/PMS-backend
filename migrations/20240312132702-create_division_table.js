@@ -8,26 +8,27 @@ module.exports = {
         allowNull: false,
         
       },
-      sector_id: {
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
-        allowNull: true,
-      },
+      sector_id:{
+          type: Sequelize.UUID,
+          references: {
+            model: 'Sectors', // The name of the referenced model
+            key: 'sector_id' // The name of the referenced column in the Roles table
+          }
+        },
       name: {
         type: Sequelize.STRING,
         allowNull: false,
       },
       head_id: {
         type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
         allowNull: true,
       },
       created_by: {
-        type: Sequelize.STRING,
+        type: Sequelize.UUID,
         allowNull: true,
       },
       updated_by: {
-        type: Sequelize.STRING,
+        type: Sequelize.UUID,
         allowNull: true,
       },
       createdAt: {

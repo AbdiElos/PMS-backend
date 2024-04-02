@@ -2,32 +2,21 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Teams', {
-      team_id: {
+    await queryInterface.createTable('Document_types', {
+      document_type_id: {
         type: Sequelize.UUID,
         allowNull:false,
         primaryKey: true
       },
-      name: {
+      document_type: {
         type: Sequelize.STRING,
         allowNull: false
       },
-      description: {
-        type: Sequelize.STRING,
-        allowNull: false
+      createdBy:{
+        type:Sequelize.UUID
       },
-      team_manager_id: {
-        type: Sequelize.UUID,
-        allowNull:false,
-        allowNull: true
-      },
-      created_by: {
-        type: Sequelize.STRING,
-        allowNull: true
-      },
-      updated_by: {
-        type: Sequelize.STRING,
-        allowNull: true
+      updatedBy:{
+        type:Sequelize.UUID
       },
       createdAt: {
         type: Sequelize.DATE,
@@ -43,6 +32,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Teams');
+    await queryInterface.dropTable('Document_types');
   }
 };
