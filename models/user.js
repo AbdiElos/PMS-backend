@@ -46,10 +46,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     project_status:{type:DataTypes.BOOLEAN,defaultValue:false},
     account_status: {type:DataTypes.BOOLEAN,defaultValue:true},
-<<<<<<< HEAD
-    created_by: DataTypes.STRING,
-    updated_by: DataTypes.STRING
-=======
     created_by: DataTypes.UUID,
     updated_by: DataTypes.UUID,
     createdAt:DataTypes.DATE,
@@ -57,7 +53,6 @@ module.exports = (sequelize, DataTypes) => {
     is_deleted:DataTypes.BOOLEAN,
     deletionAt:DataTypes.DATE,
     deletedBy:DataTypes.UUID
->>>>>>> 8787baa846415018bd1e3d5d7d8ae7180c60f147
   }, {
     sequelize,
     modelName: 'User',
