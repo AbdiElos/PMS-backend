@@ -19,24 +19,13 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
-      created_by: {
-        type: Sequelize.STRING,
-        allowNull: true
-      },
-      updated_by: {
-        type: Sequelize.STRING,
-        allowNull: true
-      },
-      createdAt: {
-        type: Sequelize.DATE,
-        allowNull: false,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
-      },
-      updatedAt: {
-        type: Sequelize.DATE,
-        allowNull: false,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
-      }
+      created_by: {type: Sequelize.UUID},
+      updated_by: {type: Sequelize.UUID},
+      createdAt: {allowNull: false,type: Sequelize.DATE},
+      updatedAt: {allowNull: false,type: Sequelize.DATE},
+      is_deleted: {allowNull: false,type: Sequelize.BOOLEAN,default:false},
+      deletionAt:{allowNull:true,type:Sequelize.DATE},
+      deletedBy:{allowNull:true,type:Sequelize.UUID}
     });
   },
 

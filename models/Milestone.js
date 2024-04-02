@@ -43,11 +43,11 @@ module.exports = (sequelize, DataTypes) => {
      
       
       created_by: {
-        type: DataTypes.STRING,
+        type: DataTypes.UUID,
         allowNull: true,
       },
       updated_by: {
-        type: DataTypes.STRING,
+        type: DataTypes.UUID,
         allowNull: true,
       },
     });

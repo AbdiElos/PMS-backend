@@ -28,7 +28,7 @@ db.sequelize = sequelize;
 // Import  models here
 db.Roles = require('../models/Roles')(sequelize, Sequelize);
 db.User = require('../models/user')(sequelize, Sequelize);
-db.Activity = require('../models/activity')(sequelize, Sequelize);
+// db.Activity = require('../models/activity')(sequelize, Sequelize);
 db.Permission = require('../models/permission')(sequelize, Sequelize);
 db.Project= require('../models/project')(sequelize, Sequelize);
 db.Sector = require('../models/sector')(sequelize, Sequelize);
@@ -41,9 +41,9 @@ db.division=require('../models/division')(sequelize,Sequelize)
 db.Project_member= require('../models/project_member')(sequelize, Sequelize);
 
 db.Milestone= require('../models/Milestone')(sequelize, Sequelize);
-db.Milestone_members= require('../models/milestone_members')(sequelize, Sequelize);
+// db.Milestone_members= require('../models/milestone_members')(sequelize, Sequelize);
 db.Task= require('../models/task')(sequelize, Sequelize);
-db.Task_member= require('../models/task_member')(sequelize, Sequelize);
+// db.Task_member= require('../models/task_member')(sequelize, Sequelize);
 db.Sub_task= require('../models/sub_task')(sequelize, Sequelize);
 db.Document= require('../models/document')(sequelize, Sequelize);
 db.Document_type= require('../models/document_type')(sequelize, Sequelize);
@@ -66,8 +66,8 @@ db.User.belongsTo(db.Division, { foreignKey: 'division_id', as: 'Division' });
 
 
 
-db.Task_member.hasMany(db.Sub_task, { foreignKey: 'task_member_id', as: 'Sub_tasks' });
-db.Sub_task.belongsTo(db.Task_member, { foreignKey: 'task_member_id', as: 'Task_member' });
+// db.Task_member.hasMany(db.Sub_task, { foreignKey: 'task_member_id', as: 'Sub_tasks' });
+// db.Sub_task.belongsTo(db.Task_member, { foreignKey: 'task_member_id', as: 'Task_member' });
 
 
 db.Project.hasMany(db.Document, { foreignKey: "project_id", as: 'Document' });
@@ -75,18 +75,11 @@ db.Document.belongsTo(db.Project, { foreignKey: "project_id", as: 'Project' });
 
 
 
-db.Team.hasMany(db.User, { foreignKey: "team_id", as: 'User' });
+db.Team.hasMany(db.User, { foreignKey: "team_id", as: 'Users' });
 db.User.belongsTo(db.Team, { foreignKey: "team_id", as: 'Team' });
-
 
 db.Document_type.hasMany(db.Document, { foreignKey: "document_type_id", as: 'Document' });
  db.Document.belongsTo(db.Document_type, { foreignKey: "document_type_id", as: 'Document_type' });
-
-
-
-
-
-
 
 
 
@@ -155,18 +148,18 @@ db.Project_member.belongsToMany(db.Milestone, {
 
 
 
-db.Milestone_members.belongsToMany(db.Task, {
-  through: 'Task_member',
-  foreignKey: 'milestone_member_id',
-  otherKey: 'task_id',
-  as: 'Tasks',
-});
+// db.Milestone_members.belongsToMany(db.Task, {
+//   through: 'Task_member',
+//   foreignKey: 'milestone_member_id',
+//   otherKey: 'task_id',
+//   as: 'Tasks',
+// });
 
-db.Task.belongsToMany(db.Milestone_members, {
-  through: 'Task_member',
-  foreignKey: 'task_id',
-  otherKey: 'milestone_member_id',
-  as: 'Milestone_members',
-});
+// db.Task.belongsToMany(db.Milestone_members, {
+//   through: 'Task_member',
+//   foreignKey: 'task_id',
+//   otherKey: 'milestone_member_id',
+//   as: 'Milestone_members',
+// });
 
 module.exports = db;

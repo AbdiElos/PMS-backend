@@ -25,20 +25,13 @@ module.exports = {
       end_date: {
         type: Sequelize.STRING
       },
-      created_by: {
-        type: Sequelize.STRING
-      },
-      updated_by: {
-        type: Sequelize.STRING
-      },
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      }
+      created_by: {type: Sequelize.UUID},
+      updated_by: {type: Sequelize.UUID},
+      createdAt: {allowNull: false,type: Sequelize.DATE},
+      updatedAt: {allowNull: false,type: Sequelize.DATE},
+      is_deleted: {allowNull: false,type: Sequelize.BOOLEAN,default:false},
+      deletionAt:{allowNull:true,type:Sequelize.DATE},
+      deletedBy:{allowNull:true,type:Sequelize.UUID}
     });
   },
   async down(queryInterface, Sequelize) {

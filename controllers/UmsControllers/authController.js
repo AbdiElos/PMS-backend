@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const db = require("../../config/db");
 const User = db.User;
 const Roles = db.Roles;
+const UserRoles=db.user_role
 const Permission=db.Permission
 const handleAuth = async (req, res) => { 
   console.log(req.body)
@@ -13,10 +14,10 @@ const handleAuth = async (req, res) => {
   try {
     const foundUser = await User.findOne({ 
       where: { email },
-      include: [{
-            model: Roles, 
-            as: 'Roles', 
-          }]
+      include:[{
+        model:Roles,
+        as:"Roles"
+      }]
     });
     
     if (!foundUser) {
@@ -32,7 +33,7 @@ const handleAuth = async (req, res) => {
     if (match) {
       const accessToken = jwt.sign(
         {
-          userInfo: usersInfo
+         userInfo: foundUser
         },
         process.env.ACCESS_TOKEN_SECRET,
         { expiresIn: '1d' }

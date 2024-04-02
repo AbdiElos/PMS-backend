@@ -10,12 +10,12 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Task.belongsToMany(models.Milestone_member, {
-        through: 'Task_member',
-        foreignKey: 'task_id',
-        otherKey: 'milestone_member_id',
-        as: 'milestone_members',
-      });
+      // Task.belongsToMany(models.Milestone_member, {
+      //   through: 'Task_member',
+      //   foreignKey: 'task_id',
+      //   otherKey: 'milestone_member_id',
+      //   as: 'milestone_members',
+      // });
     }
   }
   Task.init({
@@ -35,8 +35,8 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     start_date: DataTypes.STRING,
     end_date: DataTypes.STRING,
-    created_by: DataTypes.STRING,
-    updated_by: DataTypes.STRING
+    created_by: DataTypes.UUID,
+    updated_by: DataTypes.UUID
   }, {
     sequelize,
     modelName: 'Task',

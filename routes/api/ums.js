@@ -13,6 +13,9 @@ const forgotPasswordController = require('../../controllers/UmsControllers/forgo
 const adminController2 = require('../../controllers/UmsControllers/adminController2.js');
 const adminController = require('../../controllers/UmsControllers/adminController.js');
 const  changepasswordController= require('../../controllers/UmsControllers/changepasswordController.js');
+const verifyAccessWithoutProject=require('../../middlewares/verifyAccessWithoutProject.js')
+
+const { verify } = require('jsonwebtoken');
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
       console.log('calling destination...')
@@ -26,7 +29,8 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage })
 
 router.route('/registerUser')
-    .post(registerController.handleNewUser)
+    .post(verifyJWT,verifyAccessWithoutProject('2f33c5e4-f009-11ee-bd81-c01803d475fd'),registerController.handleNewUser)
+    // ('2f33c5e4-f009-11ee-bd81-c01803d475fd')
 router.route("/login")
     .post(authController.handleAuth);
 router.route('/refresh')
@@ -38,9 +42,9 @@ router.route('/findalluser')
 router.route('/profile/update')
     .put(verifyJWT,adminController.editMember)
 router.route("/profile/changeStatus/:id")
-    .get(adminController.toggleSuspend)
+    .put(adminController.toggleSuspend)
 router.route('/profile/changepassword')
-    .put(verifyJWT,changepasswordController.handleChangePassword)
+    .put(changepasswordController.handleChangePassword)
 
 
 
@@ -55,12 +59,8 @@ router.route("/resetPassword")
     .post(forgotPasswordController.handleReset);
 router.route('/logout')
     .get(logoutController.handleLogout)
-router.route('/addMember')
-    .post(adminController.addUser)
 router.route("/getUser/:username")
     .get(adminController.getUser);
-router.route("/consumers/:username/activity")
-    .get(adminController.getActivity);
 router.route("/editMember/edit/:username")
     .put(adminController.editMember)
 router.route("/deleteMember/:username/:role")
@@ -71,16 +71,5 @@ router.route("/update/:id")
 router.route('/profile/update')
     .post(upload.single("profileImg"),profileController.updateProfile)
 
-// router.route('/sector/newsector')
-//    .post(sectorController.handleNewSector)
-// router.route('/sector/getsector/:id')
-//    .get(sectorController.handleGetSectorById)
 
-// router.route('/sector/getallsector')
-//    .get(sectorController.handleGetAllSectors)
-
-// router.route('/sector/updatesector/:id')
-//    .put(sectorController.handleUpdateSector)
-// router.route('/sector/deletesector/:id')
-//    .delete(sectorController. handleDeleteSector)
 module.exports=router;

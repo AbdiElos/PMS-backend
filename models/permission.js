@@ -15,7 +15,9 @@ module.exports = (sequelize, DataTypes) => {
   }
   Permission.init({
     permission_id: {type:DataTypes.UUID,primaryKey:true,required: true},
-    name: DataTypes.STRING
+    name: DataTypes.STRING,
+    createdAt:DataTypes.DATE,
+    updatedAt:DataTypes.DATE
   }, {
     sequelize,
     modelName: 'Permission',

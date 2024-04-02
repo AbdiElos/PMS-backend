@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Milestone_members extends Model {
+  class Subtask_members extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -13,17 +13,24 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  Milestone_members.init({
-    milestone_member_id: {
+  Subtask_members.init({
+    subtask_member_id: {
       type: DataTypes.UUID,
       allowNull:false,
       primaryKey: true,
     },
-    milestone_id: DataTypes.UUID,
-    project_member_id: DataTypes.UUID
+    subtask_id: DataTypes.UUID,
+    project_member_id: DataTypes.UUID,
+    created_by: DataTypes.UUID,
+    updated_by: DataTypes.UUID,
+    createdAt:DataTypes.DATE,
+    updatedAt:DataTypes.DATE,
+    is_deleted:DataTypes.BOOLEAN,
+    deletionAt:DataTypes.DATE,
+    deletedBy:DataTypes.UUID
   }, {
     sequelize,
-    modelName: 'Milestone_members',
+    modelName: 'Subtask_members',
   });
-  return Milestone_members;
+  return Subtask_members;
 };

@@ -19,15 +19,19 @@ module.exports = (sequelize, DataTypes) => {
     project_manager: DataTypes.UUID,
     technical_manager: DataTypes.UUID,
     overall_progress: DataTypes.STRING,
-    start_date: DataTypes.DATE,
-    end_date: DataTypes.DATE,
-    createdBy: DataTypes.UUID,
-    updatedBy: DataTypes.UUID,
+    start_date: DataTypes.STRING,
+    end_date: DataTypes.STRING,
+    document_id: DataTypes.UUID,
+    created_by: DataTypes.UUID,
+    updated_by: DataTypes.UUID,
     createdAt:DataTypes.DATE,
-    updatedAt:DataTypes.DATE
+    updatedAt:DataTypes.DATE,
+    is_deleted:DataTypes.BOOLEAN,
+    deletionAt:DataTypes.DATE,
+    deletedBy:DataTypes.UUID
   }, {
     sequelize,
-    modelName: 'Project',
+    modelName: 'Projects',
   });
   return Project;
 };

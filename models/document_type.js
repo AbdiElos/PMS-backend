@@ -12,20 +12,13 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: false
     },
-    createdBy:{
-      type:DataTypes.UUID
-    },
-    updatedBy:{
-      type:DataTypes.UUID
-    },
-    createdAt: {
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
-    updatedAt: {
-      type: DataTypes.DATE,
-      allowNull: false,
-    }
+    created_by: DataTypes.UUID,
+    updated_by: DataTypes.UUID,
+    createdAt:DataTypes.DATE,
+    updatedAt:DataTypes.DATE,
+    is_deleted:DataTypes.BOOLEAN,
+    deletionAt:DataTypes.DATE,
+    deletedBy:DataTypes.UUID
   });
 
   return Document_type;

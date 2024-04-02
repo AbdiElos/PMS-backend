@@ -33,7 +33,6 @@ router.route('/addMember')
 router.route('/allUser')
     .get(adminController.getAllUser)
 
-
 router.route("/getUser/:full_name")
     .get(adminController.getUser);
 

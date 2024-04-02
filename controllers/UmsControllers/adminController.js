@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const db = require("../../config/db");
+const user_role =db.user_role
 const User = db.User;
 const Roles = db.Roles;
 
@@ -19,62 +20,19 @@ const getUser = async (req, res) => {
 
 
 const getAllUser = async (req, res) => {
+  console.log("getting all users .....")
   try {
     const users = await User.findAll();
     if (!users || users.length === 0) {
       return res.status(404).json({ "message": "No users found" });
     }
     return res.status(201).json(users);
-  } catch (err) {
+  }catch (err) {
     console.error(err);
     return res.status(500).json({ "message": "Server error" });
   }
 };
 
-
-const getActivity = async (req, res) => {
-  const full_name = req.params.full_name;
-  try {
-    const result = await Activity.findAll({ where: { full_name } });
-    return res.status(201).json(result);
-  } catch (err) {
-    console.error(err);
-    return res.status(500).json({ "message": "Server error" });
-  }
-};
-
-const addUser = async (req, res) => {
-  const {
-    full_name, password, roles, email
-  } = req.body;
-
-  if (!full_name || !password || !email) {
-    return res.status(400).json({ "message": "Bad request" });
-  }
-
-  try {
-    const duplicate = await User.findOne({ where: { full_name } });
-    if (duplicate) {
-      return res.sendStatus(409);
-    }
-
-    const hashedPwd = await bcrypt.hash(password, 10);
-
-    const newUser = await User.create({
-      full_name,
-      roles,
-      password: hashedPwd,
-      email,
-    });
-
-    console.log(newUser);
-    console.log('New user added');
-    return res.status(201).json({ "success": "New user is created" });
-  } catch (err) {
-    console.error(err);
-    return res.status(500).json({ "error": "Server problem" });
-  }
-};
 
 const deleteUser = async (req, res) => {
   const full_name = req.params.full_name;
@@ -116,7 +74,6 @@ const editMember = async (req, res) => {
     return res.status(500).json({ "message": "Server problem" });
   }
 };
-
 const toggleSuspend = async (req, res) => {
   const user_id = req.params.id;
   try {
@@ -128,7 +85,7 @@ const toggleSuspend = async (req, res) => {
     result.account_status = !result.account_status; // Remove the space before 'account_status'
     await result.save();
 
-    return res.status(201).json({ "message": `status is updated member` });
+    return res.status(201).json({ "message": `status is updated ` });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ "message": "Server problem" });
@@ -136,8 +93,6 @@ const toggleSuspend = async (req, res) => {
 };
 module.exports = {
   getUser,
-  getActivity,
-  addUser,
   deleteUser,
   editMember,
   toggleSuspend,

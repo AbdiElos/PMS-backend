@@ -1,4 +1,3 @@
-const bcrypt = require('bcrypt');
 const db = require("../../config/db");
 const User = db.User;
 const Division = db.Division;
@@ -10,7 +9,7 @@ const uuid = uuidv4();
 const handleNewDivision = async (req, res) => {
     const { name,sector_id,head_id } = req.body;
     if (!name || !sector_id || !head_id) {
-      return res.status(400).json({ "message": "Please provide sector name" });
+      return res.status(400).json({ "message": "Please provide division info properly" });
     }
     try {
       const existingDivision = await Division.findOne({ where: { name } });
@@ -42,7 +41,6 @@ const handleNewDivision = async (req, res) => {
 
   const handleGetDivisionById = async (req, res) => {
     const { id } = req.params;
-
     try {
       const division = await Division.findByPk(id);
       if (!division) {
@@ -91,9 +89,10 @@ const handleNewDivision = async (req, res) => {
     }
   };
   // handle all roles
-  const handleGetAllRole= async (req, res) => {
+  const handleGetAllDefaultRole= async (req, res) => {
+    console.log("getting roles ....")
     try {
-      const roles = await Roles.findAll();
+      const roles = await Roles.findAll({where:{project_related:false}});
       return res.status(200).json(roles);
     } catch (error) {
       console.error(error);
@@ -121,4 +120,4 @@ const handleNewDivision = async (req, res) => {
       return res.status(500).json({ "message": "Server error" });
     }
   };
-  module.exports= { handleGetAllUsersInDivision, handleGetAllRole,handleNewDivision, handleGetAllDivision, handleGetDivisionById, handleUpdateDivision, handleDeleteDivision };
+  module.exports= { handleGetAllUsersInDivision, handleGetAllDefaultRole,handleNewDivision, handleGetAllDivision, handleGetDivisionById, handleUpdateDivision, handleDeleteDivision };
