@@ -53,20 +53,12 @@ const handleGetAllTeams = async (req, res) => {
         as:"Users",
         attributes:['user_id','full_name','img_url']
       },attributes:['team_id','name','description','team_manager_id']});
-      const newTeams=[]
       for(const team of teams){
-        const newTeam={}
         var user=await User.findByPk(team.team_manager_id)
-        newTeam.manager_img=user.dataValues.img_url
-        newTeam.manager_name=user.dataValues.full_name
-        newTeam.name=team.name
-        newTeam.description=team.description
-        newTeam.team_id=team.team_id
-        newTeam.manager_id=team.team_manager_id
-        newTeam.users=team.Users
-        newTeams.push(newTeam)
+        team.dataValues.manager_img=user.dataValues.img_url
+        team.dataValues.manager_name=user.dataValues.full_name
       }
-      return res.status(200).json(newTeams);
+      return res.status(200).json(teams);
     } catch (error) {
       console.error(error);
       return res.status(500).json({ "message": "Server error" });
