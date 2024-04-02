@@ -37,7 +37,13 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     refreshToken: DataTypes.STRING,
-    team_id: DataTypes.UUID,
+    team_id: {
+      type:DataTypes.UUID,
+      references: {
+        model: 'Teams', // The name of the referenced model
+        key: 'team_id' // The name of the referenced column in the Roles table
+      }
+    },
     project_status:{type:DataTypes.BOOLEAN,defaultValue:false},
     account_status: {type:DataTypes.BOOLEAN,defaultValue:true},
     created_by: DataTypes.UUID,

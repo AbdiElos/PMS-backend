@@ -21,8 +21,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public', 'uploads')));
+
 app.use("/ums", require('./routes/api/ums'));
-// app.use(verifyJWT);
+app.use(verifyJWT);
 app.use("/organization", require('./routes/api/organization'));
 app.use("/project", require('./routes/api/projectroute'));
 

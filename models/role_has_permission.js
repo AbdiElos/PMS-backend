@@ -30,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
     deletedBy:DataTypes.UUID
   }, {
     sequelize,
-    modelName: 'Role_has_permission',
+    modelName: 'Role_has_permissions',
   });
   return Role_has_permission;
 };

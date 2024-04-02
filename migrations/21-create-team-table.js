@@ -18,7 +18,6 @@ module.exports = {
       },
       team_manager_id: {
         type: Sequelize.UUID,
-        allowNull:false,
         allowNull: true
       },
       division_id:{type:Sequelize.UUID},

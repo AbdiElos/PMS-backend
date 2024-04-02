@@ -13,7 +13,8 @@ const forgotPasswordController = require('../../controllers/UmsControllers/forgo
 const adminController2 = require('../../controllers/UmsControllers/adminController2.js');
 const adminController = require('../../controllers/UmsControllers/adminController.js');
 const  changepasswordController= require('../../controllers/UmsControllers/changepasswordController.js');
-const roleController=require('../../controllers/UmsControllers/rolesController.js')
+const verifyAccessWithoutProject=require('../../middlewares/verifyAccessWithoutProject.js')
+
 const { verify } = require('jsonwebtoken');
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -28,7 +29,8 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage })
 
 router.route('/registerUser')
-    .post(registerController.handleNewUser)
+    .post(verifyJWT,verifyAccessWithoutProject('2f33c5e4-f009-11ee-bd81-c01803d475fd'),registerController.handleNewUser)
+    // ('2f33c5e4-f009-11ee-bd81-c01803d475fd')
 router.route("/login")
     .post(authController.handleAuth);
 router.route('/refresh')
@@ -57,12 +59,8 @@ router.route("/resetPassword")
     .post(forgotPasswordController.handleReset);
 router.route('/logout')
     .get(logoutController.handleLogout)
-router.route('/addMember')
-    .post(adminController.addUser)
 router.route("/getUser/:username")
     .get(adminController.getUser);
-router.route("/consumers/:username/activity")
-    .get(adminController.getActivity);
 router.route("/editMember/edit/:username")
     .put(adminController.editMember)
 router.route("/deleteMember/:username/:role")
@@ -73,14 +71,5 @@ router.route("/update/:id")
 router.route('/profile/update')
     .post(upload.single("profileImg"),profileController.updateProfile)
 
-// roles controller
 
-router.route("/role/add")
-  .post(roleController.handleNewRole)
-router.route('/role/getallprojectroles')
-  .get(roleController.handleGetAllProjectRelatedRole)
-router.route('/role/getallroles')
-  .get(roleController.handleGetAllRole)
-router.route('/getallpermissions')
-  .get(roleController.handleGetAllPermissions)
 module.exports=router;

@@ -90,6 +90,7 @@ const handleNewDivision = async (req, res) => {
   };
   // handle all roles
   const handleGetAllDefaultRole= async (req, res) => {
+    console.log("getting roles ....")
     try {
       const roles = await Roles.findAll({where:{project_related:false}});
       return res.status(200).json(roles);

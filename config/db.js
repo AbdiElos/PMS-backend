@@ -75,9 +75,8 @@ db.Document.belongsTo(db.Project, { foreignKey: "project_id", as: 'Project' });
 
 
 
-db.Team.hasMany(db.User, { foreignKey: "team_id", as: 'User' });
+db.Team.hasMany(db.User, { foreignKey: "team_id", as: 'Users' });
 db.User.belongsTo(db.Team, { foreignKey: "team_id", as: 'Team' });
-
 
 db.Document_type.hasMany(db.Document, { foreignKey: "document_type_id", as: 'Document' });
  db.Document.belongsTo(db.Document_type, { foreignKey: "document_type_id", as: 'Document_type' });

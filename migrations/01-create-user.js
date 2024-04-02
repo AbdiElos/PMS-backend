@@ -39,7 +39,11 @@ module.exports = {
         type: Sequelize.STRING
       },
       team_id: {
-        type: Sequelize.UUID
+        type: Sequelize.UUID,
+        references: {
+          model: 'Teams', // The name of the referenced model
+          key: 'team_id' // The name of the referenced column in the Roles table
+        }
       },
       project_status: {
         type: Sequelize.BOOLEAN

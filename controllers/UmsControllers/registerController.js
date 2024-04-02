@@ -9,8 +9,6 @@ const handleNewUser = async (req, res) => {
   const uuid = uuidv4();
   console.log(req.body)
   const { full_name, email,gender,division,role} = req.body;
-  // const isFirstAccount = (await User.count()) === 0;
-  // const role_id = isFirstAccount ? "3dba29ec-e51c-11ee-9ec0-c01803d47480" : "7078a968-e51c-11ee-9ec0-c01803d47480";
   const password = generateRandomPassword();
 
   if (!full_name || !email || !division || !role) {
@@ -29,6 +27,7 @@ const handleNewUser = async (req, res) => {
       full_name,
       email,
       gender,
+      first_time_status:false, //change this on production
       password:hashedPwd,
       unchanged_password,
       division_id:division

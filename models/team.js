@@ -16,6 +16,7 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: false
     },
+   
     team_manager_id: {
       type: DataTypes.UUID,
       allowNull: true
