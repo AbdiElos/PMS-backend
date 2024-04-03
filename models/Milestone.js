@@ -27,10 +27,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      technical_manager: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
+      // technical_manager: {
+      //   type: DataTypes.STRING,
+      //   allowNull: true,
+      // },
      
       start_date: {
         type: DataTypes.STRING,

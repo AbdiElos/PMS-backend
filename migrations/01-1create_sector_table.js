@@ -4,7 +4,7 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('Sectors', {
       sector_id: {type: Sequelize.UUID,primaryKey: true,allowNull: false},
-      leader_id: {type: Sequelize.UUID,defaultValue: Sequelize.UUIDV4,allowNull: true},
+      leader_id: {type: Sequelize.UUID,allowNull: true},
       name: {type: Sequelize.STRING,allowNull: false,},
       created_by: {type: Sequelize.UUID},
       updated_by: {type: Sequelize.UUID},

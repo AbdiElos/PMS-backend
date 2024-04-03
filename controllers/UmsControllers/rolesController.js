@@ -8,8 +8,11 @@ const { v4: uuidv4 } = require('uuid');
 
 
 const handleNewRole = async (req, res) => {
-    var { name,permissions} = req.body;
-    permissions=permissions.split(",")
+  var { name, permissions } = req.body;
+  if (typeof permissions !== 'string') {
+    permissions = String(permissions); // Convert to a string if it's not already
+  }
+  permissions = permissions.split(",");
     console.log(permissions.length)
     if (!name) {
       return res.status(400).json({ "message": "Please provide role info properly" });
@@ -30,19 +33,24 @@ const handleNewRole = async (req, res) => {
         // created_by:req.id,
       });
       for (const value of permissions){
-        console.log("permission value",value)
         await RolePermissions.create({
           role_permission_id:uuidv4(),
           role_id:uuid,
           permission_id:value,
           // created_by:req.id
-        })
-      };
-
+        })}
       // const permission=await RolePermissions.bulkCreate(rolePermissions)
       return res.status(201).json({ "message": "New role is created", "role": role});
     } catch (error) {
       console.error(error);
+      try{
+        await RolePermissions.destroy({where:{role_id:uuid}})
+        await Roles.destroy({where:{role_id:uuid}}) 
+        
+        return res.status(400).json({"message":"permission id error"})
+      }catch(error){
+        return res.status(500).json({ "message": "Server error from roles" });
+      }
       return res.status(500).json({ "message": "Server error" });
     }
   };

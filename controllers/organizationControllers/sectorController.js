@@ -6,7 +6,7 @@ const { v4: uuidv4 } = require('uuid');
 const uuid = uuidv4();
 
 const handleNewSector = async (req, res) => {
-    const { name,leader_id } = req.body;
+    const { name} = req.body;
 
     if (!name) {
       return res.status(400).json({ "message": "Please provide sector name" });
@@ -20,7 +20,7 @@ const handleNewSector = async (req, res) => {
 
       const sector = await Sector.create({
         sector_id: uuidv4(),
-        leader_id,
+        //leader_id,
         name
       });
 
@@ -34,6 +34,11 @@ const handleNewSector = async (req, res) => {
   const handleGetAllSectors = async (req, res) => {
     try {
       const sectors = await Sector.findAll();
+      for(const sector of sectors){
+        if(sector.leader_id){var user=await User.findByPk(sector.leader_id)
+        sector.dataValues.leader_img=user.dataValues.img_url
+        sector.dataValues.leader_name=user.dataValues.full_name
+      }}
       return res.status(200).json(sectors);
     } catch (error) {
       console.error(error);

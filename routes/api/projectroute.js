@@ -5,7 +5,7 @@ const taskController = require('../../controllers/ProjectController/taskControll
 const sub_taskController = require('../../controllers/ProjectController/sub_taskController.js')
 
 
-router.route('/milestone/newMilestone') 
+router.route('/milestone/newMilestone/:project_id') 
    .post(milestoneController.createMilestone) 
 router.route('/milestone/:id') 
    .get(milestoneController.getMilestoneById) 

@@ -21,10 +21,11 @@ const getAllProjectMembers = async (req, res) => {
 
 const createMilestone = async (req, res) => {
   try {
-    const { name, milestone_status, technical_manager, start_date, end_date, created_by, updated_by, member_ids } = req.body;
+    
+    const { name, milestone_status, start_date, end_date} = req.body;
     const { project_id } = req.params; // Retrieve project_id from URL parameters
 
-    if (!name || !project_id  || !start_date || !end_date || !member_ids) {
+    if (!name || !project_id  || !start_date || !end_date) {
       return res.status(400).json({ "message": "Please fill all the forms" });
     }
 
@@ -42,11 +43,11 @@ const createMilestone = async (req, res) => {
       project_id:project_id,
       name,
       milestone_status,
-      technical_manager,
+      //technical_manager,
       start_date,
       end_date,
-      created_by,
-      updated_by,
+      //created_by,
+      //updated_by,
     });
 
     // Add members to the milestone_members table
