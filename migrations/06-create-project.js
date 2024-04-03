@@ -9,24 +9,25 @@ module.exports = {
         allowNull: false,
       },
       name: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull:false
       },
       project_manager: {
-        type: Sequelize.STRING
+        type: Sequelize.UUID
       },
       technical_manager: {
-        type: Sequelize.STRING
+        type: Sequelize.UUID
       },
       overall_progress: {
         type: Sequelize.STRING
       },
       start_date: {
-        type: Sequelize.STRING
+        type: Sequelize.DATE
       },
       end_date: {
-        type: Sequelize.STRING
+        type: Sequelize.DATE
       },
-      document_id: {
+      createdBy: {
         type: Sequelize.UUID
       },
       created_by: {

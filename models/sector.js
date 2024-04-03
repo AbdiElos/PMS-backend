@@ -21,6 +21,5 @@ module.exports = (sequelize, DataTypes) => {
     deletionAt:DataTypes.DATE,
     deletedBy:DataTypes.UUID
   });
-
   return Sector;
 };

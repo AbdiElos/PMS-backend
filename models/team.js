@@ -30,6 +30,5 @@ module.exports = (sequelize) => {
     deletionAt:DataTypes.DATE,
     deletedBy:DataTypes.UUID
   });
-
   return Team;
 };

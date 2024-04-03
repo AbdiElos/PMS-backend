@@ -54,8 +54,6 @@ const handleAuth = async (req, res) => {
     //     time: new Date()
     //   });
     //   console.log(activity);
-
-      
       res.cookie('jwt', refreshToken, { httpOnly: true, sameSite: 'None', secure: true, maxAge: 24 * 60 * 60 * 1000 });
       res.json({ access_token: accessToken, foundUser, status:foundUser.first_time_status });
     } else {

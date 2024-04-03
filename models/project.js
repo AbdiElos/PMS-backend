@@ -15,9 +15,9 @@ module.exports = (sequelize, DataTypes) => {
   }
   Project.init({
     project_id: {type:DataTypes.UUID,primaryKey:true,required: true},
-    name: DataTypes.STRING,
-    project_manager: DataTypes.STRING,
-    technical_manager: DataTypes.STRING,
+    name: {type:DataTypes.STRING,required:false},
+    project_manager: DataTypes.UUID,
+    technical_manager: DataTypes.UUID,
     overall_progress: DataTypes.STRING,
     start_date: DataTypes.STRING,
     end_date: DataTypes.STRING,

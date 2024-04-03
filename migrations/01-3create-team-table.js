@@ -30,7 +30,6 @@ module.exports = {
       deletedBy:{allowNull:true,type:Sequelize.UUID}
     });
   },
-
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('Teams');
   }

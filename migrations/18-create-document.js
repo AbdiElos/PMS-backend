@@ -17,10 +17,17 @@ module.exports = {
       }},
       project_id: {
         type: Sequelize.UUID,
-        allowNull:false,
+        allowNull:true,
         references: {
           model: 'Projects', // The name of the referenced model
           key: 'project_id'
+      }},
+      task_id:{
+        type: Sequelize.UUID,
+        allowNull:true,
+        references: {
+          model: 'Tasks', // The name of the referenced model
+          key: 'task_id'
       }},
       document: {
         type: Sequelize.STRING,
