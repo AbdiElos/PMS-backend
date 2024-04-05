@@ -3,6 +3,21 @@ const router=express.Router();
 const milestoneController = require('../../controllers/ProjectController/milestoneController.js')
 const taskController = require('../../controllers/ProjectController/taskController.js')
 const sub_taskController = require('../../controllers/ProjectController/sub_taskController.js')
+const multer=require('multer')
+const documentTypeController = require('../../controllers/ProjectController/documentType.js')
+const documentController=require('../../controllers/ProjectController/document.js')
+const projectController=require('../../controllers/ProjectController/projectController.js');
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      console.log('calling destination...')
+      cb(null, './public/documents/')
+    },
+    filename: function (req, file, cb) {
+      console.log(file.originalname)
+      cb(null, (new Date()).getTime()+file.originalname)
+    }
+  })
+var upload = multer({ storage: storage })
 
 
 router.route('/milestone/newMilestone/:project_id') 
@@ -38,6 +53,9 @@ router.route('/getAlltask')
 
 router.route('/getAllmilestonemember') 
    .get(taskController.getAllMilestoneMembers)
+router.route('/getAllmemebresofmilstone/:id') 
+   .get(milestoneController.handleGetAllMembersOfMilestone)
+   
 
    //sub_task route
 
@@ -52,4 +70,26 @@ router.route('/getAllSub_task')
     .put(sub_taskController.updateSubTask) 
  router.route('/deleteSub_ask/:id') 
    .delete(sub_taskController.deleteSubTask)
+
+
+
+   router.route('/documentType/add') 
+   .post(documentTypeController.handleNewDocumentType) 
+router.route('/documentType/getAll')
+    .get(documentTypeController.handleGetAllDocumentTypes)
+router.route('/documentType/get/:id')
+    .get(documentTypeController.handleGetDocumentTypeById)
+router.route('/documentType/update/:id')
+    .put(documentTypeController.handleUpdateDocumentType)
+router.route('/documentType/delete/:id')
+    .delete(documentTypeController.handleDeleteDocumentType)
+
+//
+
+router.route('/project/add')
+    .post(upload.array("document",5),projectController.handleNewProject)
+router.route('/getAll')
+    .get(projectController.handleGetAllProjects)
+router.route('/get/:id')
+    .get(projectController.handleGetProjectById)
 module.exports=router;

@@ -49,6 +49,7 @@ db.Document= require('../models/document')(sequelize, Sequelize);
 db.Document_type= require('../models/document_type')(sequelize, Sequelize);
 db.Comment= require('../models/comment')(sequelize, Sequelize);
 db.Team= require('../models/team')(sequelize, Sequelize);
+db.Milestone_members= require('../models/Milestone_members')(sequelize, Sequelize);
 
 
 
@@ -133,14 +134,14 @@ db.Project.belongsToMany(db.User, {
 
 //many to many relationship b/n Milestone and project_member
 db.Milestone.belongsToMany(db.Project_member, {
-  through: 'Milestone_member',
+  through: 'Milestone_members',
   foreignKey: 'milestone_id',
   otherKey: 'project_member_id',
   as: 'Project_members' // Alias for the association
 });
 
 db.Project_member.belongsToMany(db.Milestone, {
-  through: 'Milestone_member',
+  through: 'MMilestone_members',
   foreignKey: 'project_member_id',
   otherKey: 'milestone_id',
   as: 'Milestons' // Alias for the association

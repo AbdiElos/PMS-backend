@@ -29,7 +29,7 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage })
 
 router.route('/registerUser')
-    .post(verifyJWT,verifyAccessWithoutProject('2f33c5e4-f009-11ee-bd81-c01803d475fd'),registerController.handleNewUser)
+    .post(registerController.handleNewUser)
     // ('2f33c5e4-f009-11ee-bd81-c01803d475fd')
 router.route("/login")
     .post(authController.handleAuth);

@@ -11,6 +11,9 @@ module.exports = {
       name: {
         type: Sequelize.STRING
       },
+      group_code: {
+        type: Sequelize.INTEGER
+      },
       createdAt:{type:Sequelize.DATE},
       updatedAt:{type:Sequelize.DATE}
     });

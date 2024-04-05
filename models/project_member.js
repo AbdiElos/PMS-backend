@@ -19,8 +19,28 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       allowNull: false,
     },
-    user_id: DataTypes.UUID,
-    project_id: DataTypes.UUID,
+    user_id: {
+      
+      type: DataTypes.UUID,
+      allowNull:false,
+    
+      references: {
+        model: 'Project', // The name of the referenced model
+        key: 'project_id' // The name of the referenced column in the project table table
+    }
+    },
+    
+    project_id:{
+      
+      type: DataTypes.UUID,
+      allowNull:false,
+    
+      references: {
+        model: 'Project', // The name of the referenced model
+        key: 'project_id' // The name of the referenced column in the project table table
+    }
+    },
+    
 
     created_by: DataTypes.UUID,
     updated_by: DataTypes.UUID,

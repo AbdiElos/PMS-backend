@@ -7,7 +7,10 @@ const uuid = uuidv4();
 
 
 const handleNewDivision = async (req, res) => {
-    const { name,sector_id,head_id } = req.body;
+    const name=req.body.division_name
+    const sector_id=req.body.sector
+    const head_id=req.body.leader
+    // const { name,sector_id,head_id } = req.body;
     if (!name || !sector_id || !head_id) {
       return res.status(400).json({ "message": "Please provide division info properly" });
     }
@@ -115,6 +118,7 @@ const handleNewDivision = async (req, res) => {
         attributes: ['division_id', 'name'],
       });
       console.log(users)
+      return res.status(200).json(users)
     } catch (error) {
       console.error(error);
       return res.status(500).json({ "message": "Server error" });

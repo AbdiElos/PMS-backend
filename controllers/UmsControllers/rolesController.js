@@ -76,6 +76,7 @@ const handleNewRole = async (req, res) => {
   const handleGetAllPermissions= async (req, res) => {
     try {
       const permissions = await Permission.findAll();
+      
       return res.status(200).json(permissions);
     } catch (error) {
       console.error(error);
