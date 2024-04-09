@@ -2,36 +2,18 @@ const db = require("../../config/db");
 const Milestone = db.Milestone;
 const Project = db.Project;
 const User = db.User;
-const Project_member = db.Project_member
-const Milestone_members= db.Milestone_member
-// const Milestone_members = db.Milestone_members
+const Project_member = db.Project_member;
+const Milestone_members = db.Milestone_members;
 const { DataTypes, UUID } = require('sequelize');
 const { v4: uuidv4 } = require('uuid');
-//const Project_members = require("../../models/project_member");
-
-
-
-
-//Function to get all members from the project_member table
-const getAllProjectMembers= async (req, res) => {
-  try {
-    const projectmembers = await Project_member.findAll();
-    return res.status(200).json(projectmembers);//projectmembers=permissions
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ "message": "Server error" });
-  }
-}
+const project = require("../../models/project");
 
 const createMilestone = async (req, res) => {
   const uuid = uuidv4();
   var { name, milestone_status, start_date, end_date, projectmembers } = req.body;
-  if (typeof projectmembers !== 'string') {
-    projectmembers = String(projectmembers); // Convert to a string if it's not already
-  }
   var { project_id } = req.params;
   projectmembers = projectmembers.split(",");
-
+  
   // Validate inputs
   if (!name || !project_id || !start_date || !end_date) {
     return res.status(400).json({ "message": "Please provide milestone information properly" });
@@ -47,6 +29,9 @@ const createMilestone = async (req, res) => {
       return res.status(409).json({ "message": "Milestone name already exists" });
     }
 
+    // if (start_date < project.start_date || end_date > project.end_date) {
+    //   return res.status(400).json({ "message": "Task dates should be within the milestone dates" });
+    // }
     // Create the milestone
     const milestone = await Milestone.create({
       milestone_id: uuid,
@@ -59,10 +44,9 @@ const createMilestone = async (req, res) => {
 
     // Create milestone members
     for (const value of projectmembers) {
-      // Validate project_member_id
       const projectMember = await Project_member.findOne({ where: { project_member_id: value } });
       if (!projectMember) {
-        await Milestone.destroy({ where: { milestone_id: milestone.milestone_id } });
+        await Milestone.destroy({ where: { milestone_id:uuid } });
         return res.status(400).json({ "message": "Invalid project_member_id" });
       }
 
@@ -106,39 +90,42 @@ const getMilestoneById = async (req, res) => {
 };
 
 
-
-
 const handleGetAllMembersOfMilestone = async (req, res) => {
-  const id = req.params.id;
-  console.log(id);
+  const { id } = req.params;
+
   try {
-    const milestone = await Milestone.findOne({
-      where: { milestone_id: id },
-      include: [{
-        model: Project_member,
-        as: "Project_members",
-        attributes: ["project_member_id"]
-      }],
-      attributes: ["milestone_id", "name"]
+    const milestone = await Milestone.findByPk(id);
+    if (!milestone) {
+      return res.status(404).json({ "message": "Milestone not found" });
+    }
+
+    // Find all milestone members associated with the milestone
+    const milestoneMembers = await Milestone_members.findAll({
+      attributes: ['milestone_member_id'],
+      where: {
+        milestone_id: id
+      }
     });
 
-    console.log(milestone);
+    // Array to store user information
+    let users = [];
 
-    if (!milestone) {
-      return res.status(400).json({ "message": "Milestone not found" });
-    }
-    for (let i = 0; i < milestone.Project_members.length; i++) {
-      const projectMember = milestone.Project_members[i];
+    // Iterate through each milestone member
+    for (let i = 0; i < milestoneMembers.length; i++) {
+      const milestoneMember = milestoneMembers[i];
+      
+      // Retrieve the associated user information for the milestone member
       const user = await User.findOne({
-        where: { user_id: "0968dca1-d770-4762-ab55-cee664225974" },
-        
+        where: { user_id: milestoneMember.milestone_member_id },
         attributes: ["user_id", "full_name", "email"]
       });
-      projectMember.User = user; // Attach the user to the projectMember object
-      
+
+      // Add user information to the array
+      users.push(user);
     }
 
-    return res.status(200).json(milestone);
+    // Return the array of user information JSON along with milestone details
+    return res.status(200).json({ milestone, users });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ "message": "Server error" });
@@ -147,27 +134,23 @@ const handleGetAllMembersOfMilestone = async (req, res) => {
 
 
 
-// const handleGetAllMembersOfMilestone= async (req, res) => {
-//   const id=req.params.id
-//   console.log(id)
-//   try {
-//     const milestone=await Milestone.findOne({where:{milestone_id:id},include:[{model: Project_member,as:"Project_members",attributes:{exclude:["createdAt","updatedAt"]}}],attributes:["milestone_id","name"]})
-//     console.log(milestone)
-//     if(!milestone){
-//       return res.status(400).json({"message":"milestone not found"})
-//     }
-//     return res.status(200).json(milestone);
-//   } catch (error) {
-//     console.error(error);
-//     return res.status(500).json({ "message": "Server error" });
-//   }
-// }
 
 
 
 const updateMilestone = async (req, res) => {
   const { id } = req.params;
-  const { project_id, name, milestone_status, technical_manager, start_date, end_date, created_by, updated_by } = req.body;
+  const { project_id, name, milestone_status, technical_manager, start_date, end_date, created_by, updated_by, projectmembers } = req.body;
+
+  // Validate inputs
+  // if (!name || !project_id || !start_date || !end_date) {
+  //   return res.status(400).json({ "message": "Please provide milestone information properly" });
+  // }
+
+  // Convert projectmembers to an array
+  let projectMembersArray = [];
+  if (projectmembers && typeof projectmembers === 'string') {
+    projectMembersArray = projectmembers.split(",");
+  }
 
   try {
     const milestone = await Milestone.findByPk(id);
@@ -175,15 +158,9 @@ const updateMilestone = async (req, res) => {
       return res.status(404).json({ "message": "Milestone not found" });
     }
 
-    if (project_id) {
-      const project = await Project.findByPk(project_id);
-      if (!project) {
-        return res.status(404).json({ "message": "Project not found" });
-      }
-    }
-
+    // Update the milestone
     await milestone.update({
-      project_id:project_id,
+      project_id,
       name,
       milestone_status,
       technical_manager,
@@ -192,6 +169,28 @@ const updateMilestone = async (req, res) => {
       created_by,
       updated_by,
     });
+
+    // Create new milestone members
+    for (const value of projectMembersArray) {
+      const projectMember = await Project_member.findOne({ where: { project_member_id: value } });
+      if (!projectMember) {
+        return res.status(400).json({ "message": "Invalid project_member_id" });
+      }
+
+      // Check if the milestone member already exists
+      const existingMember = await Milestone_members.findOne({
+        where: { milestone_id: id, project_member_id: value }
+      });
+
+      // If the member does not exist, create it
+      if (!existingMember) {
+        await Milestone_members.create({
+          milestone_member_id: uuidv4(),
+          milestone_id: id,
+          project_member_id: value,
+        });
+      }
+    }
 
     return res.status(200).json({ "message": "Milestone updated" });
   } catch (error) {
@@ -217,4 +216,11 @@ const deleteMilestone = async (req, res) => {
   }
 };
 
-module.exports = {createMilestone, getAllMilestones, getMilestoneById, updateMilestone, deleteMilestone, getAllProjectMembers,handleGetAllMembersOfMilestone };
+module.exports = {
+  createMilestone,
+  getAllMilestones,
+  getMilestoneById,
+  handleGetAllMembersOfMilestone,
+  updateMilestone,
+  deleteMilestone
+};

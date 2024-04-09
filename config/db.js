@@ -50,6 +50,7 @@ db.Document_type= require('../models/document_type')(sequelize, Sequelize);
 db.Comment= require('../models/comment')(sequelize, Sequelize);
 db.Team= require('../models/team')(sequelize, Sequelize);
 db.Milestone_members= require('../models/Milestone_members')(sequelize, Sequelize);
+db.Task_member = require('../models/task_member')(sequelize, Sequelize)
 
 
 
@@ -149,18 +150,21 @@ db.Project_member.belongsToMany(db.Milestone, {
 
 
 
-// db.Milestone_members.belongsToMany(db.Task, {
-//   through: 'Task_member',
-//   foreignKey: 'milestone_member_id',
-//   otherKey: 'task_id',
-//   as: 'Tasks',
-// });
 
-// db.Task.belongsToMany(db.Milestone_members, {
-//   through: 'Task_member',
-//   foreignKey: 'task_id',
-//   otherKey: 'milestone_member_id',
-//   as: 'Milestone_members',
-// });
+
+
+db.Milestone_members.belongsToMany(db.Task, {
+  through: 'Task_member',
+  foreignKey: 'milestone_member_id',
+  otherKey: 'task_id',
+  as: 'Tasks',
+});
+
+db.Task.belongsToMany(db.Milestone_members, {
+  through: 'Task_member',
+  foreignKey: 'task_id',
+  otherKey: 'milestone_member_id',
+  as: 'Milestone_members',
+});
 
 module.exports = db;
