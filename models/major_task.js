@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Task extends Model {
+  class Major_task extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -18,28 +18,36 @@ module.exports = (sequelize, DataTypes) => {
       // });
     }
   }
-  Task.init({
-    task_id: {
+  Major_task.init({
+    major_task_id: {
       type: DataTypes.UUID,
       primaryKey: true,
       allowNull: false,
     },
-    Major_task_id: {
+    milestone_id:{
       type: DataTypes.UUID,
-      allowNull: true,
+      allowNull:false,
       references: {
-        model: 'Major_tasks',
-        key: 'Major_task_id'
-      }
-    },
+        model: 'milestones', // The name of the referenced model
+        key: 'milestone_id' // The name of the referenced column in the Roles table
+  }
+  },
+  // mejor_task_status: {
+  //   type: DataTypes.STRING,
+  //   allowNull: false,
+  // },
     name: DataTypes.STRING,
     start_date: DataTypes.STRING,
     end_date: DataTypes.STRING,
     created_by: DataTypes.UUID,
-    updated_by: DataTypes.UUID
+    updated_by: DataTypes.UUID,
+    // major_task_status: {
+    //     type: DataTypes.STRING,
+       
+    //   },
   }, {
     sequelize,
-    modelName: 'Task',
+    modelName: 'Major_task',
   });
-  return Task;
+  return Major_task;
 };

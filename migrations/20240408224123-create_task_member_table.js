@@ -9,13 +9,16 @@ module.exports = {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
       },
-      milestone_member_id: {
+      project_member_id: {
         type: Sequelize.UUID,
+        
+        allowNull: false,
         references: {
-          model: 'Milestone_members',
-          key: 'milestone_member_id',
-        },
+          model: 'Project_members', // The name of the referenced model
+          key: 'project_member_id'
+        }
       },
+    
       task_id: {
         allowNull: false,
         type: Sequelize.UUID,

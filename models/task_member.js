@@ -6,14 +6,16 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
     },
-    milestone_member_id: {
+    project_member_id: {
       type: DataTypes.UUID,
-      //allowNull: false,
+      
+      allowNull: false,
       references: {
-        model: 'Milestone_members', // The name of the referenced model
-        key: 'milestone_member_id'
+        model: 'Project_members', // The name of the referenced model
+        key: 'project_member_id'
       }
     },
+  
     task_id:{
       type: DataTypes.UUID,
       allowNull: false,

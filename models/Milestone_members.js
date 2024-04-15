@@ -9,16 +9,20 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.UUID,
         allowNull:false,
         references: {
-          model: 'Milestone', // The name of the referenced model
+          model: 'Milestones', 
           key: 'milestone_id'
         }
       },
+
+
+
+     
       project_member_id: {
         type: DataTypes.UUID,
         
         allowNull: false,
         references: {
-          model: 'Project_member', // The name of the referenced model
+          model: 'Project_members', // The name of the referenced model
           key: 'project_member_id'
         }
       },

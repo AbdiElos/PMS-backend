@@ -49,11 +49,17 @@ db.Document= require('../models/document')(sequelize, Sequelize);
 db.Document_type= require('../models/document_type')(sequelize, Sequelize);
 db.Comment= require('../models/comment')(sequelize, Sequelize);
 db.Team= require('../models/team')(sequelize, Sequelize);
-db.Milestone_members= require('../models/Milestone_members')(sequelize, Sequelize);
+// db.Milestone_members= require('../models/Milestone_members')(sequelize, Sequelize);
 db.Task_member = require('../models/task_member')(sequelize, Sequelize)
+// db.Sub_task_member = require('../models/Subtask_members')(sequelize, Sequelize)
 
 
+db.Milestone_members = require('../models/milestone_members')(sequelize, Sequelize);
+db.Sub_task_member = require('../models/subtask_members')(sequelize, Sequelize);
 
+db.Major_task = require('../models/major_task')(sequelize, Sequelize);
+
+db.Major_task_member = require('../models/major_task_member')(sequelize, Sequelize);
 
 
 
@@ -79,6 +85,9 @@ db.Document.belongsTo(db.Project, { foreignKey: "project_id", as: 'Project' });
 
 db.Team.hasMany(db.User, { foreignKey: "team_id", as: 'Users' });
 db.User.belongsTo(db.Team, { foreignKey: "team_id", as: 'Team' });
+
+db.User.hasMany(db.Project_member, { foreignKey: "user_id", as: 'projectMembers' });
+db.Project_member.belongsTo(db.User, { foreignKey: "user_id", as: 'UserInfo' });
 
 db.Document_type.hasMany(db.Document, { foreignKey: "document_type_id", as: 'Document' });
  db.Document.belongsTo(db.Document_type, { foreignKey: "document_type_id", as: 'Document_type' });
@@ -138,14 +147,63 @@ db.Milestone.belongsToMany(db.Project_member, {
   through: 'Milestone_members',
   foreignKey: 'milestone_id',
   otherKey: 'project_member_id',
-  as: 'Project_members' // Alias for the association
+  as: 'members' // Alias for the association
 });
 
 db.Project_member.belongsToMany(db.Milestone, {
-  through: 'MMilestone_members',
+  through: 'Milestone_members',
   foreignKey: 'project_member_id',
   otherKey: 'milestone_id',
-  as: 'Milestons' // Alias for the association
+  as: 'Milestone' // Alias for the association
+});
+
+
+
+
+//many to many relationship b/n Major task and project_member
+db.Major_task.belongsToMany(db.Project_member, {
+  through: 'Major_task_member',
+  foreignKey: 'Major_task_id',
+  otherKey: 'project_member_id',
+  as: 'members' // Alias for the association
+});
+
+db.Project_member.belongsToMany(db.Major_task, {
+  through: 'Major_task_member',
+  foreignKey: 'project_member_id',
+  otherKey: 'Major_task_id',
+  as: 'Major_task' // Alias for the association
+});
+
+//many to many relationship b/n Task and project_member
+db.Task.belongsToMany(db.Project_member, {
+  through: 'Task_member',
+  foreignKey: 'task_id',
+  otherKey: 'project_member_id',
+  as: 'members' // Alias for the association
+});
+
+db.Project_member.belongsToMany(db.Task, {
+  through: 'Task_member',
+  foreignKey: 'project_member_id',
+  otherKey: 'task_id',
+  as: 'Task' // Alias for the association
+});
+
+
+//many to many relationship b/n Sub_task and project_member
+db.Sub_task.belongsToMany(db.Project_member, {
+  through: 'Subtask_members',
+  foreignKey: 'sub_task_id',
+  otherKey: 'project_member_id',
+  as: 'members' // Alias for the association
+});
+
+db.Project_member.belongsToMany(db.Sub_task, {
+  through: 'Subtask_members',
+  foreignKey: 'project_member_id',
+  otherKey: 'sub_task_id',
+  as: 'Sub_task' // Alias for the association
 });
 
 
@@ -164,7 +222,9 @@ db.Task.belongsToMany(db.Milestone_members, {
   through: 'Task_member',
   foreignKey: 'task_id',
   otherKey: 'milestone_member_id',
-  as: 'Milestone_members',
+  as: 'Task_members',
 });
+
+
 
 module.exports = db;

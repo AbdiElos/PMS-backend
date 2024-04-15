@@ -30,7 +30,7 @@ app.use("/ums", require('./routes/api/ums'));
 app.use("/project", require('./routes/api/projectroute'));
 app.use("/organization", require('./routes/api/organization'));
 
-app.use(verifyJWT);
+//app.use(verifyJWT);
 
 
 // Start the server

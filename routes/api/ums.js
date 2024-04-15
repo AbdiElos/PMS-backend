@@ -43,7 +43,7 @@ router.route('/profile/update')
     .put(verifyJWT,adminController.editMember)
 router.route("/profile/changeStatus/:id")
     .put(adminController.toggleSuspend)
-router.route('/profile/changepassword')
+router.route('/profile/changepassword/:id')
     .put(changepasswordController.handleChangePassword)
 
 

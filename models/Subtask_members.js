@@ -16,11 +16,26 @@ module.exports = (sequelize, DataTypes) => {
   Subtask_members.init({
     subtask_member_id: {
       type: DataTypes.UUID,
+      //defaultValue: DataTypes.UUIDV4,
       allowNull:false,
       primaryKey: true,
     },
-    subtask_id: DataTypes.UUID,
-    project_member_id: DataTypes.UUID,
+    sub_task_id: {
+      type: DataTypes.UUID,
+      allowNull:true,
+      references: {
+        model: 'Sub_tasks',
+        key: 'sub_task_id'
+      }},
+      project_member_id: {
+        type: DataTypes.UUID,
+        
+        allowNull: false,
+        references: {
+          model: 'Project_members', // The name of the referenced model
+          key: 'project_member_id'
+        }
+      },
     created_by: DataTypes.UUID,
     updated_by: DataTypes.UUID,
     createdAt:DataTypes.DATE,
