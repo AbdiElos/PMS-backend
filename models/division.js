@@ -9,7 +9,6 @@ module.exports = (sequelize, DataTypes) => {
       },
       sector_id: {
         type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
         allowNull: true
       },
       name: {
@@ -18,7 +17,6 @@ module.exports = (sequelize, DataTypes) => {
       },
       head_id: {
         type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
         allowNull: true
       },
 

@@ -17,8 +17,6 @@ router.route('/sector/getallsector')
  
 router.route('/sector/updatesector/:id') 
    .put(sectorController.handleUpdateSector) 
-router.route('/sector/deletesector/:id') 
-   .delete(sectorController. handleDeleteSector)
 
 // division routes
 router.route('/division/newdivision')
@@ -29,8 +27,6 @@ router.route('/division/getalldivision')
     .get(divisionController.handleGetAllDivision)
 router.route('/division/updatedivision/:id')
     .put(divisionController.handleUpdateDivision)
-router.route('/division/deletedivision/:id')
-    .delete(divisionController.handleDeleteDivision)
 router.route('/division/users/:id')
     .get(divisionController.handleGetAllUsersInDivision)
 router.route('/roles')

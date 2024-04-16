@@ -8,11 +8,13 @@ const { v4: uuidv4 } = require('uuid');
 
 
 const handleNewRole = async (req, res) => {
-  var { name, permissions } = req.body;
-  if (typeof permissions !== 'string') {
-    permissions = String(permissions); // Convert to a string if it's not already
-  }
-  permissions = permissions.split(",");
+    var { name,permissions} = req.body;
+    console.log(req.body)
+    
+    const uuid=uuidv4()
+    try {
+      console.log(permissions)
+    //permissions=permissions.split(",")  
     console.log(permissions.length)
     if (!name) {
       return res.status(400).json({ "message": "Please provide role info properly" });
@@ -20,8 +22,7 @@ const handleNewRole = async (req, res) => {
     if (!permissions || permissions.length === 0) {
       return res.status(400).send('No permissions checkbox are selected.');
     }
-    const uuid=uuidv4()
-    try {
+      // permissions=permissions.split(",")  
       const existingRole = await Roles.findOne({ where: { name } });
       if (existingRole) {
         return res.status(409).json({ "message": "role name already exists" });
@@ -57,7 +58,7 @@ const handleNewRole = async (req, res) => {
 
   const handleGetAllProjectRelatedRole= async (req, res) => {
     try {
-      const roles = await Roles.findAll({where:{project_related:true}});
+      const roles = await Roles.findAll({where:{project_related:true,is_deleted:false}});
       return res.status(200).json(roles);
     } catch (error) {
       console.error(error);
@@ -66,7 +67,7 @@ const handleNewRole = async (req, res) => {
   }
   const handleGetAllRole= async (req, res) => {
     try {
-      const roles = await Roles.findAll();
+      const roles = await Roles.findAll({where:{is_deleted:false}});
       return res.status(200).json(roles);
     } catch (error) {
       console.error(error);
@@ -88,7 +89,7 @@ const handleNewRole = async (req, res) => {
     const id=req.params.id
     console.log(id)
     try {
-      const role=await Roles.findOne({where:{role_id:id},include:[{model:Permission,as:"Permissions",attributes:{exclude:["createdAt","updatedAt"]}}],attributes:["role_id","name"]})
+      const role=await Roles.findOne({where:{role_id:id,is_deleted:false},include:[{model:Permission,as:"Permissions",attributes:{exclude:["createdAt","updatedAt"]}}],attributes:["role_id","name"]})
       console.log(role)
       if(!role){
         return res.status(400).json({"message":"role not found"})

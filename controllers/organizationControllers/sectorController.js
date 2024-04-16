@@ -1,13 +1,16 @@
 const bcrypt = require('bcrypt');
 const db = require("../../config/db");
 const User = db.User;
-const Sector = db.sector;
+const Sector = db.Sector;
+const Division=db.Division
 const { v4: uuidv4 } = require('uuid');
 const uuid = uuidv4();
 
 const handleNewSector = async (req, res) => {
-    const { name} = req.body;
-
+    const { name } = req.body;
+    console.log(req.body)
+    if(req.body.leader_id) var leader_id=req.body.leader_id
+    console.log(leader_id)
     if (!name) {
       return res.status(400).json({ "message": "Please provide sector name" });
     }
@@ -33,12 +36,7 @@ const handleNewSector = async (req, res) => {
 
   const handleGetAllSectors = async (req, res) => {
     try {
-      const sectors = await Sector.findAll();
-      for(const sector of sectors){
-        if(sector.leader_id){var user=await User.findByPk(sector.leader_id)
-        sector.dataValues.leader_img=user.dataValues.img_url
-        sector.dataValues.leader_name=user.dataValues.full_name
-      }}
+      const sectors = await Sector.findAll({include:[{model:Division,as:"Divisions"}]});
       return res.status(200).json(sectors);
     } catch (error) {
       console.error(error);
@@ -50,7 +48,7 @@ const handleNewSector = async (req, res) => {
     const { id } = req.params;
 
     try {
-      const sector = await Sector.findByPk(id);
+      const sector = await Sector.findByPk(id,{include:[{model:Division,as:"Divisions"}]});
       if (!sector) {
         return res.status(404).json({ "message": "Sector not found" });
       }
@@ -83,21 +81,6 @@ const handleNewSector = async (req, res) => {
     }
   };
 
-  const handleDeleteSector = async (req, res) => {
-    const { id } = req.params;
 
-    try {
-      const sector = await Sector.findByPk(id);
-      if (!sector) {
-        return res.status(404).json({ "message": "Sector not found" });
-      }
 
-      await sector.destroy();
-      return res.status(200).json({ "message": "Sector deleted" });
-    } catch (error) {
-      console.error(error);
-      return res.status(500).json({ "message": "Server error" });
-    }
-  };
-
-  module.exports= { handleNewSector, handleGetAllSectors, handleGetSectorById, handleUpdateSector, handleDeleteSector };
+  module.exports= { handleNewSector, handleGetAllSectors, handleGetSectorById, handleUpdateSector };

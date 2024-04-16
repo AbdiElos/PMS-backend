@@ -30,7 +30,6 @@ var upload = multer({ storage: storage })
 
 router.route('/registerUser')
     .post(registerController.handleNewUser)
-    // ('2f33c5e4-f009-11ee-bd81-c01803d475fd')
 router.route("/login")
     .post(authController.handleAuth);
 router.route('/refresh')
@@ -40,36 +39,38 @@ router.route('/finduser/:user_id')
 router.route('/findalluser')
     .get(adminController.getAllUser)
 router.route('/profile/update')
-    .put(verifyJWT,adminController.editMember)
+    .put(adminController.editMember)
 router.route("/profile/changeStatus/:id")
     .put(adminController.toggleSuspend)
 router.route('/profile/changepassword/:id')
     .put(changepasswordController.handleChangePassword)
+router.route('/profile/update')
+    .post(verifyJWT,upload.single("profileImg"),profileController.updateProfile)
 
 
 
 
 // router.route('/profile')
 //     .get(profileController.getProfile)
-router.route('/profile/update')
-    .post(profileController.updateProfile)
-router.route("/forgotPassword")
-    .post(forgotPasswordController.handleforgot);
-router.route("/resetPassword")
-    .post(forgotPasswordController.handleReset);
-router.route('/logout')
-    .get(logoutController.handleLogout)
-router.route("/getUser/:username")
-    .get(adminController.getUser);
-router.route("/editMember/edit/:username")
-    .put(adminController.editMember)
-router.route("/deleteMember/:username/:role")
-    .delete(adminController.deleteUser)
+// router.route('/profile/update')
+//     .post(profileController.updateProfile)
+// router.route("/forgotPassword")
+//     .post(forgotPasswordController.handleforgot);
+// router.route("/resetPassword")
+//     .post(forgotPasswordController.handleReset);
+// router.route('/logout')
+//     .get(logoutController.handleLogout)
+// router.route("/getUser/:username")
+//     .get(adminController.getUser);
+// router.route("/editMember/edit/:username")
+//     .put(adminController.editMember)
+// router.route("/deleteMember/:username/:role")
+//     .delete(adminController.deleteUser)
 
-router.route("/update/:id")
-    .post(adminController2.handleProfileUpdate)
-router.route('/profile/update')
-    .post(upload.single("profileImg"),profileController.updateProfile)
+// router.route("/update/:id")
+//     .post(adminController2.handleProfileUpdate)
+// router.route('/profile/update')
+//     .post(verifyJWT,upload.single("profileImg"),profileController.updateProfile)
 
 
 module.exports=router;

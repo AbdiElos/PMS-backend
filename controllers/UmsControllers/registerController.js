@@ -21,7 +21,7 @@ const handleNewUser = async (req, res) => {
   try {
     const duplicateEmail = await User.findOne({ where: { email } });
     if (duplicateEmail) {
-      return res.status(409).json({ "message": "Duplicate email" });
+      return res.status(409).json({ "message": "Duplicate email" });0
     }
 
     const hashedPwd = await bcrypt.hash(password, 6);
@@ -44,7 +44,12 @@ const handleNewUser = async (req, res) => {
     });
     return res.status(201).json({ "success": "New user is created user account is" ,full_name,email,unchanged_password});
   } catch (err) {
-    console.error(err);
+    console.error(err)
+    try{
+      await User.destroy({where:{user_id:uuid}})
+    }catch(err){
+      console.error(err)
+    }
     return res.status(500).json({ "message": "Server problem" });
   }
 };

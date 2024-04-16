@@ -2,16 +2,15 @@ const db = require("../../config/db");
 const User = db.User;
 const Division = db.Division;
 const Roles=db.Roles;
+const Permission=db.Permission
 const { v4: uuidv4 } = require('uuid');
 const uuid = uuidv4();
 
 
 const handleNewDivision = async (req, res) => {
-    const name=req.body.division_name
-    const sector_id=req.body.sector
-    const head_id=req.body.leader
-    // const { name,sector_id,head_id } = req.body;
-    if (!name || !sector_id || !head_id) {
+    if(req.body.head_id)var head_id=req.body.head_id
+    const { name,sector_id} = req.body;
+    if (!name || !sector_id) {
       return res.status(400).json({ "message": "Please provide division info properly" });
     }
     try {
@@ -34,7 +33,7 @@ const handleNewDivision = async (req, res) => {
 
   const handleGetAllDivision = async (req, res) => {
     try {
-      const division = await Division.findAll();
+      const division = await Division.findAll({include:[{model:User,as:"Users"}]});
       return res.status(200).json(division);
     } catch (error) {
       console.error(error);
@@ -45,7 +44,7 @@ const handleNewDivision = async (req, res) => {
   const handleGetDivisionById = async (req, res) => {
     const { id } = req.params;
     try {
-      const division = await Division.findByPk(id);
+      const division = await Division.findByPk(id,{include:[{model:User,as:"Users"}]});
       if (!division) {
         return res.status(404).json({ "message": "division not found" });
       }
@@ -76,21 +75,7 @@ const handleNewDivision = async (req, res) => {
     }
   };
 
-  const handleDeleteDivision = async (req, res) => {
-    const { id } = req.params;
 
-    try {
-      const division = await Division.findByPk(id);
-      if (!division) {
-        return res.status(404).json({ "message": "division not found" });
-      }
-      await division.destroy();
-      return res.status(200).json({ "message": "Division deleted" });
-    } catch (error) {
-      console.error(error);
-      return res.status(500).json({ "message": "Server error" });
-    }
-  };
   // handle all roles
   const handleGetAllDefaultRole= async (req, res) => {
     console.log("getting roles ....")
@@ -124,4 +109,4 @@ const handleNewDivision = async (req, res) => {
       return res.status(500).json({ "message": "Server error" });
     }
   };
-  module.exports= { handleGetAllUsersInDivision, handleGetAllDefaultRole,handleNewDivision, handleGetAllDivision, handleGetDivisionById, handleUpdateDivision, handleDeleteDivision };
+  module.exports= { handleGetAllUsersInDivision, handleGetAllDefaultRole,handleNewDivision, handleGetAllDivision, handleGetDivisionById, handleUpdateDivision };
