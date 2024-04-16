@@ -61,6 +61,9 @@ db.Team= require('../models/team')(sequelize, Sequelize);
 
 //many to one association
 
+db.Sector.hasMany(db.Division, { foreignKey: 'sector_id', as: 'Divisions' });
+db.Division.belongsTo(db.Sector, { foreignKey: 'sector_id', as: 'Sector' });
+
 db.Division.hasMany(db.User, { foreignKey: 'division_id', as: 'Users' });
 db.User.belongsTo(db.Division, { foreignKey: 'division_id', as: 'Division' });
 
@@ -77,6 +80,9 @@ db.Document.belongsTo(db.Project, { foreignKey: "project_id", as: 'Project' });
 
 db.Team.hasMany(db.User, { foreignKey: "team_id", as: 'Users' });
 db.User.belongsTo(db.Team, { foreignKey: "team_id", as: 'Team' });
+
+db.User.hasMany(db.Project_member, { foreignKey: "user_id", as: 'projectMembers' });
+db.Project_member.belongsTo(db.User, { foreignKey: "user_id", as: 'UserInfo' });
 
 db.Document_type.hasMany(db.Document, { foreignKey: "document_type_id", as: 'Document' });
  db.Document.belongsTo(db.Document_type, { foreignKey: "document_type_id", as: 'Document_type' });
@@ -129,22 +135,35 @@ db.Project.belongsToMany(db.User, {
   as: 'Users' // Alias for the association
 });
 
+// relationship between role and project through user role
+db.Roles.belongsToMany(db.Project, {
+  through: 'User_roles',
+  foreignKey: 'role_id',
+  otherKey: 'project_id',
+  as: 'Projects' // Alias for the association
+});
 
+db.Project.belongsToMany(db.Roles, {
+  through: 'User_roles',
+  foreignKey: 'project_id',
+  otherKey: 'role_id',
+  as: 'ProjectRoles' // Alias for the association
+});
 
 //many to many relationship b/n Milestone and project_member
-db.Milestone.belongsToMany(db.Project_member, {
-  through: 'Milestone_member',
-  foreignKey: 'milestone_id',
-  otherKey: 'project_member_id',
-  as: 'Project_members' // Alias for the association
-});
+// db.Milestone.belongsToMany(db.Project_member, {
+//   through: 'Milestone_member',
+//   foreignKey: 'milestone_id',
+//   otherKey: 'project_member_id',
+//   as: 'Project_members' // Alias for the association
+// });
 
-db.Project_member.belongsToMany(db.Milestone, {
-  through: 'Milestone_member',
-  foreignKey: 'project_member_id',
-  otherKey: 'milestone_id',
-  as: 'Milestons' // Alias for the association
-});
+// db.Project_member.belongsToMany(db.Milestone, {
+//   through: 'Milestone_member',
+//   foreignKey: 'project_member_id',
+//   otherKey: 'milestone_id',
+//   as: 'Milestons' // Alias for the association
+// });
 
 
 

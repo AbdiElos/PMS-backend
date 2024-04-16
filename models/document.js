@@ -18,18 +18,10 @@ module.exports = (sequelize) => {
     },
     project_id: {
       type: DataTypes.UUID,
-      allowNull: true,
+      allowNull: false,
       references: {
         model: 'projects', // The name of the referenced model
         key: 'project_id'
-      }
-    },
-    task_id: {
-      type: DataTypes.UUID,
-      allowNull: true,
-      references: {
-        model: 'Task', // The name of the referenced model
-        key: 'task_id'
       }
     },
     document: {

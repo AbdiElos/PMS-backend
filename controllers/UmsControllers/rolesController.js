@@ -9,7 +9,12 @@ const { v4: uuidv4 } = require('uuid');
 
 const handleNewRole = async (req, res) => {
     var { name,permissions} = req.body;
-    permissions=permissions.split(",")
+    console.log(req.body)
+    
+    const uuid=uuidv4()
+    try {
+      console.log(permissions)
+    //permissions=permissions.split(",")  
     console.log(permissions.length)
     if (!name) {
       return res.status(400).json({ "message": "Please provide role info properly" });
@@ -17,8 +22,7 @@ const handleNewRole = async (req, res) => {
     if (!permissions || permissions.length === 0) {
       return res.status(400).send('No permissions checkbox are selected.');
     }
-    const uuid=uuidv4()
-    try {
+      // permissions=permissions.split(",")  
       const existingRole = await Roles.findOne({ where: { name } });
       if (existingRole) {
         return res.status(409).json({ "message": "role name already exists" });

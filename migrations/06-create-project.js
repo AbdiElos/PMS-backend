@@ -12,12 +12,6 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull:false
       },
-      project_manager: {
-        type: Sequelize.UUID
-      },
-      technical_manager: {
-        type: Sequelize.UUID
-      },
       overall_progress: {
         type: Sequelize.STRING
       },
@@ -27,11 +21,12 @@ module.exports = {
       end_date: {
         type: Sequelize.DATE
       },
-      createdBy: {
-        type: Sequelize.UUID
-      },
-      created_by: {
-        type: Sequelize.STRING
+      division_id:  {
+        type: Sequelize.UUID,
+        references: {
+          model: 'Divisions', // The name of the referenced model
+          key: 'division_id' // The name of the referenced column in the Roles table
+        }
       },
       created_by: {type: Sequelize.UUID},
       updated_by: {type: Sequelize.UUID},
