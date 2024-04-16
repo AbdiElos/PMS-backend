@@ -1,6 +1,6 @@
 const express=require('express');
 const router=express.Router();
-const milestoneController = require('../../controllers/ProjectController/milestoneController.js')
+const activityController = require('../../controllers/ProjectController/activityController.js')
 const taskController = require('../../controllers/ProjectController/taskController.js')
 const majortaskController = require('../../controllers/ProjectController/major_taskController.js')
 const sub_taskController = require('../../controllers/ProjectController/sub_taskController.js')
@@ -21,26 +21,28 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage })
 
 
-router.route('/milestone/newMilestone/:project_id') 
-   .post(milestoneController.createMilestone) 
-router.route('/milestone/:id') 
-   .get(milestoneController.getMilestoneById) 
-router.route('/getAllmilestone/:project_id') 
-   .get(milestoneController.getAllMilestones) 
- router.route('/updateMilestone/:id') 
-    .put(milestoneController.updateMilestone) 
- router.route('/deleteMilestone/:id') 
-   .delete(milestoneController.deleteMilestone)
 
-//  router.route('/getAllmilestonemember') 
-//    .get(taskController.getAllMilestoneMembers)
-router.route('/getAllmemebresofmilstone/:id') 
-   .get(milestoneController.handleGetAllMembersOfMilestone)
-// fetch all projectmembers for milestone members
+
+router.route('/activity/newactivity/:project_id') 
+   .post(activityController.createActivity) 
+router.route('/activity/:id') 
+   .get(activityController.getActivityById) 
+router.route('/getAllactivity/:project_id') 
+   .get(activityController.getAllActivities) 
+ router.route('/updateactivity/:id') 
+    .put(activityController.updateActivity) 
+ router.route('/deleteactivity/:id') 
+   .delete(activityController.deleteActivity)
+
+//  router.route('/getAllactivitymember') 
+//    .get(taskController.getAllactivityMembers)
+router.route('/getAllmemebrsofactivity/:id') 
+   .get(activityController.handleGetAllMembersOfActivity)
+// fetch all projectmembers for activity members
 
 
 router.route('/getAllProjectMembers') 
-   .get(milestoneController.getAlllprojectMembers ) 
+   .get(activityController.getAlllprojectMembers ) 
 
    
 
@@ -63,13 +65,13 @@ router.route('/getAlltask/:Major_task_id')
    
 
 
-router.route('/majortask/newmajortask/:milestone_id') 
+router.route('/majortask/newmajortask/:activity_id') 
    .post(majortaskController.createMajortask) 
 router.route('/majortask/:id') 
    .get(majortaskController.getmajorTaskById) 
 router.route('/majortaskmember/:id') 
    .get(majortaskController. getmajortaskmember) 
-router.route('/getAllmajortask/:milestone_id') 
+router.route('/getAllmajortask/:activity_id') 
     .get(majortaskController.getAllmajorTasks) 
  router.route('/updatemajorTask/:id') 
     .put(majortaskController.updatemajorTask) 
@@ -79,7 +81,7 @@ router.route('/getAllmajortask/:milestone_id')
 
 
 
-//getAllMilestoneMembers
+//getAllactivityMembers
 
 
    

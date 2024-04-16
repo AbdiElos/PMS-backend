@@ -7,13 +7,14 @@ module.exports = {
         type: Sequelize.UUID,
         primaryKey: true,
       },
-      milestone_id:{
+      activity_id: {
         type: Sequelize.UUID,
-        allowNull:false,
+        allowNull: false,
         references: {
-          model: 'milestones', // The name of the referenced model
-          key: 'milestone_id' // The name of the referenced column in the Roles table
-    }},
+          model: 'Activities', // The corrected name of the referenced model
+          key: 'activity_id'
+        }
+      },
       name: {
         type: Sequelize.STRING,
         allowNull: false,

@@ -170,9 +170,7 @@ const updateSubTask = async (req, res) => {
   }
 };
 
-module.exports = {
-  updateSubTask,
-};
+
 
 
 const deleteSubTask = async (req, res) => {
