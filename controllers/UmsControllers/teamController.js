@@ -9,18 +9,21 @@ const handleNewTeam = async (req, res) => {
       return res.status(400).json({ "message": "Please provide team info properly" });
     }
     try {
+      const team_id=uuidv4()
       const existingTeam = await Team.findOne({ where: { name } });
       if (existingTeam) {
         return res.status(409).json({ "message": "team name already exists" });
       }
       const team = await Team.create({
-        team_id: uuidv4(),
+        team_id,
         name,
         description,
         team_manager_id,
         // division_id:req.division,
         // created_by:req.id
       });
+      const manager= await User.findOne({where:{user_id:team_manager_id}})
+      await manager.update({team_id})
       return res.status(201).json({ "message": "New team created", "team": team });
     } catch (error) {
       console.error(error);
@@ -40,6 +43,8 @@ const handleNewTeam = async (req, res) => {
         return res.status(404).json({ "message": "team not found" });
       }
       await team.update({name,description,team_manager_id});
+      const manager=await User.findOne({where:{user_id:team_manager_id}})
+      await manager.update({team_id:id})
       return res.status(200).json({ "message": "team is updated" });
     } catch (error) {
       console.error(error);
@@ -48,16 +53,10 @@ const handleNewTeam = async (req, res) => {
   };
 const handleGetAllTeams = async (req, res) => {
     try {
-      var teams = await Team.findAll({include:{
-        model:User,
-        as:"Users",
-        attributes:['user_id','full_name','img_url']
-      },attributes:['team_id','name','description','team_manager_id']});
-      for(const team of teams){
-        var user=await User.findByPk(team.team_manager_id)
-        team.dataValues.manager_img=user.dataValues.img_url
-        team.dataValues.manager_name=user.dataValues.full_name
-      }
+      var teams = await Team.findAll({where:{is_deleted:false},
+        include:[{model:User,as:"teamMembers",attributes:['user_id','full_name','img_url',"gender"]
+      },{model:User,as:"ManagedBy",attributes:['user_id',"full_name","img_url","gender","email"]}],
+     attributes:['team_id',"name","description","team_manager_id","created_by"]});
       return res.status(200).json(teams);
     } catch (error) {
       console.error(error);
@@ -68,7 +67,10 @@ const handleGetAllTeams = async (req, res) => {
 const handleGetTeamById = async (req, res) => {
     const { id } = req.params;
     try {
-      const team = await Team.findByPk(id);
+      const team = await Team.findOne({where:{team_id:id,is_deleted:false},
+        include:[{model:User,as:"teamMembers",attributes:['user_id','full_name','img_url',"gender"]
+      },{model:User,as:"ManagedBy",attributes:['user_id',"full_name","img_url","gender","email"]}],
+     attributes:['team_id',"name","description","team_manager_id","created_by"]});
       if (!team) {
         return res.status(404).json({ "message": "team not found" });
       }

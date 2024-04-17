@@ -78,8 +78,11 @@ db.Document.belongsTo(db.Project, { foreignKey: "project_id", as: 'Project' });
 
 
 
-db.Team.hasMany(db.User, { foreignKey: "team_id", as: 'Users' });
+db.Team.hasMany(db.User, { foreignKey: "team_id", as: 'teamMembers' });
 db.User.belongsTo(db.Team, { foreignKey: "team_id", as: 'Team' });
+
+db.User.hasMany(db.Team, { foreignKey: "team_manager_id", as: 'Manages' });
+db.Team.belongsTo(db.User, { foreignKey: "team_manager_id", as: 'ManagedBy' });
 
 db.User.hasMany(db.Project_member, { foreignKey: "user_id", as: 'projectMembers' });
 db.Project_member.belongsTo(db.User, { foreignKey: "user_id", as: 'UserInfo' });
@@ -181,4 +184,17 @@ db.Project.belongsToMany(db.Roles, {
 //   as: 'Milestone_members',
 // });
 
+// trash for deleted by relationship
+db.User.hasMany(db.Project, { foreignKey: "deletedBy", as: 'DeletedProjects' });
+db.Project.belongsTo(db.User, { foreignKey: "deletedBy", as: 'DeletedByProjects' });
+
+db.User.hasMany(db.Document, { foreignKey: "deletedBy", as: 'DeletedDocuments' });
+db.Document.belongsTo(db.User, { foreignKey: "deletedBy", as: 'DeletedByDocuments' });
+
+db.User.hasMany(db.Roles, { foreignKey: "deletedBy", as: 'DeletedRoles' });
+db.Roles.belongsTo(db.User, { foreignKey: "deletedBy", as: 'RoleDeletedBy' });
+
+db.User.hasMany(db.Team, { foreignKey: "deletedBy", as: 'DeletedTeams' });
+db.Team.belongsTo(db.User, { foreignKey: "deletedBy", as: 'TeamDeletedBy' });
+// RolesDeletedBy
 module.exports = db;

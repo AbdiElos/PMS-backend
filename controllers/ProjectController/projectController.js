@@ -116,7 +116,7 @@ const handleNewProject = async (req, res) => {
   const handleGetProjectById = async (req, res) => {
     const project_id = req.params.projectId;
     try {
-      const project = await Project.findOne({where:{project_id},include:[{model:Roles,as:"ProjectRoles",include:[{model:User,as:"Users"}]}]});
+      const project = await Project.findOne({where:{project_id,is_deleted:false},include:[{model:Roles,as:"ProjectRoles",include:[{model:User,as:"Users"}]}]});
       if (!project) {
         return res.status(404).json({ "message": "project not found" });
       }

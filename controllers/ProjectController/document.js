@@ -67,8 +67,8 @@ const handleNewDocumentToProject = async (req, res) => {
     const  project_id  = req.params.projectId;
     const document_id=req.params.documentId
     try {
-      const documents = await Document.findAll({where:{project_id,document_id}});
-      if (!documents) {
+      const documents = await Document.findAll({where:{project_id,document_id,is_deleted:false},include:[{model:DocumentType,as:"Document_type",attributes:['document_type_id','document_type']}],attributes:['document_id','document','project_id','description']});
+      if (documents.length==0) {
         return res.status(404).json({ "message": "document not found" });
       }
       return res.status(200).json(documents);

@@ -34,26 +34,31 @@ const handleNewRole = async (req, res) => {
         // created_by:req.id,
       });
       for (const value of permissions){
-        console.log("permission value",value)
         await RolePermissions.create({
           role_permission_id:uuidv4(),
           role_id:uuid,
           permission_id:value,
           // created_by:req.id
-        })
-      };
-
+        })}
       // const permission=await RolePermissions.bulkCreate(rolePermissions)
       return res.status(201).json({ "message": "New role is created", "role": role});
     } catch (error) {
       console.error(error);
+      try{
+        await RolePermissions.destroy({where:{role_id:uuid}})
+        await Roles.destroy({where:{role_id:uuid}}) 
+        
+        return res.status(400).json({"message":"permission id error"})
+      }catch(error){
+        return res.status(500).json({ "message": "Server error from roles" });
+      }
       return res.status(500).json({ "message": "Server error" });
     }
   };
 
   const handleGetAllProjectRelatedRole= async (req, res) => {
     try {
-      const roles = await Roles.findAll({where:{project_related:true}});
+      const roles = await Roles.findAll({where:{project_related:true,is_deleted:false}});
       return res.status(200).json(roles);
     } catch (error) {
       console.error(error);
@@ -62,7 +67,7 @@ const handleNewRole = async (req, res) => {
   }
   const handleGetAllRole= async (req, res) => {
     try {
-      const roles = await Roles.findAll();
+      const roles = await Roles.findAll({where:{is_deleted:false}});
       return res.status(200).json(roles);
     } catch (error) {
       console.error(error);
@@ -72,6 +77,7 @@ const handleNewRole = async (req, res) => {
   const handleGetAllPermissions= async (req, res) => {
     try {
       const permissions = await Permission.findAll();
+      
       return res.status(200).json(permissions);
     } catch (error) {
       console.error(error);
@@ -83,7 +89,7 @@ const handleNewRole = async (req, res) => {
     const id=req.params.id
     console.log(id)
     try {
-      const role=await Roles.findOne({where:{role_id:id},include:[{model:Permission,as:"Permissions",attributes:{exclude:["createdAt","updatedAt"]}}],attributes:["role_id","name"]})
+      const role=await Roles.findOne({where:{role_id:id,is_deleted:false},include:[{model:Permission,as:"Permissions",attributes:{exclude:["createdAt","updatedAt"]}}],attributes:["role_id","name"]})
       console.log(role)
       if(!role){
         return res.status(400).json({"message":"role not found"})

@@ -23,7 +23,7 @@ const handleNewSector = async (req, res) => {
 
       const sector = await Sector.create({
         sector_id: uuidv4(),
-        leader_id,
+        //leader_id,
         name
       });
 
