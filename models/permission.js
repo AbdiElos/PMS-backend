@@ -17,6 +17,9 @@ module.exports = (sequelize, DataTypes) => {
     permission_id: {type:DataTypes.UUID,primaryKey:true,required: true},
     name: DataTypes.STRING,
     createdAt:DataTypes.DATE,
+    group_code: {
+      type: DataTypes.INTEGER
+    },
     updatedAt:DataTypes.DATE
   }, {
     sequelize,

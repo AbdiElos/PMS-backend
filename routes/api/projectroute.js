@@ -52,20 +52,31 @@ router.route('/getAllmilestone')
     .put(milestoneController.updateMilestone) 
  router.route('/deleteMilestone/:id') 
    .delete(milestoneController.deleteMilestone)
+
+ router.route('/getAllmilestonemember') 
+   .get(taskController.getAllMilestoneMembers)
+router.route('/getAllmemebresofmilstone/:id') 
+   .get(milestoneController.handleGetAllMembersOfMilestone)
 // fetch all projectmembers for milestone members
+
+
 
 router.route('/getAllProjectMembers') 
    .get(milestoneController.getAllMilestones) 
   
 
+   
+
 
 //Task routers
 
 
-router.route('/task/newTask') 
+router.route('/task/newTask/:milestone_id') 
    .post(taskController.createTask) 
 router.route('/task/:id') 
    .get(taskController.getTaskById) 
+router.route('/taskmember/:id') 
+   .get(taskController.gettaskmember) 
 router.route('/getAlltask') 
    .get(taskController.getAllTasks) 
  router.route('/updateTask/:id') 
@@ -74,8 +85,8 @@ router.route('/getAlltask')
    .delete(taskController.deleteTask)
 //getAllMilestoneMembers
 
-router.route('/getAllmilestonemember') 
-   .get(taskController.getAllMilestoneMembers)
+
+   
 
    //sub_task route
 
@@ -104,4 +115,26 @@ router.route("/:projectId/document/:documentId/update")
   .put(upload.single("documents"),documentController.handleUpdateDocument)
 
 
+
+
+
+   router.route('/documentType/add') 
+   .post(documentTypeController.handleNewDocumentType) 
+router.route('/documentType/getAll')
+    .get(documentTypeController.handleGetAllDocumentTypes)
+router.route('/documentType/get/:id')
+    .get(documentTypeController.handleGetDocumentTypeById)
+router.route('/documentType/update/:id')
+    .put(documentTypeController.handleUpdateDocumentType)
+router.route('/documentType/delete/:id')
+    .delete(documentTypeController.handleDeleteDocumentType)
+
+//
+
+router.route('/project/add')
+    .post(upload.array("document",5),projectController.handleNewProject)
+router.route('/getAll')
+    .get(projectController.handleGetAllProjects)
+router.route('/get/:id')
+    .get(projectController.handleGetProjectById)
 module.exports=router;
