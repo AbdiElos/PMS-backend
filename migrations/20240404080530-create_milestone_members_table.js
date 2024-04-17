@@ -12,7 +12,7 @@ module.exports = {
         type: Sequelize.UUID,
         allowNull:false,
         references: {
-          model: 'Milestone', // The name of the referenced model
+          model: 'Milestones', // The corrected name of the referenced model
           key: 'milestone_id'
         }
       },
@@ -21,7 +21,7 @@ module.exports = {
         
         allowNull: false,
         references: {
-          model: 'Project_member', // The name of the referenced model
+          model: 'Project_members', // The name of the referenced model
           key: 'project_member_id'
         }
       },

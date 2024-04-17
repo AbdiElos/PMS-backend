@@ -8,14 +8,15 @@ module.exports = {
         primaryKey: true,
         allowNull: false,
       },
-      milestone_id:{
+      Major_task_id: {
         type: Sequelize.UUID,
-        allowNull:false,
+        allowNull: true,
         references: {
-          model: 'milestones', // The name of the referenced model
-          key: 'milestone_id' // The name of the referenced column in the Roles table
-    }
-    },
+          model: 'Major_tasks',
+          key: 'Major_task_id'
+        }
+      },
+    
       name: {
         type: Sequelize.STRING
       },

@@ -2,27 +2,26 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Sub_tasks', {
-      sub_task_id: {
+    await queryInterface.createTable('Major_tasks', {
+      Major_task_id: {
         type: Sequelize.UUID,
         primaryKey: true,
       },
-      task_id:{
+      milestone_id:{
         type: Sequelize.UUID,
-        allowNull: false,
+        allowNull:false,
         references: {
-          model: 'Tasks', // The name of the referenced model
-          key: 'task_id'
-        }
-      },
+          model: 'milestones', // The name of the referenced model
+          key: 'milestone_id' // The name of the referenced column in the Roles table
+    }},
       name: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      subtask_status: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
+      // mejor_task_status: {
+      //   type: Sequelize.STRING,
+      //   allowNull: false,
+      // },
       start_date: {
         type: Sequelize.STRING,
         allowNull: true,
@@ -42,6 +41,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Sub_tasks');
+    await queryInterface.dropTable('Major_tasks');
   }
 };

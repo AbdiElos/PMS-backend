@@ -13,6 +13,10 @@ const handleNewUser = async (req, res) => {
 
   if (!full_name || !email || !division || !role) {
       return res.status(400).json({ "message": "Incomplete data form" });
+
+
+
+      
     }
   try {
     const duplicateEmail = await User.findOne({ where: { email } });
@@ -36,7 +40,7 @@ const handleNewUser = async (req, res) => {
       user_role_id:uuidv4(),
       user_id:uuid,
       role_id:role,
-      project_id:"97a17f58-f00c-11ee-bd81-c01803d475fd"
+      project_id:"283c6182-fa03-11ee-9b9b-c01803d475fd"
     });
     return res.status(201).json({ "success": "New user is created user account is" ,full_name,email,unchanged_password});
   } catch (err) {
