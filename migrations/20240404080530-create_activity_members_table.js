@@ -32,6 +32,19 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
       },
+      is_deleted: {
+        allowNull: false,
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+      },
+      deletedAt: {
+        allowNull: true,
+        type: Sequelize.DATE,
+      },
+      deletedBy: {
+        allowNull: true,
+        type: Sequelize.UUID,
+      }
     });
   },
 

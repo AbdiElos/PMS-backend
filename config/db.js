@@ -1,3 +1,4 @@
+
 require('dotenv').config();
 const Sequelize = require('sequelize');
 
@@ -65,9 +66,13 @@ db.Major_task_member = require('../models/major_task_member')(sequelize, Sequeli
 
 
 
+
 // Define associations if any
 
 //many to one association
+
+db.Sub_task.hasMany(db.Comment, { foreignKey: "sub_task_id", as: 'Coments' });
+db.Comment.belongsTo(db.Sub_task, { foreignKey: "sub_task_id", as: 'Sub_tasks' });
 
 db.Division.hasMany(db.User, { foreignKey: 'division_id', as: 'Users' });
 db.User.belongsTo(db.Division, { foreignKey: 'division_id', as: 'Division' });
@@ -225,6 +230,25 @@ db.Task.belongsToMany(db.Activity_members, {
   as: 'Task_members',
 });
 
+
+db.Sector.hasMany(db.Division, { foreignKey: "sector_id", as: "Divisions" });
+db.Division.belongsTo(db.Sector, { foreignKey: "sector_id", as: "Sector" });
+
+
+// relationship between role and project through user role
+db.Roles.belongsToMany(db.Project, {
+  through: "User_roles",
+  foreignKey: "role_id",
+  otherKey: "project_id",
+  as: "Projects", // Alias for the association
+});
+
+db.Project.belongsToMany(db.Roles, {
+  through: "User_roles",
+  foreignKey: "project_id",
+  otherKey: "role_id",
+  as: "ProjectRoles", // Alias for the association
+});
 
 
 module.exports = db;

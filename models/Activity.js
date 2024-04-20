@@ -41,6 +41,19 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.UUID,
       allowNull: true,
     },
+    is_deleted: {
+      allowNull: false,
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
+    deletedAt: {
+      allowNull: true,
+      type: DataTypes.DATE,
+    },
+    deletedBy: {
+      allowNull: true,
+      type: DataTypes.UUID,
+    }
   });
 
   return Activity;

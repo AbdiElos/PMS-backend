@@ -41,6 +41,7 @@ module.exports = (sequelize, DataTypes) => {
     end_date: DataTypes.STRING,
     created_by: DataTypes.UUID,
     updated_by: DataTypes.UUID,
+    is_deleted: {allowNull: false,type: DataTypes.BOOLEAN,default:false},
     // major_task_status: {
     //     type: DataTypes.STRING,
        

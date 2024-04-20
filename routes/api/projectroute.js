@@ -8,6 +8,8 @@ const multer=require('multer')
 const documentTypeController = require('../../controllers/ProjectController/documentType.js')
 const documentController=require('../../controllers/ProjectController/document.js')
 const projectController=require('../../controllers/ProjectController/projectController.js');
+const CommentController = require('../../controllers/ProjectController/commentController')
+
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
       console.log('calling destination...')
@@ -41,7 +43,7 @@ router.route('/getAllmemebrsofactivity/:id')
 // fetch all projectmembers for activity members
 
 
-router.route('/getAllProjectMembers') 
+router.route('/getAllProjectMembers/:project_id') 
    .get(activityController.getAlllprojectMembers ) 
 
    
@@ -118,10 +120,39 @@ router.route('/documentType/delete/:id')
 
 //
 
+// project routes
 router.route('/project/add')
-    .post(upload.array("document",5),projectController.handleNewProject)
+    .post(upload.array("documents",5),projectController.handleNewProject)
 router.route('/getAll')
     .get(projectController.handleGetAllProjects)
-router.route('/get/:id')
+router.route('/get/:projectId')
     .get(projectController.handleGetProjectById)
+router.route('/getMembers/:projectId')
+   .get(projectController.handleGetProjectMemberById)
+
+
+
+   //comment
+   router.route('/newcomment/:sub_task_id') 
+   .post(CommentController.createComment) 
+
+
+router.route('/comment/:comment_id') 
+   .get(CommentController.getCommentById) 
+
+
+router.route('/getAllacomment/:sub_task_id') 
+   .get(CommentController.getAllComments) 
+ router.route('/updatecomment/:comment_id') 
+    .put(CommentController.updateComment) 
+ router.route('/deletecomment/:comment_id') 
+   .delete(CommentController.deleteComment)
+
 module.exports=router;
+
+
+
+
+
+
+

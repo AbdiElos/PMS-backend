@@ -21,6 +21,23 @@ module.exports = (sequelize, DataTypes) => {
         key: 'project_member_id'
       }
     },
+    updated_by: {
+      type: DataTypes.UUID,
+      allowNull: true,
+    },
+    is_deleted: {
+      allowNull: false,
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
+    deletedAt: {
+      allowNull: true,
+      type: DataTypes.DATE,
+    },
+    deletedBy: {
+      allowNull: true,
+      type: DataTypes.UUID,
+    }
   });
 
   return Activity_members;

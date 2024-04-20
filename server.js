@@ -24,8 +24,10 @@ app.use(express.static(path.join(__dirname, 'public', 'uploads')));
 
 app.use("/ums", require('./routes/api/ums'));
 app.use("/organization", require('./routes/api/organization'));
-app.use("/project", require('./routes/api/projectroute'));
+
+
 app.use(verifyJWT);
+app.use("/project", require('./routes/api/projectroute'));
 app.use("/trash", require('./routes/api/trash.js'));
 
 

@@ -7,9 +7,13 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         allowNull: false,
       },
-      sector_id: {
+      sector_id:  {
         type: DataTypes.UUID,
-        allowNull: true
+        allowNull: false,
+        references: {
+          model: 'Sectors',
+          key: 'sector_id'
+        }
       },
       name: {
         type: DataTypes.STRING,

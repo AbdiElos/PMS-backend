@@ -14,13 +14,13 @@ const uuid = uuidv4();
 const getAllMilestoneMembers = async (req, res) => {
 
   
-  try {
-    const members = await db.Milestone_members.findAll();
-    return res.status(200).json(members);
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ "message": "Server error" });
-  }
+  // try {
+  //   const members = await db.Milestone_members.findAll();
+  //   return res.status(200).json(members);
+  // } catch (error) {
+  //   console.error(error);
+  //   return res.status(500).json({ "message": "Server error" });
+  // }
 };
 const createTask = async (req, res) => {
   const uuid = uuidv4();

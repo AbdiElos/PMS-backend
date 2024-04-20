@@ -19,7 +19,13 @@ module.exports = (sequelize, DataTypes) => {
     overall_progress: DataTypes.STRING,
     start_date: DataTypes.STRING,
     end_date: DataTypes.STRING,
-    division_id:DataTypes.UUID,
+    division_id:  {
+      type: DataTypes.UUID,
+      references: {
+        model: 'Divisions', // The name of the referenced model
+        key: 'division_id' // The name of the referenced column in the Roles table
+      }
+    },
     created_by: DataTypes.UUID,
     updated_by: DataTypes.UUID,
     createdAt:DataTypes.DATE,

@@ -10,6 +10,7 @@ const uuid = uuidv4();
 const handleNewDivision = async (req, res) => {
     if(req.body.head_id)var head_id=req.body.head_id
     const { name,sector_id} = req.body;
+    console.log(req.body)
     if (!name || !sector_id) {
       return res.status(400).json({ "message": "Please provide division info properly" });
     }

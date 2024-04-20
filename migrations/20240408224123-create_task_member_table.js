@@ -27,6 +27,9 @@ module.exports = {
           key: 'task_id',
         },
       },
+      is_deleted: {allowNull: false,type: Sequelize.BOOLEAN,defaultValue:false},
+      deletionAt:{allowNull:true,type:Sequelize.DATE},
+      deletedBy:{allowNull:true,type:Sequelize.UUID},
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

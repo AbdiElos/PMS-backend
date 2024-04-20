@@ -40,7 +40,7 @@ const handleNewUser = async (req, res) => {
       user_role_id:uuidv4(),
       user_id:uuid,
       role_id:role,
-      project_id:"283c6182-fa03-11ee-9b9b-c01803d475fd"
+      project_id:"0f33f2fc-fabf-4442-bc7f-5155bce621a5"
     });
     return res.status(201).json({ "success": "New user is created user account is" ,full_name,email,unchanged_password});
   } catch (err) {

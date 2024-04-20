@@ -9,22 +9,28 @@ const { v4: uuidv4 } = require('uuid');
 const project = require("../../models/project");
 
 const getAlllprojectMembers = async (req, res) => {
-  try {
-    const projectMembers = await db.Project_member.findAll();
-    const userIds = projectMembers.map(member => member.user_id);
-    const users = [];
-
-    for (const userId of userIds) {
-      const user = await db.User.findByPk(userId);
-      users.push(user.full_name);
+  
+ 
+    const { project_id } = req.params;
+    console.log(project_id);
+    try {
+      const members = await db.Project_member.findAll({
+        where: { project_id: project_id },
+        include: [{ 
+          model: db.User,
+          as: 'UserInfo', // Specify the alias for the association
+          attributes: ['full_name']
+        }]
+      });
+      return res.status(200).json(members);
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ "message": "Server error" });
     }
-
-    return res.status(200).json(users);
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Server error" });
-  }
-};
+  };
+  
+  
+  
 
 const createActivity = async (req, res) => {
   const uuid = uuidv4();
@@ -34,6 +40,10 @@ const createActivity = async (req, res) => {
   if (!name || !project_id || !start_date || !end_date) {
     return res.status(400).json({ "message": "Please provide activity information properly" });
   }
+  const existnigProject = await Project.findOne({where:{project_id:project_id}})
+    if(!existnigProject){
+      return res.status(400).json({"message":"we can't get the project to create activity for it"})
+    }
 
   try {
     projectmembers = projectmembers.split(",");
@@ -43,6 +53,7 @@ const createActivity = async (req, res) => {
     }
 
     const existingActivity = await Activity.findOne({ where: { name } });
+    
     if (existingActivity) {
       return res.status(409).json({ "message": "Activity name already exists" });
     }

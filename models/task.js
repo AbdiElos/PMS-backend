@@ -32,11 +32,16 @@ module.exports = (sequelize, DataTypes) => {
         key: 'Major_task_id'
       }
     },
+    updatedAt: {allowNull: false,type: DataTypes.DATE},
+    is_deleted: {allowNull: false,type: DataTypes.BOOLEAN,defaultValue:false},
+    deletionAt:{allowNull:true,type:DataTypes.DATE},
+    deletedBy:{allowNull:true,type:DataTypes.UUID},
     name: DataTypes.STRING,
     start_date: DataTypes.STRING,
     end_date: DataTypes.STRING,
     created_by: DataTypes.UUID,
     updated_by: DataTypes.UUID
+
   }, {
     sequelize,
     modelName: 'Task',
