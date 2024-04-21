@@ -20,18 +20,23 @@ const getUser = async (req, res) => {
 
 
 const getAllUser = async (req, res) => {
-  console.log("getting all users .....")
+  console.log("getting all users .....");
   try {
-    const users = await User.findAll();
+    const users = await User.findAll({
+      include: [{ model: Roles,as:"Roles" }] // Include the Role model with the specified attributes
+    });
+
     if (!users || users.length === 0) {
       return res.status(404).json({ "message": "No users found" });
     }
-    return res.status(201).json(users);
-  }catch (err) {
+    
+    return res.status(200).json(users); // Use 200 status code for success
+  } catch (err) {
     console.error(err);
     return res.status(500).json({ "message": "Server error" });
   }
 };
+
 
 
 const deleteUser = async (req, res) => {
@@ -52,7 +57,8 @@ const deleteUser = async (req, res) => {
 };
 
 const editMember = async (req, res) => {
-  const user_id = req.id;
+  const user_id = req.params.id;
+  console.log(user_id)
   const { full_name,email,gender} = req.body;
 
   try {

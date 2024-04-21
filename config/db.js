@@ -71,8 +71,19 @@ db.Major_task_member = require('../models/major_task_member')(sequelize, Sequeli
 
 //many to one association
 
+
+//for Sub_task and comment
 db.Sub_task.hasMany(db.Comment, { foreignKey: "sub_task_id", as: 'Coments' });
 db.Comment.belongsTo(db.Sub_task, { foreignKey: "sub_task_id", as: 'Sub_tasks' });
+
+
+//Project and comment
+db.Project.hasMany(db.Comment, { foreignKey: "project_id", as: 'Coments' });
+db.Comment.belongsTo(db.Project, { foreignKey: "project_id", as: 'Projects' });
+
+//Activity and comment
+db.Activity.hasMany(db.Comment, { foreignKey: "activity_id", as: 'Coments' });
+db.Comment.belongsTo(db.Activity, { foreignKey: "activity_id", as: 'Activitys' });
 
 db.Division.hasMany(db.User, { foreignKey: 'division_id', as: 'Users' });
 db.User.belongsTo(db.Division, { foreignKey: 'division_id', as: 'Division' });

@@ -10,11 +10,28 @@ module.exports = (sequelize) => {
     },
     sub_task_id:  {
       type: DataTypes.UUID,
-      allowNull:false,
+      allowNull:true,
       references: {
         model: 'sub_tasks', // The name of the referenced model
         key: 'sub_task_id'
     }},
+    project_id: {
+      type: DataTypes.UUID,
+      allowNull: true,
+      references: {
+        model: 'projects',
+        key: 'project_id'
+      }
+    },
+    activity_id: {
+      type: DataTypes.UUID,
+      allowNull: true,
+      references: {
+        model: 'activities',
+        key: 'activity_id'
+      }
+    },
+    
     comment: {
       type: DataTypes.STRING,
       allowNull: false

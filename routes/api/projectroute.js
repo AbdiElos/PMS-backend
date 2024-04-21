@@ -9,7 +9,7 @@ const documentTypeController = require('../../controllers/ProjectController/docu
 const documentController=require('../../controllers/ProjectController/document.js')
 const projectController=require('../../controllers/ProjectController/projectController.js');
 const CommentController = require('../../controllers/ProjectController/commentController')
-
+const verifyJWT = require('../../middlewares/verifyJWT.js');
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
       console.log('calling destination...')
@@ -30,7 +30,7 @@ router.route('/activity/newactivity/:project_id')
 router.route('/activity/:id') 
    .get(activityController.getActivityById) 
 router.route('/getAllactivity/:project_id') 
-   .get(activityController.getAllActivities) 
+   .get(verifyJWT,activityController.getAllActivities) 
  router.route('/updateactivity/:id') 
     .put(activityController.updateActivity) 
  router.route('/deleteactivity/:id') 
@@ -124,7 +124,7 @@ router.route('/documentType/delete/:id')
 router.route('/project/add')
     .post(upload.array("documents",5),projectController.handleNewProject)
 router.route('/getAll')
-    .get(projectController.handleGetAllProjects)
+    .get(verifyJWT,projectController.handleGetAllProjects)
 router.route('/get/:projectId')
     .get(projectController.handleGetProjectById)
 router.route('/getMembers/:projectId')
@@ -133,7 +133,11 @@ router.route('/getMembers/:projectId')
 
 
    //comment
-   router.route('/newcomment/:sub_task_id') 
+   router.route('/newcommentsubtask/:sub_task_id') 
+   .post(CommentController.createComment) 
+   router.route('/newcommentproject/:project_id') 
+   .post(CommentController.createComment) 
+   router.route('/newcommentactivity/:activity_id') 
    .post(CommentController.createComment) 
 
 
@@ -141,8 +145,16 @@ router.route('/comment/:comment_id')
    .get(CommentController.getCommentById) 
 
 
-router.route('/getAllacomment/:sub_task_id') 
+router.route('/getAllacommentOfSubtask/:sub_task_id') 
    .get(CommentController.getAllComments) 
+   router.route('/getAllacommentOfProject/:project_id') 
+   .get(CommentController.getAllComments) 
+
+
+   router.route('/getAllacommentOfActivity/:activity_id') 
+   .get(CommentController.getAllComments) 
+
+
  router.route('/updatecomment/:comment_id') 
     .put(CommentController.updateComment) 
  router.route('/deletecomment/:comment_id') 
