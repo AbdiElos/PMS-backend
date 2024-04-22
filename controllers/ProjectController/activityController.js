@@ -2,6 +2,8 @@ const db = require("../../config/db");
 const Activity = db.Activity;
 const Project = db.Project;
 const User = db.User;
+const Major_task= db.Major_task
+const Comment = db.Comment
 const Project_member = db.Project_member;
 const Activity_members = db.Activity_members;
 const { DataTypes, UUID, where } = require('sequelize');
@@ -101,14 +103,44 @@ const getAllActivities = async (req, res) => {
           through: { attributes: [] },
           include: [{ model: User, as: "UserInfo", attributes: ["full_name", "img_url", "email"] }]
         }
-      ]
+      ],
+      
     });
-    return res.status(200).json(activities);
+
+    // Array to store activities with their associated major tasks and comments
+    const activitiesWithDetails = [];
+
+    // Iterate over activities
+    for (const activity of activities) {
+      // Fetch major tasks for the current activity
+      const majorTasks = await Major_task.findAll({
+        where: { activity_id: activity.activity_id },
+        // Add any additional associations or options for Major_task model
+      });
+
+      // Fetch comments for the current activity
+      const comments = await Comment.findAll({
+        where: { activity_id: activity.activity_id },
+        // Add any additional associations or options for Comment model
+      });
+
+      // Add the current activity along with its major tasks and comments to the array
+      activitiesWithDetails.push({
+        activity: activity,
+        majorTasks: majorTasks,
+        comments: comments,
+        majorTasklength: majorTasks.length,
+        commentlength: comments.length
+      });
+    }
+
+    return res.status(200).json(activitiesWithDetails);
   } catch (error) {
     console.error(error);
     return res.status(500).json({ "message": "Server error" });
   }
 };
+
 
 const getActivityById = async (req, res) => {
   const { id } = req.params;

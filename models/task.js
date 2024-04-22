@@ -32,6 +32,11 @@ module.exports = (sequelize, DataTypes) => {
         key: 'Major_task_id'
       }
     },
+    is_milestone: {
+      allowNull: false,
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
     updatedAt: {allowNull: false,type: DataTypes.DATE},
     is_deleted: {allowNull: false,type: DataTypes.BOOLEAN,defaultValue:false},
     deletionAt:{allowNull:true,type:DataTypes.DATE},

@@ -61,6 +61,11 @@ module.exports = {
         allowNull: true,
         type: Sequelize.DATE,
       },
+      is_milestone: {
+        allowNull: false,
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+      },
       deletedBy: {
         allowNull: true,
         type: Sequelize.UUID,

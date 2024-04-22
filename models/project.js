@@ -26,6 +26,7 @@ module.exports = (sequelize, DataTypes) => {
         key: 'division_id' // The name of the referenced column in the Roles table
       }
     },
+    
     created_by: DataTypes.UUID,
     updated_by: DataTypes.UUID,
     createdAt:DataTypes.DATE,

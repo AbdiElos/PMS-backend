@@ -26,6 +26,11 @@ module.exports = {
       end_date: {
         type: Sequelize.STRING
       },
+      is_milestone: {
+        allowNull: false,
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+      },
       created_by: {type: Sequelize.UUID},
       updated_by: {type: Sequelize.UUID},
       createdAt: {allowNull: false,type: Sequelize.DATE},

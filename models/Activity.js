@@ -53,7 +53,12 @@ module.exports = (sequelize, DataTypes) => {
     deletedBy: {
       allowNull: true,
       type: DataTypes.UUID,
-    }
+    },
+    is_milestone: {
+      allowNull: false,
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
   });
 
   return Activity;

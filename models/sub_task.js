@@ -32,6 +32,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true,
     },
+    is_milestone: {
+      allowNull: false,
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
     created_by: DataTypes.UUID,
     updated_by: DataTypes.UUID,
     createdAt:DataTypes.DATE,

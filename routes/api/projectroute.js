@@ -9,6 +9,7 @@ const documentTypeController = require('../../controllers/ProjectController/docu
 const documentController=require('../../controllers/ProjectController/document.js')
 const projectController=require('../../controllers/ProjectController/projectController.js');
 const CommentController = require('../../controllers/ProjectController/commentController')
+const milestoneController = require('../../controllers/ProjectController/milestoneController.js')
 const verifyJWT = require('../../middlewares/verifyJWT.js');
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -131,6 +132,14 @@ router.route('/getMembers/:projectId')
    .get(projectController.handleGetProjectMemberById)
 
 
+   // // //get milestone from three table
+   // // //getAllMilstone
+   // router.route('/getAllmilestone/:project_id')
+   // .get(milestoneController.getAllMilstone)
+   // router.route('/getAllmilestone/:activity_id')
+   // .get(milestoneController.getAllMilstone)
+   // router.route('/getAllmilestone/:task_id')
+   // .get(milestoneController.getAllMilstone)
 
    //comment
    router.route('/newcommentsubtask/:sub_task_id') 
