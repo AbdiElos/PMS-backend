@@ -109,7 +109,7 @@ const handleNewProject = async (req, res) => {
 
   const handleGetAllProjects = async (req, res) => {
     try {
-      const projects = await Project.findAll({include:[{model:Roles,as:"ProjectRoles",include:[{model:User,as:"Users",attributes:["user_id","full_name","img_url","gender"]}],attributes:["role_id","name"]}],attributes:["project_id","name","overall_progress","start_date","end_date"]});
+      const projects = await Project.findAll({include:[{model:Roles,as:"ProjectRoles",include:[{model:User,as:"Users",attributes:["user_id","full_name","img_url","gender"]}],attributes:["role_id","name"]}],attributes:["project_id","name","overall_progress","start_date","end_date","createdAt"]});
       return res.status(200).json(projects);
     } catch (error) {
       console.error(error);

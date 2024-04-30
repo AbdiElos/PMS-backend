@@ -31,7 +31,7 @@ app.use("/organization", require('./routes/api/organization'));
 
 app.use("/project", require('./routes/api/projectroute'));
 app.use("/trash", require('./routes/api/trash.js'));
-app.use(verifyJWT);
+// app.use(verifyJWT);
 
 // Start the server
 app.listen(PORT, '0.0.0.0',() => {

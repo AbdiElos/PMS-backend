@@ -3,7 +3,7 @@ const db = require('../../config/db');
 const Task = db.Task;
 const Milestone = db.Milestone;
 const Task_members = db.Task_member
-const Major_task = db.Major_task;
+const Activity = db.Activity;
 const User = db.User;
 const Milestone_member = db.Milestone_members;
 const Project_member = db.Project_member;
@@ -24,41 +24,43 @@ const getAllMilestoneMembers = async (req, res) => {
 };
 const createTask = async (req, res) => {
   const uuid = uuidv4();
-  const { name, start_date, end_date, taskmembers } = req.body;
-  const { Major_task_id } = req.params;
+  const { name, start_date, end_date, taskmembers,task_status } = req.body;
+  const { activity_id } = req.params;
   console.log("taskmembers====", req.body);
-  let taskmembersArray = [];
-    if (taskmembers) {
-      taskmembersArray = taskmembers.split(",");
-    }
+  // let taskmembersArray = [];
+  //   if (taskmembers) {
+  //     taskmembersArray = taskmembers.split(",");
+  //   }
   
   try {
     
-    console.log(Major_task_id)
+    console.log(activity_id)
 
-    if (!Major_task_id || !name || !start_date || !end_date || !taskmembers) {
+    if (!activity_id || !name || !start_date || !end_date || !taskmembers||!task_status) {
       return res.status(400).json({ "message": "Please provide task information properly" });
     }
 
-    const existingTask = await Task.findOne({ where: { name } });
+    const existingTask = await Task.findOne({ where: { name:name,activity_id:activity_id } });
     if (existingTask) {
       return res.status(409).json({ "message": "Task name already exists" });
     }
 
-    const major_task = await Major_task.findByPk(Major_task_id);
-    if (!major_task) {
-      return res.status(404).json({ "message": "Major_task not found" });
+    const activity = await Activity.findByPk(activity_id);
+    if (!activity) {
+      return res.status(404).json({ "message": "Activity not found" });
     }
 
     const task = await Task.create({
       task_id: uuid,
-      Major_task_id,
+      activity_id,
       name,
       start_date,
+      task_status,
+      taskmembers,
       end_date,
     });
 
-    for (const value of taskmembersArray) {
+    for (const value of taskmembers) {
       const projectMember = await Project_member.findOne({ where: { project_member_id: value } });
       if (!projectMember) {
         await Task.destroy({ where: { task_id: uuid } });
@@ -81,9 +83,10 @@ const createTask = async (req, res) => {
 
 
 const getAllTasks = async (req, res) => {
-  const{Major_task_id}= req.params
+  const{activity_id}= req.params
+  console.log(activity_id)
   try {
-    const tasks = await Task.findAll({wher:{Major_task_id:Major_task_id},
+    const tasks = await Task.findAll({where:{activity_id:activity_id,is_deleted:false},
       include: [
         {
           model: Project_member,
@@ -93,6 +96,7 @@ const getAllTasks = async (req, res) => {
           include: [{ model: User, as: "UserInfo", attributes: ["full_name", "img_url", "email"] }]
         }
       ]});
+      
     return res.status(200).json(tasks);
   } catch (error) {
     console.error(error);
@@ -102,9 +106,10 @@ const getAllTasks = async (req, res) => {
 
 const getTaskById = async (req, res) => {
   const { id } = req.params;
+  console.log(id)
 
   try {
-    const task = await Task.findByPk(id);
+    const task = await Task.findOne( {where: { task_id:id,is_deleted:false }});
     if (!task) {
       return res.status(404).json({ "message": "Task not found" });
     }
@@ -119,24 +124,25 @@ const updateTask = async (req, res) => {
   const uuid = uuidv4();
   
   
-  const {Major_task_id,name, start_date, end_date, created_by, updated_by,taskmembers  } = req.body;
+  const {activity_id,name, start_date, end_date, created_by, updated_by,taskmembers ,task_status } = req.body;
   const { task_id } = req.params;
   console.log("taskmembers====", req.body);
-  let taskmembersArray = [];
-    if (taskmembers) {
-      taskmembersArray = taskmembers.split(",");
-    }
+ 
+    // if (taskmembers) {
+    //   taskmembersArray = taskmembers.split(",");
+    // }
 
   try {
-    const task = await Task.findByPk(task_id);
+    const task = await Task.findOne( {where: { task_id:id,is_deleted:false }});
     if (!task) {
       return res.status(404).json({ "message": "Task not found" });
     }
 
     await task.update({
-      Major_task_id,
+      activity_id,
       name,
       start_date,
+      taskmembers,
       end_date,
       created_by,
       updated_by,
@@ -188,7 +194,7 @@ const gettaskmember = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const task = await Task.findByPk(id, {
+    const task = await Task.findOne( {where: { task_id:id,is_deleted:false },
       include: [
         {
           model: Project_member,

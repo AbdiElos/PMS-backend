@@ -8,15 +8,18 @@ module.exports = {
         primaryKey: true,
         allowNull: false,
       },
-      Major_task_id: {
+      activity_id: {
         type: Sequelize.UUID,
-        allowNull: true,
+        allowNull: false,
         references: {
-          model: 'Major_tasks',
-          key: 'Major_task_id'
+          model: 'Activities', // The corrected name of the referenced model
+          key: 'activity_id'
         }
       },
-    
+      task_status: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
       name: {
         type: Sequelize.STRING
       },

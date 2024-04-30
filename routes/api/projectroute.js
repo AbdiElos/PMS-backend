@@ -31,7 +31,7 @@ router.route('/activity/newactivity/:project_id')
 router.route('/activity/:id') 
    .get(activityController.getActivityById) 
 router.route('/getAllactivity/:project_id') 
-   .get(verifyJWT,activityController.getAllActivities) 
+   .get(activityController.getAllActivities) 
  router.route('/updateactivity/:id') 
     .put(activityController.updateActivity) 
  router.route('/deleteactivity/:id') 
@@ -53,13 +53,13 @@ router.route('/getAllProjectMembers/:project_id')
 //Task routers
 
 
-router.route('/task/newTask/:Major_task_id') 
+router.route('/task/newTask/:activity_id') 
    .post(taskController.createTask) 
 router.route('/task/:id') 
    .get(taskController.getTaskById) 
 router.route('/taskmember/:id') 
    .get(taskController.gettaskmember) 
-router.route('/getAlltask/:Major_task_id') 
+router.route('/getAlltask/:activity_id') 
    .get(taskController.getAllTasks) 
  router.route('/updateTask/:task_id') 
     .put(taskController.updateTask) 
@@ -68,18 +68,18 @@ router.route('/getAlltask/:Major_task_id')
    
 
 
-router.route('/majortask/newmajortask/:activity_id') 
-   .post(majortaskController.createMajortask) 
-router.route('/majortask/:id') 
-   .get(majortaskController.getmajorTaskById) 
-router.route('/majortaskmember/:id') 
-   .get(majortaskController. getmajortaskmember) 
-router.route('/getAllmajortask/:activity_id') 
-    .get(majortaskController.getAllmajorTasks) 
- router.route('/updatemajorTask/:id') 
-    .put(majortaskController.updatemajorTask) 
- router.route('/deletemajorTask/:id') 
-   .delete(majortaskController.deletemajorTask)
+// router.route('/majortask/newmajortask/:activity_id') 
+//    .post(majortaskController.createMajortask) 
+// router.route('/majortask/:id') 
+//    .get(majortaskController.getmajorTaskById) 
+// router.route('/majortaskmember/:id') 
+//    .get(majortaskController. getmajortaskmember) 
+// router.route('/getAllmajortask/:activity_id') 
+//     .get(majortaskController.getAllmajorTasks) 
+//  router.route('/updatemajorTask/:id') 
+//     .put(majortaskController.updatemajorTask) 
+//  router.route('/deletemajorTask/:id') 
+   //.delete(majortaskController.deletemajorTask)
 
 
 
@@ -133,13 +133,10 @@ router.route('/getMembers/:projectId')
 
 
    // // //get milestone from three table
-   // // //getAllMilstone
-   // router.route('/getAllmilestone/:project_id')
-   // .get(milestoneController.getAllMilstone)
-   // router.route('/getAllmilestone/:activity_id')
-   // .get(milestoneController.getAllMilstone)
-   // router.route('/getAllmilestone/:task_id')
-   // .get(milestoneController.getAllMilstone)
+   // //getAllMilstonerouter.route('/getAllmilestone/:idType/:id')
+   router.route('/getAllmilestone/:idType/:id')
+   .get(milestoneController.getAllMilestone);
+ 
 
    //comment
    router.route('/newcommentsubtask/:sub_task_id') 

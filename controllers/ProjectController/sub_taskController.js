@@ -29,16 +29,16 @@ const createSubTask = async (req, res) => {
 
   const { name, subtask_status, start_date, end_date, subtaskmembers } = req.body;
   const { task_id } = req.params;
-  let subtaskmembersArray = subtaskmembers.split(",");
+ // let subtaskmembers = subtaskmembers.split(",");
   console.log("task_id======", task_id);
-  console.log("task_memberid=======", subtaskmembersArray);
+  console.log("task_memberid=======", subtaskmembers);
 
   if (!name || !subtask_status || !subtaskmembers || !start_date || !end_date || !task_id) {
     return res.status(400).json({ "message": "Please provide the information properly" });
   }
 
   try {
-    const existingSubTask = await Sub_task.findOne({ where: { name } });
+    const existingSubTask = await Sub_task.findOne({ where: { name:name,task_id:task_id} });
     if (existingSubTask) {
       return res.status(409).json({ "message": "Sub_task name already exists" });
     }
@@ -57,9 +57,10 @@ const createSubTask = async (req, res) => {
       end_date,
     });
 
-    console.log("subtaskmembersArray=====", subtaskmembersArray[0]);
+    
 
-    for (const value of subtaskmembersArray) {
+
+    for (const value of subtaskmembers) {
       const projectMember = await Project_member.findOne({ where: { project_member_id: value } });
       if (!projectMember) {
         await Sub_task.destroy({ where: { sub_task_id: uuid } });
@@ -83,7 +84,7 @@ const createSubTask = async (req, res) => {
 const getAllSubTasks = async (req, res) => {
   const {task_id}= req.params
   try {
-    const subTasks = await Sub_task.findAll({where:{task_id:task_id},
+    const subTasks = await Sub_task.findAll({where:{task_id:task_id,is_deleted:false},
       include: [
         {
           model: Project_member,
@@ -104,7 +105,7 @@ const getSubTaskById = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const subTask = await Sub_task.findByPk(id);
+    const subTask = await Sub_task.findOne({where:{sub_task_id:id,is_deleted:false}})
     if (!subTask) {
       return res.status(404).json({ "message": "Sub-task not found" });
     }
@@ -124,13 +125,13 @@ const updateSubTask = async (req, res) => {
   const { name, subtask_status, start_date, end_date, subtaskmembers } = req.body;
 
   // Convert subtaskmembers to an array
-  let subtaskmembersArray = [];
-  if (subtaskmembers && typeof subtaskmembers === 'string') {
-    subtaskmembersArray = subtaskmembers.split(",");
-  }
+  //let subtaskmembers = [];
+  // if (subtaskmembers && typeof subtaskmembers === 'string') {
+  //   subtaskmembers = subtaskmembers.split(",");
+  // }
 
   try {
-    const subTask = await Sub_task.findByPk(id);
+    const subTask = await Sub_task.findOne({where:{sub_task_id:id,is_deleted:false}})
     if (!subTask) {
       return res.status(404).json({ "message": "Sub-task not found" });
     }
@@ -153,7 +154,7 @@ const updateSubTask = async (req, res) => {
     });
 
     // Create new sub-task members
-    for (const value of subtaskmembersArray) {
+    for (const value of subtaskmembers) {
       await Sub_task_member.create({
         subtask_member_id: uuidv4(),
         sub_task_id: id,

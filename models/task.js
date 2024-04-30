@@ -24,13 +24,17 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       allowNull: false,
     },
-    Major_task_id: {
+    activity_id: {
       type: DataTypes.UUID,
-      allowNull: true,
+      allowNull: false,
       references: {
-        model: 'Major_tasks',
-        key: 'Major_task_id'
+        model: 'Activities', // The corrected name of the referenced model
+        key: 'activity_id'
       }
+    },
+    task_status: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
     is_milestone: {
       allowNull: false,

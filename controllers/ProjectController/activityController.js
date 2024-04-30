@@ -2,7 +2,7 @@ const db = require("../../config/db");
 const Activity = db.Activity;
 const Project = db.Project;
 const User = db.User;
-const Major_task= db.Major_task
+const Task= db.Task
 const Comment = db.Comment
 const Project_member = db.Project_member;
 const Activity_members = db.Activity_members;
@@ -48,13 +48,13 @@ const createActivity = async (req, res) => {
     }
 
   try {
-    projectmembers = projectmembers.split(",");
+    // projectmembers = projectmembers.split(",");
   
     if (projectmembers.length === 0) {
       return res.status(400).json({ "message": "No project member checkboxes are selected." });
     }
 
-    const existingActivity = await Activity.findOne({ where: { name } });
+    const existingActivity = await Activity.findOne({ where: { name:name,project_id:project_id } });
     
     if (existingActivity) {
       return res.status(409).json({ "message": "Activity name already exists" });
@@ -94,7 +94,7 @@ const getAllActivities = async (req, res) => {
   const { project_id } = req.params;
   try {
     const activities = await Activity.findAll({
-      where: { project_id: project_id },
+      where: { project_id: project_id,is_deleted:false },
       include: [
         {
           model: Project_member,
@@ -107,29 +107,27 @@ const getAllActivities = async (req, res) => {
       
     });
 
-    // Array to store activities with their associated major tasks and comments
+    // Array to store activities with their associated tasks and comments
     const activitiesWithDetails = [];
 
     // Iterate over activities
     for (const activity of activities) {
-      // Fetch major tasks for the current activity
-      const majorTasks = await Major_task.findAll({
+      // Fetch  tasks for the current activity
+      const tasks = await Task.findAll({
         where: { activity_id: activity.activity_id },
-        // Add any additional associations or options for Major_task model
       });
 
       // Fetch comments for the current activity
       const comments = await Comment.findAll({
         where: { activity_id: activity.activity_id },
-        // Add any additional associations or options for Comment model
       });
 
       // Add the current activity along with its major tasks and comments to the array
       activitiesWithDetails.push({
         activity: activity,
-        majorTasks: majorTasks,
+        tasks: tasks,
         comments: comments,
-        majorTasklength: majorTasks.length,
+        Tasklength: tasks.length,
         commentlength: comments.length
       });
     }
@@ -145,7 +143,9 @@ const getAllActivities = async (req, res) => {
 const getActivityById = async (req, res) => {
   const { id } = req.params;
   try {
-    const activity = await Activity.findByPk(id, {
+
+   
+    const activity = await Activity.findOne( {where: { activity_id:id,is_deleted:false },
       include: [
         {
           model: Project_member,
@@ -170,7 +170,7 @@ const handleGetAllMembersOfActivity = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const activity = await Activity.findByPk(id, {
+    const activity = await Activity.findOne( {where: { activity_id:id,is_deleted:false },
       include: [
         {
           model: Project_member,
@@ -202,7 +202,7 @@ const updateActivity = async (req, res) => {
   }
 
   try {
-    const activity = await Activity.findByPk(id);
+    const activity = await Activity.findOne( {where: { activity_id:id,is_deleted:false }})
     if (!activity) {
       return res.status(404).json({ "message": "Activity not found" });
     }
