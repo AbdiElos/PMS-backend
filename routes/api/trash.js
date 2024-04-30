@@ -1,9 +1,13 @@
 const express=require('express');
 const router=express.Router();
+const verifyJWT = require('../../middlewares/verifyJWT');
 const PDTController=require("../../controllers/trashControllers/ProjectTrash")
 const DocumentController=require('../../controllers/trashControllers/DocumentTrash')
 const RoleController=require('../../controllers/trashControllers/RoleTrash')
 const TeamController=require('../../controllers/trashControllers/TeamTrash')
+const UserController=require('../../controllers/trashControllers/UserTrash')
+const SectorController=require('../../controllers/trashControllers/SectorTrash')
+const DivisionController=require('../../controllers/trashControllers/DivisionTrash')
 //PROJECTS
 router.route('/deleteProject/:projectId')
     .delete(PDTController.handleDeleteProject)
@@ -32,6 +36,25 @@ router.route('/restoreTeam/:teamId')
     .get(TeamController.handleRestoreTeam)
 router.route('/getDeletedTeams')
     .get(TeamController.handleAllDeletedTeams)
-
-
+//USER
+router.route('/deleteUser/:userId')
+    .delete(UserController.handleDeleteUser)
+router.route('/restoreUser/:userId')
+    .get(UserController.handleRestoreUser)
+router.route('/getDeletedUsers')
+    .get(UserController.handleAllDeletedUsers)
+//SECTOR
+router.route('/deleteSector/:sectorId')
+    .delete(verifyJWT,SectorController.handleDeleteSector)
+router.route('/restoreSector/:sectorId')
+    .get(SectorController.handleRestoreSector)
+router.route('/getDeletedSectors')
+    .get(SectorController.handleAllDeletedSectors)
+//DIVISION
+router.route('/deleteDivision/:divisionId')
+    .delete(DivisionController.handleDeleteDivision)
+router.route('/restoreDivision/:divisionId')
+    .get(DivisionController.handleRestoreDivision)
+router.route('/getDeletedDivisions')
+    .get(DivisionController.handleAllDeletedDivisions)
 module.exports=router;

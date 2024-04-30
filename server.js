@@ -8,6 +8,7 @@ const verifyJWT = require('./middlewares/verifyJWT');
 const credentials = require('./middlewares/credentials');
 const path = require('path');
 const connection = require('./config/connect');
+require('dotenv').config()
 connection
 
 const PORT = process.env.PORT || 3500;
@@ -20,12 +21,13 @@ app.use(cors(corsOptionsDelegate));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public', 'uploads')));
 
+app.use(express.static(path.join(__dirname, 'public')));
+app.use("/settings", require('./routes/api/settings.js'));
 app.use("/ums", require('./routes/api/ums'));
 app.use("/organization", require('./routes/api/organization'));
 app.use("/project", require('./routes/api/projectroute'));
-app.use(verifyJWT);
+// app.use(verifyJWT);
 app.use("/trash", require('./routes/api/trash.js'));
 
 

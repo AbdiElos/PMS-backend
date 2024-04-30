@@ -7,7 +7,7 @@ const Roles = db.Roles;
 const getUser = async (req, res) => {
   const user_id = req.params.user_id;
   try {
-    const result = await User.findOne({ where: { user_id } });
+    const result = await User.findOne({ where: { user_id ,is_deleted:false} });
     if (!result) {
       return res.status(404).json({ "message": "User not found" });
     }
@@ -22,7 +22,7 @@ const getUser = async (req, res) => {
 const getAllUser = async (req, res) => {
   console.log("getting all users .....")
   try {
-    const users = await User.findAll();
+    const users = await User.findAll({where:{is_deleted:false}});
     if (!users || users.length === 0) {
       return res.status(404).json({ "message": "No users found" });
     }

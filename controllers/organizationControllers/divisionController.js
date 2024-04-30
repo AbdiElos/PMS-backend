@@ -1,9 +1,12 @@
 const db = require("../../config/db");
 const User = db.User;
 const Division = db.Division;
+const Sector=db.sector
 const Roles=db.Roles;
+const Sequelize = require('sequelize');
 const Permission=db.Permission
 const { v4: uuidv4 } = require('uuid');
+const division = require("../../models/division");
 const uuid = uuidv4();
 
 
@@ -33,7 +36,8 @@ const handleNewDivision = async (req, res) => {
 
   const handleGetAllDivision = async (req, res) => {
     try {
-      const division = await Division.findAll({include:[{model:User,as:"Users"}]});
+      const division = await Division.findAll({where:{is_deleted:false},
+        include:[{model:User,as:"Users",attributes:['user_id',"full_name","img_url","email","gender"]},{model:Sector,as:"Sector",attributes:["sector_id","name"]}]});
       return res.status(200).json(division);
     } catch (error) {
       console.error(error);
@@ -44,7 +48,8 @@ const handleNewDivision = async (req, res) => {
   const handleGetDivisionById = async (req, res) => {
     const { id } = req.params;
     try {
-      const division = await Division.findByPk(id,{include:[{model:User,as:"Users"}]});
+      const division = await Division.findOne({where:{is_deleted:false,division_id:id},
+        include:[{model:User,as:"Users",attributes:['user_id',"full_name","img_url","email","gender"]},{model:Sector,as:"Sector",attributes:["sector_id","name"]}]});
       if (!division) {
         return res.status(404).json({ "message": "division not found" });
       }
@@ -80,7 +85,10 @@ const handleNewDivision = async (req, res) => {
   const handleGetAllDefaultRole= async (req, res) => {
     console.log("getting roles ....")
     try {
-      const roles = await Roles.findAll({where:{project_related:false}});
+      const excludedValues = [process.env.ORGANIZATION_ADMIN, process.env.SECTOR_ADMIN];
+      const roles = await Roles.findAll({where:{project_related:false,role_id: {
+        [Sequelize.Op.notIn]: excludedValues
+      }}});
       return res.status(200).json(roles);
     } catch (error) {
       console.error(error);

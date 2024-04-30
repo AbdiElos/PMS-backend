@@ -36,7 +36,7 @@ const handleNewSector = async (req, res) => {
 
   const handleGetAllSectors = async (req, res) => {
     try {
-      const sectors = await Sector.findAll({include:[{model:Division,as:"Divisions"}]});
+      const sectors = await Sector.findAll({where:{is_deleted:false},include:[{model:Division,as:"Divisions"}]});
       return res.status(200).json(sectors);
     } catch (error) {
       console.error(error);
@@ -48,7 +48,7 @@ const handleNewSector = async (req, res) => {
     const { id } = req.params;
 
     try {
-      const sector = await Sector.findByPk(id,{include:[{model:Division,as:"Divisions"}]});
+      const sector = await Sector.findOne({where:{is_deleted:false,sector_id:id},include:[{model:Division,as:"Divisions"}]});
       if (!sector) {
         return res.status(404).json({ "message": "Sector not found" });
       }

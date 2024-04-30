@@ -13,7 +13,7 @@ const handleAuth = async (req, res) => {
   }
   try {
     const foundUser = await User.findOne({ 
-      where: { email },
+      where: { email,is_deleted:false },
       include:[{
         model:Roles,
         as:"Roles"
