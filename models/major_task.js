@@ -24,14 +24,14 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       allowNull: false,
     },
-    milestone_id:{
+    activity_id: {
       type: DataTypes.UUID,
-      allowNull:false,
+      allowNull: false,
       references: {
-        model: 'milestones', // The name of the referenced model
-        key: 'milestone_id' // The name of the referenced column in the Roles table
-  }
-  },
+        model: 'Activities', // The corrected name of the referenced model
+        key: 'activity_id'
+      }
+    },
   // mejor_task_status: {
   //   type: DataTypes.STRING,
   //   allowNull: false,
@@ -41,6 +41,7 @@ module.exports = (sequelize, DataTypes) => {
     end_date: DataTypes.STRING,
     created_by: DataTypes.UUID,
     updated_by: DataTypes.UUID,
+    is_deleted: {allowNull: false,type: DataTypes.BOOLEAN,default:false},
     // major_task_status: {
     //     type: DataTypes.STRING,
        

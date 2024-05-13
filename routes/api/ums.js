@@ -30,6 +30,8 @@ var upload = multer({ storage: storage })
 
 router.route('/registerUser')
     .post(registerController.handleNewUser)
+// router.route('/registerUser')
+//     .post(verifyAccessWithoutProject(process.env.REGISTER_NEW_USER),registerController.handleNewUser)
 router.route("/login")
     .post(authController.handleAuth);
 router.route('/refresh')
@@ -37,15 +39,15 @@ router.route('/refresh')
 router.route('/finduser/:user_id')
     .get(adminController.getUser)
 router.route('/findalluser')
-    .get(adminController.getAllUser)
-router.route('/profile/update')
+    .get(verifyJWT,adminController.getAllUser)
+router.route('/profile/update/:id')
     .put(adminController.editMember)
 router.route("/profile/changeStatus/:id")
     .put(adminController.toggleSuspend)
 router.route('/profile/changepassword/:id')
     .put(changepasswordController.handleChangePassword)
-router.route('/profile/update')
-    .post(verifyJWT,upload.single("profileImg"),profileController.updateProfile)
+// router.route('/profile/update')
+//     .post(verifyJWT,upload.single("profileImg"),profileController.updateProfile)
 
 
 

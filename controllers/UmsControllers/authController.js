@@ -25,7 +25,7 @@ const handleAuth = async (req, res) => {
     }
     
     if (!foundUser.account_status) {
-      return res.status(400).json({ "message": "You are temporarily banned from accessing your account. Please contact us for assistance." });
+      return res.status(402).json({ "message": "You are temporarily banned from accessing your account. Please contact us for assistance." });
     }
    console.log(password,foundUser.password)
     const match = await bcrypt.compare(password, foundUser.password);

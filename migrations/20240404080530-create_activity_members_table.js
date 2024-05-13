@@ -2,23 +2,22 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Milestone_members', {
-      milestone_member_id: {
+    await queryInterface.createTable('Activity_members', {
+      activity_member_id: {
         type: Sequelize.UUID,
         allowNull: false,
         primaryKey: true,
       },
-      milestone_id: {
+      activity_id: {
         type: Sequelize.UUID,
-        allowNull:false,
+        allowNull: false,
         references: {
-          model: 'Milestones', // The corrected name of the referenced model
-          key: 'milestone_id'
+          model: 'Activities', // The corrected name of the referenced model
+          key: 'activity_id'
         }
       },
       project_member_id: {
         type: Sequelize.UUID,
-        
         allowNull: false,
         references: {
           model: 'Project_members', // The name of the referenced model
@@ -33,10 +32,24 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
       },
+      is_deleted: {
+        allowNull: false,
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+      },
+      
+      deletedAt: {
+        allowNull: true,
+        type: Sequelize.DATE,
+      },
+      deletedBy: {
+        allowNull: true,
+        type: Sequelize.UUID,
+      }
     });
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Milestone_members');
+    await queryInterface.dropTable('Activity_members');
   }
 };

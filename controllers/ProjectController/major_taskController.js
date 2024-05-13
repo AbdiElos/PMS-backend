@@ -2,17 +2,17 @@
 const { Op, where } = require('sequelize');
 const db = require('../../config/db');
 const Major_task = db.Major_task;
-const Milestone = db.Milestone;
+const Activity = db.Activity
 const Major_task_member = db.Major_task_member;
 const User = db.User;
-const Milestone_member = db.Milestone_members;
+const Activity_member = db.Activity_members;
 const Project_member = db.Project_member;
 const { v4: uuidv4 } = require('uuid');
 const uuid = uuidv4();
 
-const getAllMilestoneMembers = async (req, res) => {
+const getAllActivityMembers = async (req, res) => {
   try {
-    const members = await db.Milestone_members.findAll();
+    const members = await db.Activity_members.findAll();
     return res.status(200).json(members);
   } catch (error) {
     console.error(error);
@@ -20,11 +20,12 @@ const getAllMilestoneMembers = async (req, res) => {
   }
 };
 
+
 const createMajortask = async (req, res) => {
   const uuid = uuidv4();
   const { name, start_date, end_date, majortaskmembers } = req.body;
-  const { milestone_id  } = req.params;
-  console.log("milestone_id",milestone_id )
+  const { activity_id  } = req.params;
+  console.log("Activity_id",activity_id )
   console.log("majortaskmembers====", req.body);
   let majortaskmembersArray = [];
   
@@ -32,7 +33,7 @@ const createMajortask = async (req, res) => {
  
 
   try {
-    if (!milestone_id ||!name || !start_date || !end_date || !majortaskmembers) {
+    if (!activity_id ||!name || !start_date || !end_date || !majortaskmembers) {
       return res.status(400).json({ "message": "Please provide Major_task information properly" });
     }
 
@@ -41,14 +42,14 @@ const createMajortask = async (req, res) => {
       return res.status(409).json({ "message": "Major task name already exists" });
     }
 
-    const milestone = await Milestone.findByPk(milestone_id);
-    if (!milestone) {
-      return res.status(404).json({ "message": "Milestone not found" });
+    const activity = await Activity.findByPk(activity_id);
+    if (!activity) {
+      return res.status(404).json({ "message": "Activity not found" });
     }
 
     const Majortask = await Major_task.create({
       major_task_id: uuid,
-      milestone_id :milestone_id,
+      activity_id :activity_id,
       name,
       start_date,
       end_date,
@@ -75,15 +76,11 @@ const createMajortask = async (req, res) => {
   }
 };
 
-
-
-
-
 const getAllmajorTasks = async (req, res) => {
-  const { milestone_id } = req.params;
+  const { activity_id } = req.params;
   try {
     const majortasks = await Major_task.findAll({
-      where: { milestone_id: milestone_id },
+      where: { activity_id: activity_id },
       include: [
         {
           model: Project_member,
@@ -119,14 +116,17 @@ const getmajorTaskById = async (req, res) => {
 
 const updatemajorTask = async (req, res) => {
   const { id } = req.params;
-  const { milestone_id, name, start_date, end_date, created_by, updated_by, majortaskmembers } = req.body;
+  const { activity_id, name, start_date, end_date, created_by, updated_by, majortaskmembers } = req.body;
 
   // Validate inputs
-  // if (!milestone_id || !name || !start_date || !end_date) {
+  // if (!activity_id || !name || !start_date || !end_date) {
   //   return res.status(400).json({ "message": "Please provide major task information properly" });
   // }
 
   // Convert taskmembers to an array
+
+
+
   let majortaskMembersArray = [];
   if (majortaskmembers && typeof majortaskmembers === 'string') {
     majortaskMembersArray = majortaskmembers.split(",");
@@ -140,7 +140,7 @@ const updatemajorTask = async (req, res) => {
 
     // Update the major task
     await majortask.update({
-      milestone_id,
+      activity_id,
       name,
       start_date,
       end_date,
@@ -214,4 +214,4 @@ const getmajortaskmember = async (req, res) => {
   }
 };
 
-module.exports = { createMajortask,getAllmajorTasks,getmajorTaskById,  updatemajorTask, deletemajorTask, getAllMilestoneMembers, getmajortaskmember };
+module.exports = { createMajortask,getAllmajorTasks,getmajorTaskById,  updatemajorTask, deletemajorTask, getAllActivityMembers, getmajortaskmember };

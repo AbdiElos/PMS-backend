@@ -32,6 +32,9 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       type: DataTypes.DATE,
     },
+    is_deleted: {allowNull: false,type: DataTypes.BOOLEAN,defaultValue:false},
+    deletionAt:{allowNull:true,type:DataTypes.DATE},
+    deletedBy:{allowNull:true,type:DataTypes.UUID}
   });
   return Task_member;
 };

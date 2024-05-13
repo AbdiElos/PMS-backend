@@ -3,7 +3,14 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('Divisions', {
       division_id: {type: Sequelize.UUID,primaryKey: true,allowNull: false},
-      sector_id: {type: Sequelize.UUID,defaultValue: Sequelize.UUIDV4,allowNull: true},
+      sector_id:  {
+        type: Sequelize.UUID,
+        allowNull: false,
+        references: {
+          model: 'Sectors',
+          key: 'sector_id'
+        }
+      },
       name: {type: Sequelize.STRING,allowNull: false},
       head_id: {type: Sequelize.UUID,defaultValue: Sequelize.UUIDV4,allowNull: true},
       created_by: {type: Sequelize.UUID},

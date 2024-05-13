@@ -24,19 +24,33 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       allowNull: false,
     },
-    Major_task_id: {
+    activity_id: {
       type: DataTypes.UUID,
-      allowNull: true,
+      allowNull: false,
       references: {
-        model: 'Major_tasks',
-        key: 'Major_task_id'
+        model: 'Activities', // The corrected name of the referenced model
+        key: 'activity_id'
       }
     },
+    task_status: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    is_milestone: {
+      allowNull: false,
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
+    updatedAt: {allowNull: false,type: DataTypes.DATE},
+    is_deleted: {allowNull: false,type: DataTypes.BOOLEAN,defaultValue:false},
+    deletionAt:{allowNull:true,type:DataTypes.DATE},
+    deletedBy:{allowNull:true,type:DataTypes.UUID},
     name: DataTypes.STRING,
     start_date: DataTypes.STRING,
     end_date: DataTypes.STRING,
     created_by: DataTypes.UUID,
     updated_by: DataTypes.UUID
+
   }, {
     sequelize,
     modelName: 'Task',

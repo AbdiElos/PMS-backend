@@ -14,9 +14,11 @@ require('dotenv').config()
 const handleNewProject = async (req, res) => {
     console.log("project body")
     const { name,project_managers,technical_managers,start_date,end_date,document_type_id,document_description,members,division_id } = req.body;
-    if (!name || !start_date || !end_date || !document_type_id || !project_managers || !technical_managers || !members ) {
+    if (!name || !start_date || !end_date || !document_type_id || !project_managers || !technical_managers || !members||!division_id ) {
       return res.status(400).json({ "message": "Please provide required project information" });
     }
+
+    console.log("members===",members)
     const uuid=uuidv4()
     try {
       var allMembers=members+","+project_managers+","+technical_managers;
@@ -74,9 +76,11 @@ const handleNewProject = async (req, res) => {
           const projectMember=await ProjectMembers.create({
             project_member_id: uuidv4(),
             user_id:allMembers[i],
+            
             project_id:uuid
           });
         }
+        
     for(let i=0; i<req.files.length; i++){
         const documents=await Document.create({
           document_id: uuidv4(),
@@ -105,7 +109,7 @@ const handleNewProject = async (req, res) => {
 
   const handleGetAllProjects = async (req, res) => {
     try {
-      const projects = await Project.findAll({include:[{model:Roles,as:"ProjectRoles",include:[{model:User,as:"Users",attributes:["user_id","full_name","img_url","gender"]}],attributes:["role_id","name"]}]});
+      const projects = await Project.findAll({include:[{model:Roles,as:"ProjectRoles",include:[{model:User,as:"Users",attributes:["user_id","full_name","img_url","gender"]}],attributes:["role_id","name"]}],attributes:["project_id","name","overall_progress","start_date","end_date","createdAt"]});
       return res.status(200).json(projects);
     } catch (error) {
       console.error(error);

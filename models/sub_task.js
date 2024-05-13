@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     sub_task_id: {
       type: DataTypes.UUID,
       allowNull:false,
-      defaultValue: DataTypes.UUIDV4,
+      //defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
     },
     task_id:{
@@ -31,6 +31,11 @@ module.exports = (sequelize, DataTypes) => {
     end_date: {
       type: DataTypes.STRING,
       allowNull: true,
+    },
+    is_milestone: {
+      allowNull: false,
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
     },
     created_by: DataTypes.UUID,
     updated_by: DataTypes.UUID,

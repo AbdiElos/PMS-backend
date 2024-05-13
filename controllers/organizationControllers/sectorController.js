@@ -11,7 +11,7 @@ const handleNewSector = async (req, res) => {
     console.log(req.body)
     if(req.body.leader_id) var leader_id=req.body.leader_id
     console.log(leader_id)
-    if (!name) {
+    if (!name||!leader_id) {
       return res.status(400).json({ "message": "Please provide sector name" });
     }
 

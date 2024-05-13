@@ -1,5 +1,6 @@
 const express=require('express');
 const router=express.Router();
+const verifyJWT = require('../../middlewares/verifyJWT.js');
 const sectorController = require('../../controllers/organizationControllers/sectorController.js')
 const divisionController=require('../../controllers/organizationControllers/divisionController.js')
 const roleController=require('../../controllers/UmsControllers/rolesController.js')
@@ -8,15 +9,15 @@ const verifyAccessWithoutProject=require('../../middlewares/verifyAccessWithoutP
 
 // sector routes
 router.route('/sector/newsector') 
-   .post(sectorController.handleNewSector) 
+   .post(verifyJWT,sectorController.handleNewSector) 
 router.route('/sector/getsector/:id') 
-   .get(sectorController.handleGetSectorById) 
+   .get(verifyJWT,sectorController.handleGetSectorById) 
  
 router.route('/sector/getallsector') 
-   .get(sectorController.handleGetAllSectors) 
+   .get(verifyJWT,sectorController.handleGetAllSectors) 
  
 router.route('/sector/updatesector/:id') 
-   .put(sectorController.handleUpdateSector) 
+   .put(verifyJWT,sectorController.handleUpdateSector) 
 
 // division routes
 router.route('/division/newdivision')
@@ -24,13 +25,13 @@ router.route('/division/newdivision')
 router.route('/division/getdivision/:id')
     .get(divisionController.handleGetDivisionById)
 router.route('/division/getalldivision')
-    .get(divisionController.handleGetAllDivision)
+    .get(verifyJWT,divisionController.handleGetAllDivision)
 router.route('/division/updatedivision/:id')
     .put(divisionController.handleUpdateDivision)
 router.route('/division/users/:id')
     .get(divisionController.handleGetAllUsersInDivision)
 router.route('/roles')
-    .get(divisionController.handleGetAllDefaultRole)
+    .get(verifyJWT,divisionController.handleGetAllDefaultRole)
 
 // roles controller
 
