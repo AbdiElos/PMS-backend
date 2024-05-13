@@ -108,44 +108,40 @@ const handleUpdateDivision = async (req, res) => {
   }
 };
 
-// handle all roles
-const handleGetAllDefaultRole = async (req, res) => {
-  console.log("getting roles ....");
-  try {
-    const roles = await Roles.findAll({ where: { project_related: false } });
-    return res.status(200).json(roles);
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Server error" });
+  // handle all roles
+  const handleGetAllDefaultRole= async (req, res) => {
+    console.log("getting roles ....")
+    try {
+      const excludedValues = [process.env.ORGANIZATION_ADMIN, process.env.SECTOR_ADMIN];
+      const roles = await Roles.findAll({where:{project_related:false,role_id: {
+        [Sequelize.Op.notIn]: excludedValues
+      }}});
+      return res.status(200).json(roles);
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ "message": "Server error" });
+    }
   }
-};
-const handleGetAllUsersInDivision = async (req, res) => {
-  console.log("users in certain division called");
-  const id = req.params.id;
-  try {
-    const users = await Division.findAll({
-      where: { division_id: id },
-      include: [
-        {
-          model: User,
-          as: "Users",
-          attributes: ["user_id", "full_name", "email"],
-        },
-      ],
-      attributes: ["division_id", "name"],
-    });
-    console.log(users);
-    return res.status(200).json(users);
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Server error" });
-  }
-};
-module.exports = {
-  handleGetAllUsersInDivision,
-  handleGetAllDefaultRole,
-  handleNewDivision,
-  handleGetAllDivision,
-  handleGetDivisionById,
-  handleUpdateDivision,
-};
+  const handleGetAllUsersInDivision= async (req, res) => {
+    console.log("users in certain division called")
+    const id=req.params.id;
+    try {
+      const users = await Division.findAll({
+        where: { division_id:id },
+        include: [
+          {
+            model: User,
+            as: 'Users',
+            attributes: ['user_id','full_name', 'email'],
+          },
+        ],
+        attributes: ['division_id', 'name'],
+      });
+      console.log(users)
+      return res.status(200).json(users)
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ "message": "Server error" });
+    }
+  };
+  module.exports= { handleGetAllUsersInDivision, handleGetAllDefaultRole,handleNewDivision, handleGetAllDivision, handleGetDivisionById, handleUpdateDivision };

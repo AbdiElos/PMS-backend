@@ -8,13 +8,13 @@ const { v4: uuidv4 } = require('uuid');
 
 
 const handleNewRole = async (req, res) => {
-    var { name,permissions} = req.body;
     console.log(req.body)
+    var { name,permissions} = req.body;
     
     const uuid=uuidv4()
     try {
-      console.log(permissions)
-    //permissions=permissions.split(",")  
+    console.log(permissions)
+    permissions=permissions.split(",")  
     console.log(permissions.length)
     if (!name) {
       return res.status(400).json({ "message": "Please provide role info properly" });

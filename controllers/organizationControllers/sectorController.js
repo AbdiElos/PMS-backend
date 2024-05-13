@@ -65,19 +65,17 @@ const handleGetAllSectors = async (req, res) => {
 const handleGetSectorById = async (req, res) => {
   const { id } = req.params;
 
-  try {
-    const sector = await Sector.findByPk(id, {
-      include: [{ model: Division, as: "Divisions" }],
-    });
-    if (!sector) {
-      return res.status(404).json({ message: "Sector not found" });
+    try {
+      const sector = await Sector.findOne({where:{is_deleted:false,sector_id:id},include:[{model:Division,as:"Divisions"}]});
+      if (!sector) {
+        return res.status(404).json({ "message": "Sector not found" });
+      }
+      return res.status(200).json(sector);
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ "message": "Server error" });
     }
-    return res.status(200).json(sector);
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Server error" });
-  }
-};
+  };
 
 const handleUpdateSector = async (req, res) => {
   const { id } = req.params;

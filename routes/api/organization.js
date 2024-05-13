@@ -35,7 +35,7 @@ router.route('/roles')
 
 // roles controller
 
-router.route("/role/add")
+router.route('/role/add')
   .post(roleController.handleNewRole)
 router.route('/role/getallprojectroles')
   .get(roleController.handleGetAllProjectRelatedRole)
@@ -47,6 +47,8 @@ router.route('/role/:id/update')
   .put(roleController.handleUpdateRole)
 router.route('/role/:id/getallpermissions')
   .get(roleController.handleGetAllPermissionsOfRole)
+
+//teams controller
 router.route('/team/add')
   .post(teamController.handleNewTeam)
 router.route('/team/getall')
