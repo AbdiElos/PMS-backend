@@ -14,7 +14,7 @@ const handleNewRole = async (req, res) => {
     const uuid=uuidv4()
     try {
     console.log(permissions)
-    permissions=permissions.split(",")  
+    // permissions=permissions.split(",")  
     console.log(permissions.length)
     if (!name) {
       return res.status(400).json({ "message": "Please provide role info properly" });

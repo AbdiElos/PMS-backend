@@ -40,7 +40,7 @@ db.Project_member= require('../models/project_member')(sequelize, Sequelize);
 
 db.Activity= require('../models/Activity')(sequelize, Sequelize);
 
-db.Milestone= require('../models/Milestone')(sequelize, Sequelize);
+// db.Milestone= require('../models/Milestone')(sequelize, Sequelize);
 db.Task= require('../models/task')(sequelize, Sequelize);
 db.Sub_task= require('../models/sub_task')(sequelize, Sequelize);
 db.Document= require('../models/document')(sequelize, Sequelize);
@@ -53,7 +53,7 @@ db.Task_member = require('../models/task_member')(sequelize, Sequelize)
 
 
 db.Activity_members = require('../models/activity_members')(sequelize, Sequelize);
-db.Milestone_members = require('../models/milestone_members')(sequelize, Sequelize);
+// db.Milestone_members = require('../models/milestone_members')(sequelize, Sequelize);
 db.Sub_task_member = require('../models/subtask_members')(sequelize, Sequelize);
 db.Major_task = require('../models/major_task')(sequelize, Sequelize);
 db.Major_task_member = require('../models/major_task_member')(sequelize, Sequelize);
@@ -86,6 +86,9 @@ db.Comment.belongsTo(db.Activity, { foreignKey: "activity_id", as: 'Activitys' }
 
 db.Division.hasMany(db.User, { foreignKey: 'division_id', as: 'Users' });
 db.User.belongsTo(db.Division, { foreignKey: 'division_id', as: 'Division' });
+
+db.Sector.hasMany(db.Division, { foreignKey: 'division_id', as: 'Divisions' });
+db.Division.belongsTo(db.Sector, { foreignKey: 'division_id', as: 'Sectors' });
 
 db.Project.hasMany(db.Document, { foreignKey: "project_id", as: 'Document' });
 db.Document.belongsTo(db.Project, { foreignKey: "project_id", as: 'Project' });
@@ -218,10 +221,6 @@ db.Project_member.belongsToMany(db.Sub_task, {
 });
 
 
-
-
-
-
 db.Activity_members.belongsToMany(db.Task, {
   through: 'Task_member',
   foreignKey: 'activity_member_id',
@@ -230,7 +229,6 @@ db.Activity_members.belongsToMany(db.Task, {
 });
 
 db.Task.belongsToMany(db.Activity_members, {
-db.Task.belongsToMany(db.Milestone_members, {
   through: 'Task_member',
   foreignKey: 'task_id',
   otherKey: 'activity_member_id',

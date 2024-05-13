@@ -47,9 +47,6 @@ router.route('/getAllmemebrsofactivity/:id')
 router.route('/getAllProjectMembers/:project_id') 
    .get(activityController.getAlllprojectMembers ) 
 
-   
-
-
 //Task routers
 
 

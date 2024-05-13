@@ -18,8 +18,19 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.UUID,
       primaryKey:true
     },
-    role_id: DataTypes.UUID,
-    permission_id: DataTypes.UUID,
+    role_id: {
+      type: DataTypes.UUID,
+      allowNull: false,
+      references: {
+        model: 'Roles',
+        key: 'role_id'
+      }},
+    permission_id: {type: DataTypes.UUID,
+      allowNull: false,
+      references: {
+        model: 'Permissions',
+        key: 'permission_id'
+    }},
     
     created_by: DataTypes.UUID,
     updated_by: DataTypes.UUID,
