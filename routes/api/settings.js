@@ -17,7 +17,7 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage })
 // ORGANIZATION ROUTES
 router.route('/AddOrganization') 
-   .post(upload.fields([{ name: 'logo', maxCount: 1 }]),settingsController.handleNewOrganization)
+   .post(upload.fields([{ name: 'logo', maxCount: 1 },{ name: 'background', maxCount: 1 }]),settingsController.handleNewOrganization)
 // SOCIALMEDIA ROUTES
 router.route('/getOrganization')
     .get(settingsController.handleGetOrganization)
@@ -25,5 +25,6 @@ router.route('/AddSocialMedia')
    .post(settingsController.handleNewSocialMedia)
 router.route('/getAllSocialMedias')
     .get(settingsController.handleGetAllSocialMedia)
-
+router.route('/updateOrganization/:id')
+    .post(settingsController.handleUpdateOrganization)
 module.exports=router;

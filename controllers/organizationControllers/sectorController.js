@@ -79,13 +79,15 @@ const handleGetSectorById = async (req, res) => {
 
 const handleUpdateSector = async (req, res) => {
   const { id } = req.params;
-  const { name, leader_id } = req.body;
+  const name=req.body.sector_name
+  const leader_id=req.body.leader_id
 
-  if (!name || !leader_id) {
-    return res
-      .status(400)
-      .json({ message: "Please provide sector name and leader_id" });
-  }
+  console.log(req.body)
+  // if (!name || !leader_id) {
+  //   return res
+  //     .status(400)
+  //     .json({ message: "Please provide sector name and leader_id" });
+  // }
 
   try {
     const sector = await Sector.findByPk(id);

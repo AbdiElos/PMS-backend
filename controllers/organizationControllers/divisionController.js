@@ -86,15 +86,17 @@ const handleGetDivisionById = async (req, res) => {
 
 const handleUpdateDivision = async (req, res) => {
   const { id } = req.params;
-  const { name, sector_id, head_id } = req.body;
-
-  if (!name || !sector_id || !head_id) {
-    return res
-      .status(400)
-      .json({
-        message: "Please provide division name, sector and head properly",
-      });
-  }
+  const { sector_id } = req.body;
+  console.log(req.body)
+  const head_id=req.body.leader_id
+  const name=req.body.division_name
+  // if (!name || !sector_id || !head_id) {
+  //   return res
+  //     .status(400)
+  //     .json({
+  //       message: "Please provide division name, sector and head properly",
+  //     });
+  // }
   try {
     const division = await Division.findByPk(id);
     if (!division) {

@@ -120,7 +120,7 @@ db.Roles.belongsToMany(db.User, {
   through: 'User_roles',
   foreignKey: 'role_id',
   otherKey: 'user_id',
-  as: 'Users' // Alias for the association
+  as: 'UsersRole' // Alias for the association
 });
 
 
@@ -141,21 +141,33 @@ db.Roles.belongsToMany(db.Permission, {
 
 
 db.User.belongsToMany(db.Project, {
-  through: 'Project_member',
+  through: 'project_members',
   foreignKey: 'user_id',
   otherKey: 'project_id',
   as: 'Projects' // Alias for the association
 });
 
 db.Project.belongsToMany(db.User, {
-  through: 'Project_member',
+  through: 'project_members',
   foreignKey: 'project_id',
   otherKey: 'user_id',
   as: 'Users' // Alias for the association
 });
 
 
+db.Roles.belongsToMany(db.Project, {
+  through: "User_roles",
+  foreignKey: "role_id",
+  otherKey: "project_id",
+  as: "Projects", // Alias for the association
+});
 
+db.Project.belongsToMany(db.Roles, {
+  through: "User_roles",
+  foreignKey: "project_id",
+  otherKey: "role_id",
+  as: "ProjectRoles", // Alias for the association
+});
 //many to many relationship b/n Activity and project_member
 db.Activity.belongsToMany(db.Project_member, {
   through: 'Activity_members',
@@ -238,6 +250,12 @@ db.Task.belongsToMany(db.Activity_members, {
 
 
 // trash for deleted by relationship
+db.User.hasMany(db.user_role, { foreignKey: "user_id", as: 'UserToUserRoles' });
+db.user_role.belongsTo(db.User, { foreignKey: "user_id", as: 'UserRoleToUser' });
+
+db.Roles.hasMany(db.user_role, { foreignKey: "role_id", as: 'RolesToUserRole' });
+db.user_role.belongsTo(db.Roles, { foreignKey: "role_id", as: 'UserRoleToRoles' });
+
 db.User.hasMany(db.Project, { foreignKey: "deletedBy", as: 'DeletedProjects' });
 db.Project.belongsTo(db.User, { foreignKey: "deletedBy", as: 'DeletedByProjects' });
 

@@ -13,6 +13,7 @@ require("dotenv").config();
 
 const handleNewProject = async (req, res) => {
   console.log("project body");
+  console.log(req.body)
   const {
     name,
     project_managers,
@@ -31,8 +32,7 @@ const handleNewProject = async (req, res) => {
     !document_type_id ||
     !project_managers ||
     !technical_managers ||
-    !members ||
-    !division_id
+    !members 
   ) {
     return res
       .status(400)
@@ -65,7 +65,7 @@ const handleNewProject = async (req, res) => {
       overall_progress: "on Progress",
       start_date,
       end_date,
-      division_id,
+      // division_id,
     });
     console.log("creating project managers");
     for (let i = 0; i < newproject_managers.length; i++) {
@@ -135,30 +135,15 @@ const handleNewProject = async (req, res) => {
 
 const handleGetAllProjects = async (req, res) => {
   try {
-    const projects = await Project.findAll({
-      include: [
-        {
-          model: Roles,
-          as: "ProjectRoles",
-          include: [
-            {
-              model: User,
-              as: "Users",
-              attributes: ["user_id", "full_name", "img_url", "gender"],
-            },
-          ],
-          attributes: ["role_id", "name"],
-        },
-      ],
-      attributes: [
-        "project_id",
-        "name",
-        "overall_progress",
-        "start_date",
-        "end_date",
-        "createdAt",
-      ],
-    });
+    const projects = await Project.findAll();
+    for(let i=0;i<projects.length;i++){
+      var manager1=await UserRole.findAll({where:{project_id:projects[i].project_id,role_id:process.env.TECHNICAL_MANAGER},
+        include:[{model:User,as:"UserRoleToUser"}]})
+      var manager=await UserRole.findAll({where:{project_id:projects[i].project_id,role_id:process.env.PROJECT_MANAGER},
+      include:[{model:User,as:"UserRoleToUser"}]})
+      projects[i].dataValues.project_manager=manager
+      projects[i].dataValues.technical_manager=manager1
+    }
     return res.status(200).json(projects);
   } catch (error) {
     console.error(error);
@@ -170,15 +155,21 @@ const handleGetProjectById = async (req, res) => {
   const project_id = req.params.projectId;
   try {
     const project = await Project.findOne({
-      where: { project_id, is_deleted: false },
-      include: [
-        {
-          model: Roles,
-          as: "ProjectRoles",
-          include: [{ model: User, as: "Users" }],
-        },
-      ],
+      where: { project_id,is_deleted:false},
+      include:[{model:Roles,as:"ProjectRoles",include:[{model:UserRole,as:"RolesToUserRole",where:{project_id}}]}]
     });
+    // const users = await UserRole.findOne({
+    //   where: { project_id,is_deleted:false},
+    //   // include:[{model:Roles,as:"ProjectRoles"}],
+    //   include:[{model:User,as:"Users"}]
+    // });
+    var combinations=[]
+
+
+    // for(let i=0;i<project.dataValues.Users.length;i++){
+    //   const role=await UserRole.findOne({where:{project_id,user_id:project.dataValues.Users[i].dataValues.user_id}})
+    //   roles.push(role)
+    // }
     if (!project) {
       return res.status(404).json({ message: "project not found" });
     }

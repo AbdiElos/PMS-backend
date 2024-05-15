@@ -3,8 +3,10 @@ require('dotenv').config();
 
 const verifyJWT=(req,res,next)=>{
     const authHeader=req.headers.authorization ||req.headers.Authorization;
+    console.log(authHeader)
     if(!authHeader?.startsWith('Bearer ')) return res.status(401).json({message:"token required"});
     const token=authHeader.split(' ')[1];
+    console.log(token)
     jwt.verify(
         token,
         process.env.ACCESS_TOKEN_SECRET,

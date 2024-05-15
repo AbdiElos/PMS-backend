@@ -27,7 +27,7 @@ app.use("/settings", require('./routes/api/settings.js'));
 app.use("/ums", require('./routes/api/ums'));
 app.use("/organization", require('./routes/api/organization'));
 app.use("/project", require('./routes/api/projectroute'));
-// app.use(verifyJWT);
+app.use(verifyJWT);
 app.use("/trash", require('./routes/api/trash.js'));
 
 

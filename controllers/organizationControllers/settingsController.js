@@ -1,14 +1,18 @@
 const db = require("../../config/db");
 const { v4: uuidv4, validate: isValidUUID } = require('uuid');
+const user_role = require("../../models/user_role");
+const User=db.User
+const UserRole=db.user_role
 require('dotenv').config()
 const Organization=db.Organization
 const OrganizationMedia=db.OrganizationMedia
 const Media=db.SocialMedia
 
 const handleNewOrganization = async (req, res) => {
+  console.log("organization body ...",req.body)
     var { name,acronym,header_color,footer_color,background_color,copyright_text,media} = req.body;
     // media=media.split(',')
-    console.log(req.body)
+    console.log("organization body ...",req.body)
     if (!name ) {
       return res.status(400).json({ "message": "Please provide required organization information" });
     }
@@ -74,6 +78,37 @@ const handleNewOrganization = async (req, res) => {
       return res.status(500).json({"message":"server error"})
     }
   }
+  const handleUpdateOrganization = async (req, res) => {
+    const { id } = req.params;
+    console.log(req.body)
+    // const name=req.body.organization_name
+    const leader_id=req.body.leader_id
+  
+    console.log(req.body)
+  
+    try {
+      // const organization = await Organization.findOne({where:{organization_id:id}});
+      // if (!organization) {
+      //   return res.status(404).json({ message: "Organization not found" });
+      // }
+      
+      // await organization.update({leader_id });
+      const supervisor=await UserRole.findOne({where:{role_id:process.env.ORGANIZATION_ADMIN}})
+      if(supervisor){
+        await supervisor.update({user_id:leader_id})
+      }else{
+        await UserRole.create({
+          user_role_id:uuidv4(),
+          role_id:process.env.ORGANIZATION_ADMIN,
+          user_id:leader_id
+        })
+      }
+      return res.status(200).json({supervisor, message: "Organization updated" });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: "Server error" });
+    }
+  };
   const handleGetAllSocialMedia=async(req,res)=>{
     try {
       const medias = await Media.findAll();
@@ -86,10 +121,11 @@ const handleNewOrganization = async (req, res) => {
   const handleGetOrganization=async(req,res)=>{
     try {
       const organization = await Organization.findAll();
-      return res.status(200).json(organization);
+      const leader=await UserRole.findOne({where:{role_id:process.env.ORGANIZATION_ADMIN},include:[{model:User,as:"UserRoleToUser"}]})
+      return res.status(200).json({organization,leader});
     }catch (error) {
       console.error(error);
       return res.status(500).json({ "message": "Server error" });
     }
   }
-  module.exports={handleNewOrganization,handleNewSocialMedia,handleGetAllSocialMedia,handleGetOrganization}
+  module.exports={handleNewOrganization,handleNewSocialMedia,handleGetAllSocialMedia,handleGetOrganization,handleUpdateOrganization}

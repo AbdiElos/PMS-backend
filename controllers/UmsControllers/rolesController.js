@@ -103,7 +103,8 @@ const handleNewRole = async (req, res) => {
   const handleUpdateRole = async (req, res) => {
     const {id}=req.params
     var { name,permissions} = req.body;
-    permissions=permissions.split(",")
+    // permissions=permissions.split(",")
+    console.log(req.body)
     console.log(permissions.length)
     if (!name) {
       return res.status(400).json({ "message": "Please provide role info properly" });
@@ -117,13 +118,14 @@ const handleNewRole = async (req, res) => {
       if (!existingRole) {
         return res.status(401).json({ "message": "role not found" });
       }
+      await existingRole.update({name})
       await RolePermissions.destroy({where: {role_id:id}})
       for (const value of permissions){
         console.log("permission value",value)
         await RolePermissions.create({
           role_permission_id:uuidv4(),
           role_id:id,
-          permission_id:value,
+          permission_id:value.permission_id,
           // updated_by:req.id
         })
       };
