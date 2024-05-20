@@ -1,6 +1,6 @@
-const express = require('express');
-const router=express.Router();
-const adminController = require('../../controllers/adminController.js');
+const express = require("express");
+const router = express.Router();
+const adminController = require("../../controllers/adminController.js");
 /*const multer=require('multer')
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -28,17 +28,12 @@ const verifyAdmin=(req,res,next)=>{
   }
   next()
 }*/
-router.route('/addMember')
-    .post(adminController.addUser)
-router.route('/allUser')
-    .get(adminController.getAllUser)
+router.route("/addMember").post(adminController.addUser);
+router.route("/allUser").get(adminController.getAllUser);
 
-router.route("/getUser/:full_name")
-    .get(adminController.getUser);
+router.route("/getUser/:full_name").get(adminController.getUser);
 
-
-router.route("/changeStatus/:full_name")
-    .get(adminController.toggleSuspend)
+router.route("/changeStatus/:full_name").get(adminController.toggleSuspend);
 /*router.route("/consumers/:username/activity")
     .get(verifyAdmin,adminController.getActivity);
 
@@ -48,4 +43,4 @@ router.route("/deleteMember/:username/:role")
     .delete(verifyAdmin,adminController.deleteUser)
 router.route("/changeStatus/:id/toggleSuspend")
     .get(verifyAdmin,adminController.toggleSuspend)*/
-module.exports=router;
+module.exports = router;

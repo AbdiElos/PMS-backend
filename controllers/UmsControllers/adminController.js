@@ -1,6 +1,6 @@
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
 const db = require("../../config/db");
-const user_role =db.user_role
+const user_role = db.user_role;
 const User = db.User;
 const Roles = db.Roles;
 
@@ -9,35 +9,32 @@ const getUser = async (req, res) => {
   try {
     const result = await User.findOne({ where: { user_id } });
     if (!result) {
-      return res.status(404).json({ "message": "User not found" });
+      return res.status(404).json({ message: "User not found" });
     }
     return res.status(201).json(result);
   } catch (err) {
     console.error(err);
-    return res.status(500).json({ "message": "Server error" });
+    return res.status(500).json({ message: "Server error" });
   }
 };
-
 
 const getAllUser = async (req, res) => {
   console.log("getting all users .....");
   try {
     const users = await User.findAll({
-      include: [{ model: Roles,as:"Roles" }] // Include the Role model with the specified attributes
+      include: [{ model: Roles, as: "Roles" }], // Include the Role model with the specified attributes
     });
 
     if (!users || users.length === 0) {
-      return res.status(404).json({ "message": "No users found" });
+      return res.status(404).json({ message: "No users found" });
     }
-    
+
     return res.status(200).json(users); // Use 200 status code for success
   } catch (err) {
     console.error(err);
-    return res.status(500).json({ "message": "Server error" });
+    return res.status(500).json({ message: "Server error" });
   }
 };
-
-
 
 const deleteUser = async (req, res) => {
   const full_name = req.params.full_name;
@@ -49,35 +46,38 @@ const deleteUser = async (req, res) => {
 
   try {
     const deleteUser = await User.destroy({ where: { full_name } });
-    return res.status(201).json({ "message": `${full_name} deleted successfully` });
+    return res
+      .status(201)
+      .json({ message: `${full_name} deleted successfully` });
   } catch (err) {
     console.error(err);
-    return res.status(404).json({ "message": "User can't be deleted" });
+    return res.status(404).json({ message: "User can't be deleted" });
   }
 };
 
 const editMember = async (req, res) => {
   const user_id = req.params.id;
-  console.log(user_id)
-  const { full_name,email,gender} = req.body;
+  console.log(user_id);
+  const { full_name, email, gender } = req.body;
+  const img_url = req.file; // Get the uploaded image from the request
+  console.log("image_name==", img_url.filename);
 
   try {
     const result = await User.findOne({ where: { user_id } });
     if (!result) {
-      return res.status(404).json({ "message": "User not found" });
+      return res.status(404).json({ message: "User not found" });
     }
 
-    
     if (full_name) result.full_name = full_name;
     if (email) result.email = email;
     if (gender) result.gender = gender;
-   //add other atribute here to update
+    if (img_url) result.img_url = img_url.filename; // Save the image filename to the database
 
     await result.save();
-    return res.status(201).json({ "message": `user account updated` });
+    return res.status(201).json({ message: `user account updated` });
   } catch (err) {
     console.error(err);
-    return res.status(500).json({ "message": "Server problem" });
+    return res.status(500).json({ message: "Server problem" });
   }
 };
 const toggleSuspend = async (req, res) => {
@@ -85,16 +85,16 @@ const toggleSuspend = async (req, res) => {
   try {
     const result = await User.findOne({ where: { user_id } });
     if (!result) {
-      return res.status(404).json({ "message": "User not found" });
+      return res.status(404).json({ message: "User not found" });
     }
 
     result.account_status = !result.account_status; // Remove the space before 'account_status'
     await result.save();
 
-    return res.status(201).json({ "message": `status is updated ` });
+    return res.status(201).json({ message: `status is updated ` });
   } catch (err) {
     console.error(err);
-    return res.status(500).json({ "message": "Server problem" });
+    return res.status(500).json({ message: "Server problem" });
   }
 };
 module.exports = {
@@ -102,5 +102,5 @@ module.exports = {
   deleteUser,
   editMember,
   toggleSuspend,
-  getAllUser
+  getAllUser,
 };
