@@ -9,10 +9,7 @@ const handleDeleteRole = async (req, res) => {
     try {
       const current_time=new Date()
       const role = await Roles.findOne({where:{role_id}});
-      role.is_deleted=true
-      role.deletedBy=req.id
-      role.deletionAt=current_time
-      role.save()
+      await role.update({is_deleted:true,deletedBy:req.id,deletionAt:current_time})
       const user_roles=await UserRole.findAll({where:{role_id}})
       user_roles.forEach(async(row) => {await row.update({ is_deleted: true,deletedBy:req.id,deletionAt:current_time })})
       const role_permissions=await RolePermissions.findAll({where:{role_id}})

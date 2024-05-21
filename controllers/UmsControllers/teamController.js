@@ -56,7 +56,7 @@ const handleGetAllTeams = async (req, res) => {
       var teams = await Team.findAll({where:{is_deleted:false},
         include:[{model:User,as:"teamMembers",attributes:['user_id','full_name','img_url',"gender"]
       },{model:User,as:"ManagedBy",attributes:['user_id',"full_name","img_url","gender","email"]}],
-     attributes:['team_id',"name","description","team_manager_id","created_by"]});
+     attributes:['team_id',"name","description","team_manager_id","created_by","createdAt"]});
       return res.status(200).json(teams);
     } catch (error) {
       console.error(error);
@@ -70,7 +70,7 @@ const handleGetTeamById = async (req, res) => {
       const team = await Team.findOne({where:{team_id:id,is_deleted:false},
         include:[{model:User,as:"teamMembers",attributes:['user_id','full_name','img_url',"gender"]
       },{model:User,as:"ManagedBy",attributes:['user_id',"full_name","img_url","gender","email"]}],
-     attributes:['team_id',"name","description","team_manager_id","created_by"]});
+     attributes:['team_id',"name","description","team_manager_id","created_by","createdAt"]});
       if (!team) {
         return res.status(404).json({ "message": "team not found" });
       }

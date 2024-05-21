@@ -9,12 +9,13 @@ const verifyAccessWithoutProject=require('../../middlewares/verifyAccessWithoutP
 
 // sector routes
 router.route('/sector/newsector') 
-   .post(verifyJWT,sectorController.handleNewSector) 
+   .post(verifyJWT,verifyAccessWithoutProject(process.env.CREATE_ORGANIZATION),sectorController.handleNewSector) 
 router.route('/sector/getsector/:id') 
-   .get(verifyJWT,sectorController.handleGetSectorById) 
+   .get(verifyJWT,verifyAccessWithoutProject(process.env.CREATE_ORGANIZATION),sectorController.handleGetSectorById) 
  
+   
 router.route('/sector/getallsector') 
-   .get(verifyJWT,sectorController.handleGetAllSectors) 
+   .get(verifyJWT,verifyAccessWithoutProject(process.env.VIEW_ORGANIZATION),sectorController.handleGetAllSectors) 
  
 router.route('/sector/updatesector/:id') 
    .put(verifyJWT,sectorController.handleUpdateSector) 
@@ -35,7 +36,7 @@ router.route('/roles')
 
 // roles controller
 
-router.route("/role/add")
+router.route('/role/add')
   .post(roleController.handleNewRole)
 router.route('/role/getallprojectroles')
   .get(roleController.handleGetAllProjectRelatedRole)
@@ -47,6 +48,8 @@ router.route('/role/:id/update')
   .put(roleController.handleUpdateRole)
 router.route('/role/:id/getallpermissions')
   .get(roleController.handleGetAllPermissionsOfRole)
+
+//teams controller
 router.route('/team/add')
   .post(teamController.handleNewTeam)
 router.route('/team/getall')
