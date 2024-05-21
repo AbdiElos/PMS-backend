@@ -24,15 +24,12 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-// Import  models here
 db.Roles = require("../models/Roles")(sequelize, Sequelize);
 db.User = require("../models/user")(sequelize, Sequelize);
-// db.Activity = require('../models/activity')(sequelize, Sequelize);
 db.Permission = require("../models/permission")(sequelize, Sequelize);
 db.Project = require("../models/project")(sequelize, Sequelize);
 db.Sector = require("../models/sector")(sequelize, Sequelize);
 db.Division = require("../models/division")(sequelize, Sequelize);
-//db.User_role = require('../models/user_role')(sequelize, Sequelize);
 db.user_role = require("../models/user_role")(sequelize, Sequelize);
 db.role_permission = require("../models/role_has_permission")(
   sequelize,
@@ -44,8 +41,8 @@ db.Project_member = require("../models/project_member")(sequelize, Sequelize);
 
 db.Activity = require("../models/Activity")(sequelize, Sequelize);
 
+// db.Milestone= require('../models/Milestone')(sequelize, Sequelize);
 db.Task = require("../models/task")(sequelize, Sequelize);
-// db.Task_member= require('../models/task_member')(sequelize, Sequelize);
 db.Sub_task = require("../models/sub_task")(sequelize, Sequelize);
 db.Document = require("../models/document")(sequelize, Sequelize);
 db.Document_type = require("../models/document_type")(sequelize, Sequelize);
@@ -71,6 +68,14 @@ db.Major_task_member = require("../models/major_task_member")(
 // Define associations if any
 
 //many to one association
+db.SocialMedia.hasMany(db.OrganizationMedia, {
+  foreignKey: "media_id",
+  as: "OrganizationMedias",
+});
+db.OrganizationMedia.belongsTo(db.SocialMedia, {
+  foreignKey: "media_id",
+  as: "SocialMedias",
+});
 
 //for Sub_task and comment
 db.Sub_task.hasMany(db.Comment, { foreignKey: "sub_task_id", as: "Coments" });
@@ -129,7 +134,7 @@ db.Roles.belongsToMany(db.User, {
   through: "User_roles",
   foreignKey: "role_id",
   otherKey: "user_id",
-  as: "Users", // Alias for the association
+  as: "UsersRole", // Alias for the association
 });
 
 db.Permission.belongsToMany(db.Roles, {
@@ -147,19 +152,32 @@ db.Roles.belongsToMany(db.Permission, {
 });
 
 db.User.belongsToMany(db.Project, {
-  through: "Project_member",
+  through: "project_members",
   foreignKey: "user_id",
   otherKey: "project_id",
   as: "Projects", // Alias for the association
 });
 
 db.Project.belongsToMany(db.User, {
-  through: "Project_member",
+  through: "project_members",
   foreignKey: "project_id",
   otherKey: "user_id",
   as: "Users", // Alias for the association
 });
 
+db.Roles.belongsToMany(db.Project, {
+  through: "User_roles",
+  foreignKey: "role_id",
+  otherKey: "project_id",
+  as: "Projects", // Alias for the association
+});
+
+db.Project.belongsToMany(db.Roles, {
+  through: "User_roles",
+  foreignKey: "project_id",
+  otherKey: "role_id",
+  as: "ProjectRoles", // Alias for the association
+});
 //many to many relationship b/n Activity and project_member
 db.Activity.belongsToMany(db.Project_member, {
   through: "Activity_members",
@@ -234,22 +252,59 @@ db.Task.belongsToMany(db.Activity_members, {
   as: "Task_members",
 });
 
-db.Sector.hasMany(db.Division, { foreignKey: "sector_id", as: "Divisions" });
-db.Division.belongsTo(db.Sector, { foreignKey: "sector_id", as: "Sector" });
-
-// relationship between role and project through user role
-db.Roles.belongsToMany(db.Project, {
-  through: "User_roles",
-  foreignKey: "role_id",
-  otherKey: "project_id",
-  as: "Projects", // Alias for the association
+// trash for deleted by relationship
+db.User.hasMany(db.user_role, { foreignKey: "user_id", as: "UserToUserRoles" });
+db.user_role.belongsTo(db.User, {
+  foreignKey: "user_id",
+  as: "UserRoleToUser",
 });
 
-db.Project.belongsToMany(db.Roles, {
-  through: "User_roles",
-  foreignKey: "project_id",
-  otherKey: "role_id",
-  as: "ProjectRoles", // Alias for the association
+db.Roles.hasMany(db.user_role, {
+  foreignKey: "role_id",
+  as: "RolesToUserRole",
+});
+db.user_role.belongsTo(db.Roles, {
+  foreignKey: "role_id",
+  as: "UserRoleToRoles",
+});
+
+db.User.hasMany(db.Project, { foreignKey: "deletedBy", as: "DeletedProjects" });
+db.Project.belongsTo(db.User, {
+  foreignKey: "deletedBy",
+  as: "DeletedByProjects",
+});
+
+db.User.hasMany(db.Document, {
+  foreignKey: "deletedBy",
+  as: "DeletedDocuments",
+});
+db.Document.belongsTo(db.User, {
+  foreignKey: "deletedBy",
+  as: "DeletedByDocuments",
+});
+
+db.User.hasMany(db.Roles, { foreignKey: "deletedBy", as: "DeletedRoles" });
+db.Roles.belongsTo(db.User, { foreignKey: "deletedBy", as: "RoleDeletedBy" });
+
+db.User.hasMany(db.Team, { foreignKey: "deletedBy", as: "DeletedTeams" });
+db.Team.belongsTo(db.User, { foreignKey: "deletedBy", as: "TeamDeletedBy" });
+
+db.User.hasMany(db.User, { foreignKey: "deletedBy", as: "DeletedUsers" });
+db.User.belongsTo(db.User, { foreignKey: "deletedBy", as: "UserDeletedBy" });
+
+db.User.hasMany(db.Sector, { foreignKey: "deletedBy", as: "DeletedSectors" });
+db.Sector.belongsTo(db.User, {
+  foreignKey: "deletedBy",
+  as: "SectorDeletedBy",
+});
+
+db.User.hasMany(db.Division, {
+  foreignKey: "deletedBy",
+  as: "DeletedDivisions",
+});
+db.Division.belongsTo(db.User, {
+  foreignKey: "deletedBy",
+  as: "DivisionDeletedBy",
 });
 
 module.exports = db;
