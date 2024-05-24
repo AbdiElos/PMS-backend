@@ -7,25 +7,14 @@ const RolePermissions = db.role_permission;
 const { v4: uuidv4 } = require("uuid");
 
 const handleNewRole = async (req, res) => {
-<<<<<<< HEAD
-  var { name, permissions } = req.body;
   console.log(req.body);
+  var { name, permissions } = req.body;
 
   const uuid = uuidv4();
   try {
     console.log(permissions);
-    //permissions=permissions.split(",")
+    // permissions=permissions.split(",")
     console.log(permissions.length);
-=======
-    console.log(req.body)
-    var { name,permissions} = req.body;
-    
-    const uuid=uuidv4()
-    try {
-    console.log(permissions)
-    // permissions=permissions.split(",")  
-    console.log(permissions.length)
->>>>>>> 6e079a02fa2a059e030d4b2e34f319776f7d46a8
     if (!name) {
       return res
         .status(400)
@@ -79,7 +68,6 @@ const handleGetAllProjectRelatedRole = async (req, res) => {
     console.error(error);
     return res.status(500).json({ message: "Server error" });
   }
-<<<<<<< HEAD
 };
 const handleGetAllRole = async (req, res) => {
   try {
@@ -93,43 +81,6 @@ const handleGetAllRole = async (req, res) => {
 const handleGetAllPermissions = async (req, res) => {
   try {
     const permissions = await Permission.findAll();
-=======
-  const handleUpdateRole = async (req, res) => {
-    const {id}=req.params
-    var { name,permissions} = req.body;
-    // permissions=permissions.split(",")
-    console.log(req.body)
-    console.log(permissions.length)
-    if (!name) {
-      return res.status(400).json({ "message": "Please provide role info properly" });
-    }
-    if (!permissions || permissions.length === 0) {
-      return res.status(400).send('No permissions checkbox are selected.');
-    }
-    const uuid=uuidv4()
-    try {
-      const existingRole = await Roles.findOne({ where: { role_id:id } });
-      if (!existingRole) {
-        return res.status(401).json({ "message": "role not found" });
-      }
-      await existingRole.update({name})
-      await RolePermissions.destroy({where: {role_id:id}})
-      for (const value of permissions){
-        console.log("permission value",value)
-        await RolePermissions.create({
-          role_permission_id:uuidv4(),
-          role_id:id,
-          permission_id:value.permission_id,
-          // updated_by:req.id
-        })
-      };
-      return res.status(201).json({ "message": "role updated"});
-    } catch (error) {
-      console.error(error);
-      return res.status(500).json({ "message": "Server error" });
-    }
-  };
->>>>>>> 6e079a02fa2a059e030d4b2e34f319776f7d46a8
 
     return res.status(200).json(permissions);
   } catch (error) {
@@ -166,7 +117,8 @@ const handleGetAllPermissionsOfRole = async (req, res) => {
 const handleUpdateRole = async (req, res) => {
   const { id } = req.params;
   var { name, permissions } = req.body;
-  permissions = permissions.split(",");
+  // permissions=permissions.split(",")
+  console.log(req.body);
   console.log(permissions.length);
   if (!name) {
     return res
@@ -182,13 +134,14 @@ const handleUpdateRole = async (req, res) => {
     if (!existingRole) {
       return res.status(401).json({ message: "role not found" });
     }
+    await existingRole.update({ name });
     await RolePermissions.destroy({ where: { role_id: id } });
     for (const value of permissions) {
       console.log("permission value", value);
       await RolePermissions.create({
         role_permission_id: uuidv4(),
         role_id: id,
-        permission_id: value,
+        permission_id: value.permission_id,
         // updated_by:req.id
       });
     }

@@ -38,6 +38,11 @@ db.role_permission = require("../models/role_has_permission")(
 db.sector = require("../models/sector")(sequelize, Sequelize);
 db.division = require("../models/division")(sequelize, Sequelize);
 db.Project_member = require("../models/project_member")(sequelize, Sequelize);
+db.SocialMedia = require("../models/SocialMedia")(sequelize, Sequelize);
+db.OrganizationMedia = require("../models/organization_media")(
+  sequelize,
+  Sequelize
+);
 
 db.Activity = require("../models/Activity")(sequelize, Sequelize);
 
@@ -103,6 +108,15 @@ db.User.belongsTo(db.Division, { foreignKey: "division_id", as: "Division" });
 
 db.Project.hasMany(db.Document, { foreignKey: "project_id", as: "Document" });
 db.Document.belongsTo(db.Project, { foreignKey: "project_id", as: "Project" });
+
+db.Task.hasMany(db.Sub_task, { foreignKey: "task_id", as: "subTask" });
+db.Sub_task.belongsTo(db.Task, { foreignKey: "task_id", as: "Task" });
+
+db.Activity.hasMany(db.Task, { foreignKey: "activity_id", as: "Task" });
+db.Task.belongsTo(db.Activity, { foreignKey: "activity_id", as: "activity" });
+
+db.Project.hasMany(db.Activity, { foreignKey: "project_id", as: "activity" });
+db.Activity.belongsTo(db.Project, { foreignKey: "project_id", as: "project" });
 
 db.Team.hasMany(db.User, { foreignKey: "team_id", as: "Users" });
 db.User.belongsTo(db.Team, { foreignKey: "team_id", as: "Team" });

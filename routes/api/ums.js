@@ -56,18 +56,16 @@ router.route("/findalluser").get(
 //   verifyAccessWithoutProject(process.env.UPDATE_USER),adminController.editMember);
 router.route("/profile/update/:id").put(
   verifyJWT,
-  //verifyAccessWithoutProject(process.env.UPDATE_USER),
+  // verifyAccessWithoutProject(process.env.UPDATE_USER),
   upload.single("image"),
   adminController.editMember
 );
 
-router
-  .route("/profile/changeStatus/:id")
-  .put(
-    verifyJWT,
-    verifyAccessWithoutProject(process.env.CHANGE__USER_STATUS),
-    adminController.toggleSuspend
-  );
+router.route("/profile/changeStatus/:id").put(
+  verifyJWT,
+  // verifyAccessWithoutProject(process.env.CHANGE__USER_STATUS),
+  adminController.toggleSuspend
+);
 router
   .route("/profile/changepassword/:id")
   .put(

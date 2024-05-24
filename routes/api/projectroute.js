@@ -78,6 +78,9 @@ router.route("/sub_taskmembers/:id").get(sub_taskController.getSubTaskMembers);
 
 router.route("/getAllSub_task/:task_id").get(sub_taskController.getAllSubTasks);
 router.route("/updateSub_task/:id").put(sub_taskController.updateSubTask);
+router
+  .route("/updateSub_taskstatus/:id")
+  .post(sub_taskController.updateSubTaskStatus);
 router.route("/deleteSub_ask/:id").delete(sub_taskController.deleteSubTask);
 
 router
