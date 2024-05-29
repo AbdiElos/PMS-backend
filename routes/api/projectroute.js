@@ -74,6 +74,10 @@ router
   .route("/sub_task/newSubTask/:task_id")
   .post(sub_taskController.createSubTask);
 router.route("/sub_task/:id").get(sub_taskController.getSubTaskById);
+router
+  .route("/sub_taskmember/:project_member_id")
+  .get(sub_taskController.getSubtaskofmember);
+
 router.route("/sub_taskmembers/:id").get(sub_taskController.getSubTaskMembers);
 
 router.route("/getAllSub_task/:task_id").get(sub_taskController.getAllSubTasks);

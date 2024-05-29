@@ -288,6 +288,15 @@ db.Project.belongsTo(db.User, {
   as: "DeletedByProjects",
 });
 
+db.Sub_task.hasMany(db.Sub_task_member, {
+  foreignKey: "sub_task_id",
+  as: "Subtaskdetails",
+});
+db.Sub_task_member.belongsTo(db.Sub_task, {
+  foreignKey: "sub_task_id",
+  as: "Subtaskdetail",
+});
+
 db.User.hasMany(db.Document, {
   foreignKey: "deletedBy",
   as: "DeletedDocuments",

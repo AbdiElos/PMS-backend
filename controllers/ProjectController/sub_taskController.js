@@ -360,6 +360,48 @@ const updateSubTaskStatus = async (req, res) => {
   }
 };
 
+const getSubtaskofmember = async (req, res) => {
+  const { project_member_id } = req.params;
+
+  try {
+    const subTask = await Sub_task_member.findAll({
+      where: { project_member_id: project_member_id },
+      include: [
+        {
+          model: Sub_task,
+          as: "Subtaskdetail",
+        },
+      ],
+    });
+
+    if (!subTask) {
+      return res.status(404).json({ message: "Sub-task member not found" });
+    }
+    const completedSubtasks = subTask.filter(
+      (task) => task.Subtaskdetail.subtask_status === "Completed"
+    );
+    const InprogeressSubtasks = subTask.filter(
+      (task) => task.Subtaskdetail.subtask_status === "In Progress"
+    );
+    const pendingSubtasks = subTask.filter(
+      (task) => task.Subtaskdetail.subtask_status === "Pending"
+    );
+
+    const response = {
+      data: subTask,
+      totalCount: subTask.length,
+      completedCount: completedSubtasks.length,
+      InprgressCount: InprogeressSubtasks.length,
+      pendingCount: pendingSubtasks.length,
+    };
+
+    return res.status(200).json(response);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
 module.exports = {
   updateSubTaskStatus,
   createSubTask,
@@ -369,4 +411,5 @@ module.exports = {
   deleteSubTask,
   getAlltaskMembers,
   getSubTaskMembers,
+  getSubtaskofmember,
 };
