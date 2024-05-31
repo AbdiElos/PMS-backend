@@ -127,6 +127,24 @@ db.User.hasMany(db.Project_member, {
 });
 db.Project_member.belongsTo(db.User, { foreignKey: "user_id", as: "UserInfo" });
 
+db.Project.hasMany(db.Project_member, {
+  foreignKey: "project_id",
+  as: "project",
+});
+db.Project_member.belongsTo(db.Project, {
+  foreignKey: "project_id",
+  as: "userproject",
+});
+
+// db.Project.hasMany(db.Sub_task, {
+//   foreignKey: "project_id",
+//   as: "projects",
+// });
+// db.Sub_task.belongsTo(db.Project, {
+//   foreignKey: "project_id",
+//   as: "usersubtask",
+// });
+
 db.Document_type.hasMany(db.Document, {
   foreignKey: "document_type_id",
   as: "Document",

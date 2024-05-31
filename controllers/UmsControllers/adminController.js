@@ -1,8 +1,14 @@
 const bcrypt = require("bcrypt");
 const db = require("../../config/db");
+
 const user_role = db.user_role;
 const User = db.User;
 const Roles = db.Roles;
+const Project = db.Project;
+const Project_member = db.Project_member;
+const Sub_task = db.Sub_task;
+const Activity = db.Activity;
+const Task = db.Task;
 
 const getUser = async (req, res) => {
   const user_id = req.params.user_id;
@@ -96,7 +102,110 @@ const toggleSuspend = async (req, res) => {
     return res.status(500).json({ message: "Server problem" });
   }
 };
+
+const getAllUserproject = async (req, res) => {
+  const { user_id } = req.params;
+  console.log("getting all user project.....");
+  try {
+    const projectMembers = await db.Project_member.findAll({
+      where: { user_id: user_id },
+      include: [
+        {
+          model: db.Project,
+          as: "userproject",
+          include: [
+            {
+              model: db.Activity,
+              as: "activity",
+              include: [
+                {
+                  model: db.Task,
+                  as: "Task",
+                  include: [
+                    {
+                      model: db.Sub_task,
+                      as: "subTask",
+                      attributes: [
+                        "sub_task_id",
+
+                        "name",
+                        "subtask_status",
+                        "start_date",
+                        "end_date",
+                        "is_milestone",
+                        "created_by",
+                        "updated_by",
+                        "createdAt",
+                        "updatedAt",
+                        "is_deleted",
+                        "deletionAt",
+                        "deletedBy",
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+
+    if (projectMembers.length === 0) {
+      return res.status(404).json({ message: "No result" });
+    }
+
+    return res.status(200).json(projectMembers); // Use 200 status code for success
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
+const getAllUsersubtask = async (req, res) => {
+  const { project_member_id } = req.params;
+  console.log("getting all user sub_task_of project_member.....");
+  try {
+    const SubTaskmember = await db.Sub_task_member.findAll({
+      where: { project_member_id: project_member_id },
+      include: [
+        {
+          model: db.Sub_task,
+          as: "Subtaskdetail",
+          attributes: [
+            "sub_task_id",
+
+            "name",
+            "subtask_status",
+            "start_date",
+            "end_date",
+            "is_milestone",
+            "created_by",
+            "updated_by",
+            "createdAt",
+            "updatedAt",
+            "is_deleted",
+            "deletionAt",
+            "deletedBy",
+          ],
+        },
+      ],
+    });
+
+    if (SubTaskmember.length === 0) {
+      return res.status(404).json({ message: "No result" });
+    }
+
+    return res.status(200).json(SubTaskmember); // Use 200 status code for success
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
 module.exports = {
+  getAllUserproject,
+  getAllUsersubtask,
   getUser,
   deleteUser,
   editMember,

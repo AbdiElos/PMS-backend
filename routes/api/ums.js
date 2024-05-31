@@ -66,6 +66,19 @@ router.route("/profile/changeStatus/:id").put(
   // verifyAccessWithoutProject(process.env.CHANGE__USER_STATUS),
   adminController.toggleSuspend
 );
+
+router.route("/profile/project/:user_id").get(
+  verifyJWT,
+  // verifyAccessWithoutProject(process.env.CHANGE__USER_STATUS),
+  adminController.getAllUserproject
+);
+
+router.route("/profile/subtask/:project_member_id").get(
+  verifyJWT,
+  // verifyAccessWithoutProject(process.env.CHANGE__USER_STATUS),
+  adminController.getAllUsersubtask
+);
+
 router
   .route("/profile/changepassword/:id")
   .put(
@@ -76,8 +89,7 @@ router
 // router.route('/profile/update')
 //     .post(verifyJWT,upload.single("profileImg"),profileController.updateProfile)
 
-// router.route('/profile')
-//     .get(profileController.getProfile)
+// router.route("/profile/project").get(adminController.getAllUserproject);
 // router.route('/profile/update')
 //     .post(profileController.updateProfile)
 // router.route("/forgotPassword")
